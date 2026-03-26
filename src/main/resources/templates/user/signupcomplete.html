@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입 완료</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:"돋움", Dotum, sans-serif;
+    background:#f3f4f6;
+}
+
+.container{
+    max-width:800px;
+    width:90%;
+    margin:60px auto;
+    text-align:center;
+}
+
+/* 제목 */
+.title{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+/* 메시지 */
+.welcome{
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.sub-text{
+    color:#555;
+    margin-bottom:20px;
+}
+
+/* 정보 박스 */
+.info-box{
+    background:white;
+    padding:20px;
+    border-radius:5px;
+    border:1px solid #ddd;
+    text-align:left;
+}
+
+.info-box li{
+    margin-bottom:10px;
+}
+
+/* 버튼 */
+.button-area{
+    margin-top:30px;
+}
+
+.btn{
+    padding:12px 30px;
+    margin:0 10px;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.login-btn{
+    background:#3f6fb5;
+    color:white;
+}
+
+.home-btn{
+    background:#6c757d;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="title">회원가입 완료</div>
+
+<!-- 환영 메시지 -->
+<div class="welcome">
+    <span th:text="${signupUser.name}"></span> 님, 환영합니다 🎉
+</div>
+
+<div class="sub-text">
+    회원가입이 정상적으로 완료되었습니다.
+</div>
+
+<!-- 회원 정보 -->
+<div class="info-box">
+
+<ul>
+    <li>아이디: <span th:text="${signupUser.loginId}"></span></li>
+    <li>이름: <span th:text="${signupUser.name}"></span></li>
+    <li>생년월일: <span th:text="${signupUser.birth}"></span></li>
+    <li>성별: <span th:text="${signupUser.gender}"></span></li>
+    <li>전화번호: <span th:text="${signupUser.phone}"></span></li>
+    <li>주소: <span th:text="${signupUser.address}"></span></li>
+    <li>이메일: <span th:text="${signupUser.email}"></span></li>
+</ul>
+
+<!-- 차량 정보 (입력했을 때만) -->
+<div th:if="${signupUser.vehicleModel != null 
+            and signupUser.vehicleModel != ''}">
+    <hr>
+    <h4>보유 차량 정보</h4>
+    <p>
+        <span th:text="${signupUser.vehicleModel}"></span> /
+        <span th:text="${signupUser.vehicleYear}"></span> /
+        <span th:text="${signupUser.drivingDistance}"></span> Km
+    </p>
+</div>
+
+</div>
+
+<!-- 버튼 -->
+<div class="button-area">
+    <button class="btn login-btn" onclick="location.href='/login'">로그인</button>
+    <button class="btn home-btn" onclick="location.href='/'">메인으로</button>
+</div>
+
+</div>
+
+</body>
+</html>

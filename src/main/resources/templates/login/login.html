@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:"돋움", Dotum, sans-serif;
+    background:#f3f4f6;
+}
+
+/* 전체 영역 */
+.container{
+    max-width:500px;
+    width:90%;
+    margin:120px auto;
+}
+
+/* 제목 */
+.title{
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+/* 입력 영역 */
+.form-group{
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    height:45px;
+    padding:8px 12px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+
+/* 버튼 */
+.login-btn{
+    width:100%;
+    height:50px;
+    background:#3f6fb5;
+    color:white;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#355fa0;
+}
+
+/* 링크 */
+.link-area{
+    text-align:center;
+    margin-top:20px;
+}
+
+.link-area a{
+    text-decoration:none;
+    color:#0066ff;
+    margin:0 5px;
+    font-size:14px;
+}
+
+/* 에러 */
+.error-box{
+    margin-top:20px;
+    padding:15px;
+    border:1px solid red;
+    color:red;
+    background:#fff;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="title">로그인</div>
+
+    <form th:action="@{/login}" th:object="${loginRequestDto}" method="post">
+
+        <!-- 아이디 -->
+        <div class="form-group">
+            <input type="text" th:field="*{loginId}" placeholder="아이디" required />
+        </div>
+
+        <!-- 비밀번호 -->
+        <div class="form-group">
+            <input type="password" th:field="*{password}" placeholder="비밀번호" required />
+        </div>
+
+        <!-- 버튼 -->
+        <button type="submit" class="login-btn">로그인</button>
+
+    </form>
+
+    <!-- 링크 -->
+    <div class="link-area">
+        <a href="/login/find-id">아이디 찾기</a> /
+        <a href="/login/find-id">비밀번호 변경</a> /
+        <a href="/signup/term">회원가입</a>
+    </div>
+
+    <!-- 로그인 실패 메시지 -->
+    <div class="error-box" th:if="${errorMessage}">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+</div>
+
+</body>
+</html>
