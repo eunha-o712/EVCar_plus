@@ -380,22 +380,20 @@ domainInput.readOnly=false;
 
 /* 이메일 합치기 */
 
-document.querySelector("form").addEventListener("submit",function(event){
+document.querySelector("form").onsubmit = function(){
 
-const id=document.getElementById("emailId").value;
-const domain=document.getElementById("emailDomain").value;
+    const id = document.getElementById("emailId").value;
+    const domain = document.getElementById("emailDomain").value;
 
-// 이메일 입력 체크
-if(!id || !domain){
-    alert("이메일을 입력해주세요.");
-    event.preventDefault();
-    return;
-}
+    if(!id || !domain){
+        alert("이메일을 입력해주세요.");
+        return false;   // ❗ 이게 핵심 (submit 막는 방식 변경)
+    }
 
-// 이메일 합치기
-document.getElementById("emailFull").value=id+"@"+domain;
+    document.getElementById("emailFull").value = id + "@" + domain;
 
-});
+    return true;   // 정상 submit
+};
 
 /* 차량 활성화 */
 
