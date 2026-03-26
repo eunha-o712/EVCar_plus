@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관심 차량 - EVCar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/myWishlist.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-wishlist-page">
+    <section class="ev-wishlist-section">
+        <div class="ev-wishlist-container">
+            <aside class="ev-mypage-sidebar">
+                <h2 class="ev-mypage-sidebar__title">마이페이지</h2>
+                <nav class="ev-mypage-sidebar__nav">
+                    <a class="ev-mypage-sidebar__link" th:href="@{/mypage/main}">마이페이지 홈</a>
+                    <a class="ev-mypage-sidebar__link" th:href="@{/mypage/info}">내 정보</a>
+                    <a class="ev-mypage-sidebar__link ev-mypage-sidebar__link--active" th:href="@{/mypage/wishlist}">관심 차량</a>
+                    <a class="ev-mypage-sidebar__link" th:href="@{/mypage/consultation}">상담 이력</a>
+                    <a class="ev-mypage-sidebar__link" th:href="@{/mypage/inquiry}">문의 내역</a>
+                    <a class="ev-mypage-sidebar__link" th:href="@{/mypage/withdraw}">회원탈퇴</a>
+                    <a class="ev-mypage-sidebar__link" th:href="@{/logout}">로그아웃</a>
+                </nav>
+            </aside>
+
+            <div class="ev-wishlist-content">
+                <div class="ev-wishlist-header">
+                    <div>
+                        <p class="ev-wishlist-eyebrow">Wishlist</p>
+                        <h1 class="ev-wishlist-title">관심 차량</h1>
+                        <p class="ev-wishlist-description">
+                            관심 등록한 차량을 확인하고 상세보기 또는 삭제할 수 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="ev-wishlist-grid" id="wishlistGrid">
+                    <article class="ev-wishlist-card" data-wishlist-id="1">
+                        <button type="button" class="ev-wishlist-favorite" aria-label="관심차량">♥</button>
+                        <div class="ev-wishlist-image-wrap">
+                            <img class="ev-wishlist-image" th:src="@{/images/no-image.png}" alt="아이오닉 5">
+                        </div>
+                        <div class="ev-wishlist-body">
+                            <p class="ev-wishlist-brand">현대 | 중형 SUV</p>
+                            <h2 class="ev-wishlist-model">아이오닉 5</h2>
+                            <p class="ev-wishlist-price">5,200만원</p>
+                            <div class="ev-wishlist-actions">
+                                <a href="#" class="btn btn-ev-secondary">상세보기</a>
+                                <button type="button" class="btn btn-ev-primary ev-delete-btn">삭제</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="ev-wishlist-card" data-wishlist-id="2">
+                        <button type="button" class="ev-wishlist-favorite" aria-label="관심차량">♥</button>
+                        <div class="ev-wishlist-image-wrap">
+                            <img class="ev-wishlist-image" th:src="@{/images/no-image.png}" alt="EV6">
+                        </div>
+                        <div class="ev-wishlist-body">
+                            <p class="ev-wishlist-brand">기아 | 중형 SUV</p>
+                            <h2 class="ev-wishlist-model">EV6</h2>
+                            <p class="ev-wishlist-price">4,870만원</p>
+                            <div class="ev-wishlist-actions">
+                                <a href="#" class="btn btn-ev-secondary">상세보기</a>
+                                <button type="button" class="btn btn-ev-primary ev-delete-btn">삭제</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="ev-wishlist-empty ev-wishlist-empty--hidden" id="wishlistEmpty">
+                    <div class="ev-wishlist-empty__icon">♡</div>
+                    <h2 class="ev-wishlist-empty__title">관심 차량이 없습니다</h2>
+                    <p class="ev-wishlist-empty__text">마음에 드는 전기차를 관심 차량으로 등록해보세요.</p>
+                    <a class="btn btn-ev-primary" th:href="@{/vehicle/list}">차량 보러가기</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+<div th:replace="~{fragments/chatbotWidget :: chatbot}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/mypage/myWishlist.js}"></script>
+</body>
+</html>

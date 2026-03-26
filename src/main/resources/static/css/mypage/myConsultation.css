@@ -1,0 +1,46 @@
+.ev-consultation-page {
+    padding-top: 80px;
+}
+
+.ev-consultation-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ev-consultation-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.ev-consultation-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    margin-bottom: 12px;
+}
+
+.ev-consultation-status {
+    font-weight: 600;
+}
+
+.status-wait {
+    color: orange;
+}
+
+.status-done {
+    color: green;
+}
+
+.ev-empty {
+    display: none;
+    text-align: center;
+    margin-top: 40px;
+    color: #888;
+}
