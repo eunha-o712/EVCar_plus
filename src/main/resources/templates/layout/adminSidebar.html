@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside class="ev-admin-sidebar" th:fragment="adminSidebar(activeMenu)">
+    <div class="ev-admin-sidebar__brand">
+        <a th:href="@{/admin}" class="ev-admin-sidebar__logo">EV ADMIN</a>
+        <p class="ev-admin-sidebar__text">EV Consulting</p>
+    </div>
+
+    <nav class="ev-admin-sidebar__nav">
+        <a th:href="@{/admin}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'dashboard'} ? ' is-active' : ''">
+            대시보드
+        </a>
+        <a th:href="@{/admin/user}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'user'} ? ' is-active' : ''">
+            고객관리
+        </a>
+        <a th:href="@{/admin/consultation}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'consultation'} ? ' is-active' : ''">
+            상담관리
+        </a>
+        <a th:href="@{/admin/vehicle}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'vehicle'} ? ' is-active' : ''">
+            차량관리
+        </a>
+        <a href="javascript:void(0)" class="ev-admin-sidebar__link">충전소관리</a>
+        <a href="javascript:void(0)" class="ev-admin-sidebar__link">통계분석</a>
+        <a href="javascript:void(0)" class="ev-admin-sidebar__link">게시판관리</a>
+    </nav>
+</aside>
+</body>
+</html>

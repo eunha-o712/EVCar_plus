@@ -1,0 +1,9 @@
+.ev-admin-form-field--full {
+    grid-column: 1 / -1;
+}
+
+@media (min-width: 1024px) {
+    .ev-admin-form-grid {
+        align-items: start;
+    }
+}
