@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - EVCar</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+</head>
+<body>
+
+<div class="ev-admin-layout">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{layout/adminSidebar :: adminSidebar('dashboard')}"></div>
+
+    <!-- 메인 -->
+    <main class="ev-admin-main">
+        <div class="ev-admin-container">
+
+            <h1 class="ev-admin-title">대시보드</h1>
+
+            <!-- 요약 카드 -->
+            <div class="ev-admin-dashboard-cards">
+
+                <div class="ev-admin-card">
+                    <p class="ev-admin-card__label">금일 예약</p>
+                    <h2 class="ev-admin-card__value">0건</h2>
+                </div>
+
+                <div class="ev-admin-card">
+                    <p class="ev-admin-card__label">진행중 상담</p>
+                    <h2 class="ev-admin-card__value">0건</h2>
+                </div>
+
+                <div class="ev-admin-card">
+                    <p class="ev-admin-card__label">완료 상담</p>
+                    <h2 class="ev-admin-card__value">0건</h2>
+                </div>
+
+            </div>
+
+            <!-- 바로가기 -->
+            <div class="ev-admin-dashboard-actions">
+                <a th:href="@{/admin/user}" class="ev-admin-btn">고객관리</a>
+                <a th:href="@{/admin/consultation}" class="ev-admin-btn">상담관리</a>
+                <a th:href="@{/admin/vehicle}" class="ev-admin-btn">차량관리</a>
+            </div>
+
+        </div>
+    </main>
+
+</div>
+
+</body>
+</html>
