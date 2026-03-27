@@ -36,41 +36,19 @@
                             관심 등록한 차량을 확인하고 상세보기 또는 삭제할 수 있습니다.
                         </p>
                     </div>
+
+                    <!-- TODO: 차량 목록/상세 페이지 연동 전 테스트용 버튼, 연동 완료 후 제거 -->
+                    <div class="ev-wishlist-header-actions">
+                        <button type="button" class="btn btn-ev-secondary" id="addSampleVehicleButton">
+                            샘플 차량 추가
+                        </button>
+                        <button type="button" class="btn btn-ev-secondary" id="resetWishlistButton">
+                            테스트 데이터 초기화
+                        </button>
+                    </div>
                 </div>
 
-                <div class="ev-wishlist-grid" id="wishlistGrid">
-                    <article class="ev-wishlist-card" data-wishlist-id="1">
-                        <button type="button" class="ev-wishlist-favorite" aria-label="관심차량">♥</button>
-                        <div class="ev-wishlist-image-wrap">
-                            <img class="ev-wishlist-image" th:src="@{/images/no-image.png}" alt="아이오닉 5">
-                        </div>
-                        <div class="ev-wishlist-body">
-                            <p class="ev-wishlist-brand">현대 | 중형 SUV</p>
-                            <h2 class="ev-wishlist-model">아이오닉 5</h2>
-                            <p class="ev-wishlist-price">5,200만원</p>
-                            <div class="ev-wishlist-actions">
-                                <a href="#" class="btn btn-ev-secondary">상세보기</a>
-                                <button type="button" class="btn btn-ev-primary ev-delete-btn">삭제</button>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="ev-wishlist-card" data-wishlist-id="2">
-                        <button type="button" class="ev-wishlist-favorite" aria-label="관심차량">♥</button>
-                        <div class="ev-wishlist-image-wrap">
-                            <img class="ev-wishlist-image" th:src="@{/images/no-image.png}" alt="EV6">
-                        </div>
-                        <div class="ev-wishlist-body">
-                            <p class="ev-wishlist-brand">기아 | 중형 SUV</p>
-                            <h2 class="ev-wishlist-model">EV6</h2>
-                            <p class="ev-wishlist-price">4,870만원</p>
-                            <div class="ev-wishlist-actions">
-                                <a href="#" class="btn btn-ev-secondary">상세보기</a>
-                                <button type="button" class="btn btn-ev-primary ev-delete-btn">삭제</button>
-                            </div>
-                        </div>
-                    </article>
-                </div>
+                <div class="ev-wishlist-grid" id="wishlistGrid"></div>
 
                 <div class="ev-wishlist-empty ev-wishlist-empty--hidden" id="wishlistEmpty">
                     <div class="ev-wishlist-empty__icon">♡</div>

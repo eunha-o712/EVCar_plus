@@ -61,11 +61,16 @@
 }
 
 .ev-myinfo-header {
+    margin-bottom: 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    justify-content: space-between;
-    margin-bottom: 20px;
+}
+
+.ev-myinfo-header-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .ev-myinfo-eyebrow {
@@ -78,15 +83,15 @@
 }
 
 .ev-myinfo-title {
-    margin: 0;
-    color: var(--text-primary);
+    margin: 0 0 10px;
     font-size: 2rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    color: var(--text-primary);
 }
 
-.ev-edit-toggle-btn {
-    align-self: flex-start;
+.ev-myinfo-description {
+    margin: 0;
+    color: var(--text-secondary);
 }
 
 .ev-myinfo-card {
@@ -94,118 +99,83 @@
     border: 1px solid var(--border);
     border-radius: 24px;
     padding: 24px 20px;
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
 }
 
 .ev-myinfo-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 20px;
 }
 
-.ev-form-group {
+.ev-myinfo-field {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.ev-form-group--full {
+.ev-myinfo-field--full {
     grid-column: 1 / -1;
 }
 
-.ev-form-label {
-    color: var(--text-secondary);
+.ev-myinfo-label {
     font-size: 0.95rem;
     font-weight: 600;
+    color: var(--text-primary);
 }
 
-.ev-form-label--inline {
-    margin-bottom: 0;
-    min-width: 110px;
-}
-
-.ev-input[readonly],
-.ev-input:disabled {
-    background: #f8fafc;
+.ev-myinfo-input[readonly] {
+    background: #f9fafb;
     color: var(--text-secondary);
     cursor: default;
 }
 
-.ev-input.ev-edit-mode {
-    background: var(--bg-primary);
-    color: var(--text-primary);
+.ev-myinfo-input:disabled {
+    background: #f3f4f6;
+    color: var(--text-light);
+    cursor: not-allowed;
 }
 
-.ev-divider {
-    margin: 32px 0;
-    height: 1px;
-    background: var(--border);
-}
-
-.ev-mycar-header {
-    margin-bottom: 20px;
-}
-
-.ev-mycar-title {
-    margin: 0 0 6px;
-    font-size: 1.375rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.ev-mycar-description {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-}
-
-.ev-vehicle-own-box {
+.ev-myinfo-radio-group {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 20px;
-    padding: 18px 20px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: #fcfcfc;
-}
-
-.ev-radio-group {
-    display: flex;
-    align-items: center;
-    gap: 24px;
     flex-wrap: wrap;
+    gap: 12px;
 }
 
-.ev-radio-label {
+.ev-myinfo-radio {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-primary);
     color: var(--text-primary);
     font-weight: 500;
-    cursor: pointer;
 }
 
-.ev-radio-label input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--accent);
+.ev-myinfo-radio input {
+    margin: 0;
 }
 
-.ev-vehicle-fields.ev-vehicle-disabled {
-    opacity: 0.5;
-    pointer-events: none;
+.ev-myinfo-radio-group.is-disabled {
+    opacity: 0.6;
 }
 
-.ev-form-actions {
+.ev-myinfo-help {
+    margin: 4px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.ev-myinfo-footer {
+    margin-top: 32px;
     display: flex;
-    gap: 12px;
-    margin-top: 28px;
-    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
-.ev-form-actions--hidden {
-    display: none;
+.ev-myinfo-hidden {
+    display: none !important;
 }
 
 @media (min-width: 768px) {
@@ -213,23 +183,18 @@
         padding: 40px 24px 96px;
     }
 
-    .ev-myinfo-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .ev-myinfo-header {
         flex-direction: row;
         align-items: flex-end;
+        justify-content: space-between;
     }
 
     .ev-myinfo-card {
         padding: 32px 28px;
     }
 
-    .ev-vehicle-own-box {
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
+    .ev-myinfo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -243,13 +208,8 @@
         padding: 48px 32px 120px;
     }
 
-    .ev-myinfo-card {
-        padding: 40px 36px;
-    }
-}
-
-@media (min-width: 1280px) {
-    .ev-myinfo-title {
-        font-size: 2.25rem;
+    .ev-myinfo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
     }
 }

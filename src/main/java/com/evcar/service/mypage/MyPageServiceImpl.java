@@ -52,6 +52,22 @@ public class MyPageServiceImpl implements MyPageService {
             drivingDistance = null;
         }
 
+        if (requestDto.hasInvalidPasswordChangeInput()) {
+            throw new IllegalArgumentException("비밀번호 변경 항목을 모두 입력해주세요.");
+        }
+
+        if (requestDto.isNewPasswordMismatch()) {
+            throw new IllegalArgumentException("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
+        }
+
+        if (requestDto.hasPasswordChangeRequest()) {
+            if (!user.getPassword().equals(requestDto.getCurrentPassword())) {
+                throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+            }
+
+            user.changePassword(requestDto.getNewPassword());
+        }
+
         user.updateMyPageInfo(
                 requestDto.getName(),
                 requestDto.getBirthDate(),

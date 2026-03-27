@@ -1,3 +1,4 @@
+
 .ev-wishlist-page {
     padding-top: 72px;
     background: var(--bg-secondary);
@@ -62,6 +63,15 @@
 
 .ev-wishlist-header {
     margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ev-wishlist-header-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .ev-wishlist-eyebrow {
@@ -118,7 +128,7 @@
     color: var(--error);
     font-size: 1.2rem;
     font-weight: 700;
-    cursor: default;
+    cursor: pointer;
 }
 
 .ev-wishlist-image-wrap {
@@ -201,6 +211,12 @@
 @media (min-width: 768px) {
     .ev-wishlist-section {
         padding: 40px 24px 96px;
+    }
+
+    .ev-wishlist-header {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
     }
 
     .ev-wishlist-grid {

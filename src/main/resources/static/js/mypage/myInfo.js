@@ -2,148 +2,205 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('myInfoForm');
-    const editToggleBtn = document.getElementById('editToggleBtn');
-    const cancelEditBtn = document.getElementById('cancelEditBtn');
-    const editActionButtons = document.getElementById('editActionButtons');
-    const editableInputs = form.querySelectorAll('.ev-editable');
-    const editableRadios = form.querySelectorAll('.ev-editable-radio');
-    const vehicleFields = document.getElementById('vehicleFields');
-    const vehicleInputs = form.querySelectorAll('.ev-vehicle-input');
-    const hasVehicleRadios = form.querySelectorAll('input[name="hasVehicle"]');
+    const editModeButton = document.getElementById('editModeButton');
+    const saveButton = document.getElementById('saveButton');
+    const cancelButton = document.getElementById('cancelButton');
+
+    if (!form || !editModeButton || !saveButton || !cancelButton) {
+        return;
+    }
+
+    const editableInputs = form.querySelectorAll('[data-editable="true"]');
+    const hasVehicleInputs = form.querySelectorAll('input[name="hasVehicle"]');
+    const ownedVehicleFields = form.querySelectorAll('.ev-vehicle-owned-field');
+    const editableGroups = form.querySelectorAll('[data-editable-group]');
+    const fixedRadioGroups = form.querySelectorAll('.ev-myinfo-radio-group--fixed');
 
     const initialValues = new Map();
-    let editMode = false;
+    const initialPlaceholders = new Map();
 
     const saveInitialValues = () => {
         editableInputs.forEach((input) => {
-            initialValues.set(input.id, input.value);
+            initialValues.set(input.name, input.value);
+            initialPlaceholders.set(input.name, input.placeholder || '');
         });
 
-        const checkedRadio = form.querySelector('input[name="hasVehicle"]:checked');
-        initialValues.set('hasVehicle', checkedRadio ? checkedRadio.value : '');
-    };
-
-    const getSelectedHasVehicleValue = () => {
-        const checkedRadio = form.querySelector('input[name="hasVehicle"]:checked');
-        return checkedRadio ? checkedRadio.value.toLowerCase() : '';
-    };
-
-    const clearVehicleInputs = () => {
-        vehicleInputs.forEach((input) => {
-            input.value = '';
+        hasVehicleInputs.forEach((input) => {
+            initialValues.set(`hasVehicle:${input.value}`, input.checked);
         });
-    };
-
-    const updateVehicleFieldsState = () => {
-        const hasVehicle = getSelectedHasVehicleValue();
-        const vehicleEnabled = editMode && hasVehicle === 'yes';
-
-        vehicleFields.classList.toggle('ev-vehicle-disabled', !vehicleEnabled);
-
-        vehicleInputs.forEach((input) => {
-            input.readOnly = !vehicleEnabled;
-            input.classList.toggle('ev-edit-mode', vehicleEnabled);
-
-            if (!vehicleEnabled) {
-                input.value = '';
-            }
-        });
-    };
-
-    const setEditMode = (enabled) => {
-        editMode = enabled;
-
-        editableInputs.forEach((input) => {
-            if (input.tagName === 'SELECT') {
-                input.disabled = !enabled;
-            } else {
-                input.readOnly = !enabled;
-            }
-
-            input.classList.toggle('ev-edit-mode', enabled);
-        });
-
-        editableRadios.forEach((radio) => {
-            radio.disabled = !enabled;
-        });
-
-        editActionButtons.classList.toggle('ev-form-actions--hidden', !enabled);
-        editToggleBtn.style.display = enabled ? 'none' : 'inline-flex';
-
-        updateVehicleFieldsState();
     };
 
     const restoreInitialValues = () => {
         editableInputs.forEach((input) => {
-            const initialValue = initialValues.get(input.id);
-
-            if (initialValue !== undefined) {
-                input.value = initialValue;
-            }
+            input.value = initialValues.get(input.name) ?? '';
+            input.placeholder = initialPlaceholders.get(input.name) ?? '';
         });
 
-        const initialHasVehicle = initialValues.get('hasVehicle');
-        hasVehicleRadios.forEach((radio) => {
-            radio.checked = radio.value === initialHasVehicle;
+        hasVehicleInputs.forEach((input) => {
+            input.checked = Boolean(initialValues.get(`hasVehicle:${input.value}`));
         });
-
-        updateVehicleFieldsState();
     };
 
-    editToggleBtn.addEventListener('click', () => {
+    const getHasVehicleValue = () => {
+        const checkedInput = form.querySelector('input[name="hasVehicle"]:checked');
+        return checkedInput ? checkedInput.value : '';
+    };
+
+    const clearOwnedVehicleFields = () => {
+        ownedVehicleFields.forEach((field) => {
+            field.value = '';
+            field.placeholder = '';
+        });
+    };
+
+    const restoreOwnedVehiclePlaceholders = () => {
+        ownedVehicleFields.forEach((field) => {
+            field.placeholder = initialPlaceholders.get(field.name) ?? '';
+        });
+    };
+
+    const updateOwnedVehicleFields = (editing) => {
+        const hasVehicleValue = getHasVehicleValue();
+        const hasVehicle = hasVehicleValue === 'yes' || hasVehicleValue === 'Y';
+
+        if (!hasVehicle) {
+            clearOwnedVehicleFields();
+
+            ownedVehicleFields.forEach((field) => {
+                field.readOnly = true;
+                field.disabled = true;
+            });
+            return;
+        }
+
+        restoreOwnedVehiclePlaceholders();
+
+        ownedVehicleFields.forEach((field) => {
+            field.readOnly = !editing;
+            field.disabled = !editing;
+        });
+    };
+
+    const setEditMode = (editing) => {
+        editableInputs.forEach((input) => {
+            if (input.classList.contains('ev-vehicle-owned-field')) {
+                return;
+            }
+
+            input.readOnly = !editing;
+            input.disabled = false;
+        });
+
+        hasVehicleInputs.forEach((input) => {
+            input.disabled = !editing;
+        });
+
+        editableGroups.forEach((group) => {
+            group.classList.toggle('is-disabled', !editing);
+        });
+
+        fixedRadioGroups.forEach((group) => {
+            group.classList.add('is-disabled');
+        });
+
+        updateOwnedVehicleFields(editing);
+
+        editModeButton.classList.toggle('ev-myinfo-hidden', editing);
+        saveButton.classList.toggle('ev-myinfo-hidden', !editing);
+        cancelButton.classList.toggle('ev-myinfo-hidden', !editing);
+    };
+
+    hasVehicleInputs.forEach((input) => {
+        input.addEventListener('change', () => {
+            if (!input.disabled) {
+                updateOwnedVehicleFields(true);
+            }
+        });
+    });
+
+    editModeButton.addEventListener('click', () => {
         saveInitialValues();
         setEditMode(true);
     });
 
-    cancelEditBtn.addEventListener('click', () => {
+    cancelButton.addEventListener('click', () => {
         restoreInitialValues();
         setEditMode(false);
     });
 
-    hasVehicleRadios.forEach((radio) => {
-        radio.addEventListener('change', () => {
-            const hasVehicle = getSelectedHasVehicleValue();
+    form.addEventListener('submit', (event) => {
+        const phoneInput = form.querySelector('input[name="phone"]');
+        const addressInput = form.querySelector('input[name="address"]');
+        const emailInput = form.querySelector('input[name="email"]');
+        const currentPasswordInput = form.querySelector('input[name="currentPassword"]');
+        const newPasswordInput = form.querySelector('input[name="newPassword"]');
+        const newPasswordConfirmInput = form.querySelector('input[name="newPasswordConfirm"]');
 
-            if (hasVehicle !== 'yes') {
-                clearVehicleInputs();
+        if (phoneInput && !phoneInput.value.trim()) {
+            event.preventDefault();
+            window.alert('전화번호를 입력해주세요.');
+            phoneInput.focus();
+            return;
+        }
+
+        if (addressInput && !addressInput.value.trim()) {
+            event.preventDefault();
+            window.alert('주소를 입력해주세요.');
+            addressInput.focus();
+            return;
+        }
+
+        if (emailInput && !emailInput.value.trim()) {
+            event.preventDefault();
+            window.alert('이메일을 입력해주세요.');
+            emailInput.focus();
+            return;
+        }
+
+        const hasPasswordInput =
+            (currentPasswordInput && currentPasswordInput.value.trim()) ||
+            (newPasswordInput && newPasswordInput.value.trim()) ||
+            (newPasswordConfirmInput && newPasswordConfirmInput.value.trim());
+
+        if (hasPasswordInput) {
+            if (!currentPasswordInput.value.trim()) {
+                event.preventDefault();
+                window.alert('현재 비밀번호를 입력해주세요.');
+                currentPasswordInput.focus();
+                return;
             }
 
-            updateVehicleFieldsState();
-        });
-    });
-
-    form.addEventListener('submit', (event) => {
-        const requiredTargets = [
-            { id: 'name', message: '이름을 입력해주세요.' },
-            { id: 'birthDate', message: '생년월일을 입력해주세요.' },
-            { id: 'gender', message: '성별을 선택해주세요.' },
-            { id: 'phone', message: '전화번호를 입력해주세요.' },
-            { id: 'address', message: '주소를 입력해주세요.' },
-            { id: 'addressDetail', message: '상세 주소를 입력해주세요.' },
-            { id: 'email', message: '이메일을 입력해주세요.' }
-        ];
-
-        for (const target of requiredTargets) {
-            const input = document.getElementById(target.id);
-
-            if (!input || !String(input.value).trim()) {
+            if (!newPasswordInput.value.trim()) {
                 event.preventDefault();
-                alert(target.message);
-                input.focus();
+                window.alert('새 비밀번호를 입력해주세요.');
+                newPasswordInput.focus();
+                return;
+            }
+
+            if (!newPasswordConfirmInput.value.trim()) {
+                event.preventDefault();
+                window.alert('새 비밀번호 확인을 입력해주세요.');
+                newPasswordConfirmInput.focus();
+                return;
+            }
+
+            if (newPasswordInput.value !== newPasswordConfirmInput.value) {
+                event.preventDefault();
+                window.alert('새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.');
+                newPasswordConfirmInput.focus();
                 return;
             }
         }
 
-        const hasVehicle = getSelectedHasVehicleValue();
+        const hasVehicleValue = getHasVehicleValue();
 
-        if (!hasVehicle) {
-            event.preventDefault();
-            alert('차량소유여부를 선택해주세요.');
-            return;
-        }
+        if (hasVehicleValue === 'no' || hasVehicleValue === 'N') {
+            clearOwnedVehicleFields();
 
-        if (hasVehicle !== 'yes') {
-            clearVehicleInputs();
+            ownedVehicleFields.forEach((field) => {
+                field.disabled = false;
+                field.readOnly = false;
+            });
         }
     });
 

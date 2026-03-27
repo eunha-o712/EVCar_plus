@@ -19,6 +19,7 @@ public interface MyPageService {
 
     List<MyInquiryResponseDto> getMyInquiries(Integer userId);
 
+    
     void withdraw(Integer userId, WithdrawRequestDto requestDto);
 }
 

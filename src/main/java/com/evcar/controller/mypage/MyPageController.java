@@ -9,6 +9,7 @@ import com.evcar.service.mypage.MyPageService;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +65,9 @@ public class MyPageController {
     public String myWishlist() {
         return "mypage/myWishlist";
     }
+
+    
+    
 
     @GetMapping("/consultation")
     public String myConsultation(HttpSession session, Model model) {
@@ -155,4 +159,3 @@ public class MyPageController {
                 .build();
     }
 }
-
