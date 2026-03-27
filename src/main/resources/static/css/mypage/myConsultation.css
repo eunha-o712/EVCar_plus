@@ -1,0 +1,227 @@
+.ev-consultation-page {
+    padding-top: 72px;
+    background: var(--bg-secondary);
+    min-height: 100vh;
+}
+
+.ev-consultation-section {
+    padding: 32px 16px 80px;
+}
+
+.ev-consultation-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    gap: 24px;
+}
+
+.ev-mypage-sidebar {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 20px;
+    height: fit-content;
+}
+
+.ev-mypage-sidebar__title {
+    margin: 0 0 20px;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.ev-mypage-sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ev-mypage-sidebar__link {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.ev-mypage-sidebar__link:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.ev-mypage-sidebar__link--active {
+    background: var(--primary);
+    color: var(--text-on-dark);
+}
+
+.ev-consultation-content {
+    min-width: 0;
+}
+
+.ev-consultation-header {
+    margin-bottom: 24px;
+}
+
+.ev-consultation-eyebrow {
+    margin: 0 0 6px;
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.ev-consultation-title {
+    margin: 0 0 10px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.ev-consultation-description {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.ev-consultation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ev-consultation-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px 20px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
+
+.ev-consultation-card__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.ev-consultation-card__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ev-consultation-card__row--full {
+    grid-column: 1 / -1;
+}
+
+.ev-consultation-card__label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.ev-consultation-card__value {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    word-break: keep-all;
+}
+
+.ev-consultation-card__footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ev-consultation-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.ev-consultation-status--progress {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.ev-consultation-status--done {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.ev-consultation-status--cancel {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.ev-consultation-cancel-btn {
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+}
+
+.ev-consultation-disabled-text {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.ev-consultation-empty {
+    background: var(--bg-primary);
+    border: 1px dashed var(--border);
+    border-radius: 24px;
+    padding: 56px 24px;
+    text-align: center;
+}
+
+.ev-consultation-empty__icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.ev-consultation-empty__title {
+    margin: 0 0 10px;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.ev-consultation-empty__text {
+    margin: 0 0 24px;
+    color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+    .ev-consultation-section {
+        padding: 40px 24px 96px;
+    }
+
+    .ev-consultation-card__body {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .ev-consultation-container {
+        grid-template-columns: 280px minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .ev-consultation-section {
+        padding: 48px 32px 120px;
+    }
+
+    .ev-consultation-card {
+        padding: 28px 24px;
+    }
+}
