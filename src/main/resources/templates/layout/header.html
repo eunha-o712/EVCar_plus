@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header" class="ev-header ev-header--transparent">
+    <div class="ev-header__inner">
+        <h1 class="ev-header__brand">
+            <a th:href="@{/}" class="ev-header__brand-link" aria-label="EV Consulting 메인으로 이동">
+                <img th:src="@{/images/evcar_logo.png}"
+                     alt="EV Consulting 로고"
+                     class="ev-header__logo">
+            </a>
+        </h1>
+
+        <nav class="ev-header__nav" aria-label="주요 메뉴">
+            <ul class="ev-header__menu">
+                <li class="ev-header__item">
+                    <a th:href="@{/company}" class="ev-header__link">회사소개</a>
+                </li>
+                <li class="ev-header__item">
+                    <a th:href="@{/vehicle}" class="ev-header__link">전기차조회</a>
+                </li>
+                <li class="ev-header__item">
+                    <a th:href="@{/charging/map}" class="ev-header__link">충전소지도</a>
+                </li>
+                <li class="ev-header__item">
+                    <a th:href="@{/faq}" class="ev-header__link">고객센터</a>
+                </li>
+            </ul>
+
+            <div class="ev-header__auth" th:if="${session.loginUser == null}">
+                <a th:href="@{/login}" class="ev-header__auth-link">로그인</a>
+                <span class="ev-header__auth-divider">·</span>
+                <a th:href="@{/signup/term}" class="ev-header__auth-link">회원가입</a>
+            </div>
+
+            <div class="ev-header__auth" th:if="${session.loginUser != null}">
+                <a th:href="@{/mypage/main}" class="ev-header__auth-link">마이페이지</a>
+                <span class="ev-header__auth-divider">·</span>
+                <a th:href="@{/logout}" class="ev-header__auth-link">로그아웃</a>
+            </div>
+        </nav>
+    </div>
+</header>
+</body>
+</html>
