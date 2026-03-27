@@ -146,7 +146,7 @@ public class MyPageController {
     private MyPageInfoUpdateRequestDto toUpdateRequestDto(MyPageInfoResponseDto responseDto) {
         return MyPageInfoUpdateRequestDto.builder()
                 .name(responseDto.getName())
-                .birthDate(responseDto.getBirthDate())
+                .birthDate(responseDto.getBirthDate() != null ? responseDto.getBirthDate() : java.time.LocalDate.of(1990, 1, 1))
                 .gender(responseDto.getGender())
                 .phone(responseDto.getPhone())
                 .address(responseDto.getAddress())

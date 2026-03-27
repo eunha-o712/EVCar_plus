@@ -49,6 +49,7 @@
                           th:action="@{/mypage/info}"
                           th:object="${myPageInfoUpdateRequestDto}"
                           method="post">
+
                         <div class="ev-myinfo-grid">
                             <div class="ev-myinfo-field">
                                 <label class="ev-myinfo-label">이름</label>
@@ -60,10 +61,19 @@
 
                             <div class="ev-myinfo-field">
                                 <label class="ev-myinfo-label">생년월일</label>
-                                <input type="date"
+
+                                <input type="text"
+                                       id="birthDateDisplay"
                                        class="ev-input ev-myinfo-input ev-myinfo-input--fixed"
-                                       th:field="*{birthDate}"
+                                       th:value="${myPageInfoUpdateRequestDto.birthDate != null ? #temporals.format(myPageInfoUpdateRequestDto.birthDate, 'yyyy-MM-dd') : ''}"
                                        readonly>
+
+                                <input type="date"
+                                       id="birthDateInput"
+                                       class="ev-input ev-myinfo-input ev-myinfo-hidden"
+                                       th:field="*{birthDate}"
+                                       data-editable="true"
+                                       disabled>
                             </div>
 
                             <div class="ev-myinfo-field">
@@ -174,32 +184,41 @@
                                 <p class="ev-myinfo-help">차량소유여부가 no인 경우 아래 차량 정보는 비활성화되며 저장되지 않습니다.</p>
                             </div>
 
-                            <div class="ev-myinfo-field">
-                                <label class="ev-myinfo-label">보유 차량명</label>
-                                <input type="text"
-                                       class="ev-input ev-myinfo-input ev-vehicle-owned-field"
-                                       th:field="*{vehicleModel}"
-                                       data-editable="true"
-                                       readonly>
-                            </div>
+                     <div class="ev-myinfo-field">
+    <label class="ev-myinfo-label">보유 차량명</label>
+    <input type="text"
+           class="ev-input ev-myinfo-input ev-vehicle-owned-field"
+           th:field="*{vehicleModel}"
+           placeholder="예: 아이오닉 5"
+           data-editable="true"
+           readonly>
+</div>
 
-                            <div class="ev-myinfo-field">
-                                <label class="ev-myinfo-label">보유차종 연식</label>
-                                <input type="month"
-                                       class="ev-input ev-myinfo-input ev-vehicle-owned-field"
-                                       th:field="*{vehicleYear}"
-                                       data-editable="true"
-                                       readonly>
-                            </div>
+<div class="ev-myinfo-field">
+    <label class="ev-myinfo-label">보유차종 연식</label>
 
-                            <div class="ev-myinfo-field">
-                                <label class="ev-myinfo-label">주행거리(Km)</label>
-                                <input type="number"
-                                       class="ev-input ev-myinfo-input ev-vehicle-owned-field"
-                                       th:field="*{drivingDistance}"
-                                       data-editable="true"
-                                       readonly>
-                            </div>
+   <input type="text"
+       id="vehicleYearDisplay"
+       class="ev-input ev-myinfo-input ev-myinfo-input--fixed"
+       th:value="${myPageInfoUpdateRequestDto.vehicleYear != null ? myPageInfoUpdateRequestDto.vehicleYear : ''}"
+       readonly>
+
+<input type="month"
+       id="vehicleYearInput"
+       class="ev-input ev-myinfo-input ev-vehicle-owned-field ev-myinfo-hidden"
+       th:field="*{vehicleYear}"
+       data-editable="true"
+       disabled>
+</div>
+<div class="ev-myinfo-field">
+    <label class="ev-myinfo-label">주행거리(Km)</label>
+    <input type="number"
+           class="ev-input ev-myinfo-input ev-vehicle-owned-field"
+           th:field="*{drivingDistance}"
+           placeholder="예: 12000"
+           data-editable="true"
+           readonly>
+</div>
                         </div>
 
                         <div class="ev-myinfo-footer">

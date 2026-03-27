@@ -35,7 +35,16 @@ public class MyPageInfoUpdateRequestDto {
     }
 
     public boolean hasPasswordChangeRequest() {
-        return hasText(currentPassword) || hasText(newPassword) || hasText(newPasswordConfirm);
+        return hasText(currentPassword)
+                || hasText(newPassword)
+                || hasText(newPasswordConfirm);
+    }
+
+    public boolean hasInvalidPasswordChangeInput() {
+        return hasPasswordChangeRequest()
+                && (!hasText(currentPassword)
+                || !hasText(newPassword)
+                || !hasText(newPasswordConfirm));
     }
 
     public boolean isNewPasswordMismatch() {
@@ -48,11 +57,6 @@ public class MyPageInfoUpdateRequestDto {
         }
 
         return !newPassword.equals(newPasswordConfirm);
-    }
-
-    public boolean hasInvalidPasswordChangeInput() {
-        return hasPasswordChangeRequest()
-                && (!hasText(currentPassword) || !hasText(newPassword) || !hasText(newPasswordConfirm));
     }
 
     private boolean hasText(String value) {

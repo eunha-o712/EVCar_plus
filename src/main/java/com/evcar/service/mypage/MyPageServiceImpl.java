@@ -11,6 +11,7 @@ import com.evcar.dto.mypage.WithdrawRequestDto;
 import com.evcar.repository.consultation.ConsultationRepository;
 import com.evcar.repository.inquiry.InquiryRepository;
 import com.evcar.repository.user.UserRepository;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,16 @@ public class MyPageServiceImpl implements MyPageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("회원정보를 찾을 수 없습니다."));
 
-        String hasVehicle = requestDto.getHasVehicle();
+        String name = requestDto.getName() != null ? requestDto.getName() : user.getName();
+        LocalDate birthDate = requestDto.getBirthDate() != null ? requestDto.getBirthDate() : user.getBirthDate();
+        String gender = requestDto.getGender() != null ? requestDto.getGender() : user.getGender();
+
+        String phone = requestDto.getPhone() != null ? requestDto.getPhone() : user.getPhone();
+        String address = requestDto.getAddress() != null ? requestDto.getAddress() : user.getAddress();
+        String addressDetail = requestDto.getAddressDetail() != null ? requestDto.getAddressDetail() : user.getAddressDetail();
+        String email = requestDto.getEmail() != null ? requestDto.getEmail() : user.getEmail();
+
+        String hasVehicle = requestDto.getHasVehicle() != null ? requestDto.getHasVehicle() : user.getHasVehicle();
         String vehicleModel = requestDto.getVehicleModel();
         String vehicleYear = requestDto.getVehicleYear();
         Integer drivingDistance = requestDto.getDrivingDistance();
@@ -69,13 +79,13 @@ public class MyPageServiceImpl implements MyPageService {
         }
 
         user.updateMyPageInfo(
-                requestDto.getName(),
-                requestDto.getBirthDate(),
-                requestDto.getGender(),
-                requestDto.getPhone(),
-                requestDto.getAddress(),
-                requestDto.getAddressDetail(),
-                requestDto.getEmail(),
+                name,
+                birthDate,
+                gender,
+                phone,
+                address,
+                addressDetail,
+                email,
                 hasVehicle,
                 vehicleModel,
                 vehicleYear,
