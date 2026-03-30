@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InquiryRepository extends JpaRepository<Inquiry, Integer> {
+public interface InquiryRepository extends JpaRepository<Inquiry, String> {
 
-    List<Inquiry> findByUserUserIdOrderByCreatedAtDesc(Integer userId);
+    List<Inquiry> findByUserUserIdOrderByCreatedAtDesc(String userId);
 
-    Optional<Inquiry> findByInquiryIdAndUserUserId(Integer inquiryId, Integer userId);
+    Optional<Inquiry> findByInquiryIdAndUserUserId(String inquiryId, String userId);
 }

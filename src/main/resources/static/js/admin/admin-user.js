@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const moveToUserList = (params) => {
-        const url = new URL(window.location.href);
+        const url = new URL(`${window.location.origin}/admin/user`);
 
         Object.entries(params).forEach(([key, value]) => {
             if (value === null || value === undefined || value === '') {
@@ -67,17 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     detailButtons.forEach((button) => {
         button.addEventListener('click', () => {
-            const userId = button.dataset.userId;
-            const status = button.dataset.status || 'ALL';
-            const keyword = button.dataset.keyword || '';
-            const page = button.dataset.page || '1';
-
-            moveToUserList({
-                selectedUserId: userId,
-                status: status,
-                keyword: keyword,
-                page: page
-            });
+            const detailUrl = button.dataset.detailUrl;
+            if (detailUrl) {
+                window.location.href = detailUrl;
+            }
         });
     });
 

@@ -2,14 +2,12 @@ package com.evcar.service.admin;
 
 import com.evcar.dto.admin.AdminUserDetailResponseDto;
 import com.evcar.dto.admin.AdminUserListResponseDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AdminUserService {
 
-    List<AdminUserListResponseDto> getUserList(String status, String keyword, int page, int size);
-
-    long getUserCount(String status, String keyword);
+    Page<AdminUserListResponseDto> getUserPage(String status, String keyword, Pageable pageable);
 
     AdminUserDetailResponseDto getUserDetail(String userId);
 }

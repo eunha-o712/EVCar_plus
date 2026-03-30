@@ -1,18 +1,11 @@
 package com.evcar.domain.consultation;
 
-import com.evcar.domain.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,37 +13,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "CONSULTATION")
+@Table(name = "consultation")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class Consultation {
-	
-	private static final String STATUS_PENDING="대기";
-	private static final String STATUS_IN_PROGRESS="진행중";
-	private static final String STATUS_COMPLETED="완료";
-	private static final String STATUS_CANCELED="취소";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "consult_id", nullable = false)
-    private Integer consultId;
+    @Column(name = "consult_id", nullable = false, length = 20)
+    private String consultId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "preferred_datetime", length = 20)
+    private String preferredDatetime;
 
-    @Column(name = "preferred_datetime", nullable = false)
-    private LocalDateTime preferredDatetime;
-
-    @Column(name = "budget", nullable = false)
+    @Column(name = "budget")
     private Integer budget;
 
-    @Column(name = "purchase_plan", nullable = false, length = 50)
+    @Column(name = "purchase_plan", length = 20)
     private String purchasePlan;
 
-    @Column(name = "consult_content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "consult_content", columnDefinition = "TEXT")
     private String consultContent;
 
     @Column(name = "consult_status", nullable = false, length = 20)
@@ -62,42 +45,43 @@ public class Consultation {
     @Column(name = "admin_reply", columnDefinition = "TEXT")
     private String adminReply;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDate createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
+
+    @Column(name = "user_id", nullable = false, length = 20)
+    private String userId;
+
+    @Column(name = "vehicle_id", nullable = false, length = 20)
+    private String vehicleId;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        
-        if(this.consultStatus==null||this.consultStatus.isBlank()) {
-        	this.consultStatus=STATUS_PENDING;
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+        if (this.consultStatus == null || this.consultStatus.isBlank()) {
+            this.consultStatus = "PENDING";
         }
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void updateConsultStatus(String consultStatus) {
+        this.consultStatus = consultStatus;
+        this.updatedAt = LocalDate.now();
     }
-    public boolean canBeCanceled() {
-    	return STATUS_PENDING.equals(this.consultStatus)||STATUS_IN_PROGRESS.equals(this.consultStatus);
+
+    public void updateReply(String consultResult, String adminReply) {
+        this.consultResult = consultResult;
+        this.adminReply = adminReply;
+        this.updatedAt = LocalDate.now();
     }
-    public void cancel() {
-    	if(!canBeCanceled()) {
-    		throw new IllegalArgumentException("취소할 수 없는 상담 상태입니다.");
-    	}
-        this.consultStatus =  STATUS_CANCELED;
-    }
-    public boolean isInProgress() {
-    	return STATUS_IN_PROGRESS.equals(this.consultStatus);
-    }
-    public boolean isCompleted() {
-    	return STATUS_COMPLETED.equals(this.consultStatus);
-    }
-    public boolean isCanceled() {
-    	return STATUS_CANCELED.equals(this.consultStatus);
+
+    public void updateAdminProcess(String consultStatus, String consultResult, String adminReply) {
+        this.consultStatus = consultStatus;
+        this.consultResult = consultResult;
+        this.adminReply = adminReply;
+        this.updatedAt = LocalDate.now();
     }
 }

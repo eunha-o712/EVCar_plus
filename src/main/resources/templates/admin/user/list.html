@@ -1,219 +1,201 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>고객관리 - EVCar Admin</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" th:href="@{/css/common.css}">
-	<link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
-	<link rel="stylesheet" th:href="@{/css/admin/admin-user.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객관리 - EVCar Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-user.css}">
 </head>
-
 <body>
-	<div class="ev-admin-app">
-		<div class="ev-admin-layout">
-			<div th:replace="~{layout/adminSidebar :: adminSidebar('user')}"></div>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('user')}"></div>
 
-			<main class="ev-admin-main">
-				<div class="ev-admin-shell">
-					<header class="ev-admin-page-header">
-						<div class="ev-admin-page-header__breadcrumb">관리자 &gt; 고객관리</div>
-						<h1 class="ev-admin-page-header__title">고객 관리</h1>
-						<p class="ev-admin-page-header__desc">
-							회원 상태 필터, 검색, 상세 패널 구조만 먼저 구성한 화면입니다.
-						</p>
-					</header>
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; 고객관리</div>
+                    <h1 class="ev-admin-page-header__title">고객 관리</h1>
+                    <p class="ev-admin-page-header__desc">
+                        회원 상태 필터와 검색 조건을 기준으로 고객 목록을 조회할 수 있습니다.
+                    </p>
+                </header>
 
-					<div class="ev-admin-grid ev-admin-user-grid">
-						<section class="ev-admin-card">
-							<div class="ev-admin-card__body">
-								<div class="ev-admin-toolbar">
-									<div class="ev-admin-toolbar__row">
-										<div class="ev-admin-filter-group">
-											<button type="button"
-												class="ev-admin-chip"
-												th:classappend="${currentStatus == 'ALL'} ? ' is-active'"
-												data-status="ALL">
-												전체
-											</button>
-											<button type="button"
-												class="ev-admin-chip"
-												th:classappend="${currentStatus == 'ACTIVE'} ? ' is-active'"
-												data-status="ACTIVE">
-												활성
-											</button>
-											<button type="button"
-												class="ev-admin-chip"
-												th:classappend="${currentStatus == 'WITHDRAWN'} ? ' is-active'"
-												data-status="WITHDRAWN">
-												탈퇴
-											</button>
-										</div>
-									</div>
-									<div class="ev-admin-toolbar__row ev-admin-user-search">
-										<input type="text"
-											class="ev-admin-input js-user-search-input"
-											placeholder="이름 또는 전화번호 검색"
-											aria-label="이름 또는 전화번호 검색"
-											th:value="${currentKeyword}">
-										<button type="button"
-											class="ev-admin-btn ev-admin-btn--primary js-user-search-btn">
-											검색
-										</button>
-									</div>
-								</div>
+                <div class="ev-admin-grid ev-admin-user-grid">
+                    <section class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <form th:action="@{/admin/user}" method="get" class="ev-admin-toolbar">
+                                <div class="ev-admin-toolbar__row">
+                                    <div class="ev-admin-filter-group">
+                                        <button type="submit"
+                                                name="status"
+                                                value=""
+                                                class="ev-admin-chip"
+                                                th:classappend="${selectedStatus == null or selectedStatus == ''} ? ' is-active' : ''">
+                                            전체
+                                        </button>
+                                        <button type="submit"
+                                                name="status"
+                                                value="ACTIVE"
+                                                class="ev-admin-chip"
+                                                th:classappend="${selectedStatus == 'ACTIVE'} ? ' is-active' : ''">
+                                            활성
+                                        </button>
+                                        <button type="submit"
+                                                name="status"
+                                                value="WITHDRAWN"
+                                                class="ev-admin-chip"
+                                                th:classappend="${selectedStatus == 'WITHDRAWN'} ? ' is-active' : ''">
+                                            탈퇴
+                                        </button>
+                                    </div>
+                                </div>
 
-								<div class="ev-admin-table-wrap"
-									th:if="${userList != null and !#lists.isEmpty(userList)}">
-									<table class="ev-admin-table">
-										<thead>
-											<tr>
-												<th>No</th>
-												<th>이름</th>
-												<th>전화번호</th>
-												<th>이메일</th>
-												<th>가입일</th>
-												<th>상태</th>
-												<th>관리</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr th:each="user, stat : ${userList}">
-												<td th:text="${(currentPage - 1) * pageSize + stat.count}">1</td>
-												<td th:text="${user.name}">홍길동</td>
-												<td class="js-user-phone" th:text="${user.phone}">01000000000</td>
-												<td th:text="${user.email}">sample@evcar.com</td>
-												<td th:text="${user.createdAt}">2026-03-01</td>
-												<td>
-													<span class="ev-admin-badge"
-														th:classappend="${user.userStatus == 'WITHDRAWN'} ? ' ev-admin-badge--withdrawn' : ' ev-admin-badge--active'"
-														th:text="${user.userStatus == 'WITHDRAWN'} ? '탈퇴' : '활성'">
-														활성
-													</span>
-												</td>
-												<td>
-													<button type="button"
-														class="ev-admin-btn ev-admin-btn--secondary ev-admin-btn--sm js-user-detail-btn"
-														th:attr="data-user-id=${user.userId},
-                                                                 data-status=${currentStatus},
-                                                                 data-keyword=${currentKeyword},
-                                                                 data-page=${currentPage}">
-														상세
-													</button>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+                                <div class="ev-admin-toolbar__row">
+                                    <input type="text"
+                                           name="keyword"
+                                           class="ev-admin-input ev-admin-user-search"
+                                           placeholder="이름 또는 전화번호 뒤 4자리 검색"
+                                           th:value="${keyword}">
+                                    <button type="submit" class="ev-admin-btn ev-admin-btn--primary">검색</button>
+                                </div>
+                            </form>
 
-								<div class="ev-admin-pagination" th:if="${totalPages > 1}">
-									<ul class="pagination justify-content-center">
-										<li class="page-item" th:if="${hasPreviousBlock}">
-											<a class="page-link"
-												th:href="@{/admin/user(page=${previousBlockPage}, status=${currentStatus}, keyword=${currentKeyword})}">
-												&lt;
-											</a>
-										</li>
+                            <div class="ev-admin-table-wrap" th:if="${userList != null and !#lists.isEmpty(userList)}">
+                                <table class="ev-admin-table">
+                                    <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>이름</th>
+                                        <th>전화번호</th>
+                                        <th>이메일</th>
+                                        <th>가입일</th>
+                                        <th>상태</th>
+                                        <th>관리</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user, stat : ${userList}">
+                                        <td th:text="${(currentPage - 1) * 10 + stat.count}">1</td>
+                                        <td th:text="${user.name}">홍길동</td>
+                                        <td th:text="${user.formattedPhone}">010-1234-5678</td>
+                                        <td th:text="${user.email}">hong@example.com</td>
+                                        <td th:text="${user.createdAt}">2025-01-01</td>
+										<td>
+										    <span class="ev-admin-badge"
+										          th:classappend="${user.userStatus == 'ACTIVE'} ? ' ev-admin-badge--success' : ' ev-admin-badge--error'"
+										          th:text="${user.userStatus == 'ACTIVE'} ? '활성' : '탈퇴'">
+										        상태
+										    </span>
+										</td>
+                                        <td>
+                                            <a th:href="@{/admin/user(status=${selectedStatus}, keyword=${keyword}, page=${currentPage}, userId=${user.userId})}"
+                                               class="ev-admin-btn ev-admin-btn--secondary ev-admin-btn--sm">
+                                                상세
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-										<li class="page-item"
-											th:each="p : ${#numbers.sequence(startPage, endPage)}"
-											th:classappend="${p == currentPage} ? ' active'">
-											<a class="page-link"
-												th:href="@{/admin/user(page=${p}, status=${currentStatus}, keyword=${currentKeyword})}"
-												th:text="${p}">
-												1
-											</a>
-										</li>
+                            <div class="ev-admin-empty" th:if="${userList == null or #lists.isEmpty(userList)}">
+                                조회된 회원 데이터가 없습니다.
+                            </div>
 
-										<li class="page-item" th:if="${hasNextBlock}">
-											<a class="page-link"
-												th:href="@{/admin/user(page=${nextBlockPage}, status=${currentStatus}, keyword=${currentKeyword})}">
-												&gt;
-											</a>
-										</li>
-									</ul>
-								</div>
+                            <nav class="ev-admin-pagination-wrap" th:if="${totalPages != null and totalPages > 0}">
+                                <ul class="pagination pagination-sm justify-content-center mb-0">
+                                    <li class="page-item" th:classappend="${currentPage == 1} ? ' disabled'">
+                                        <a class="page-link"
+                                           th:href="@{/admin/user(status=${selectedStatus}, keyword=${keyword}, page=${currentPage - 1}, userId=${selectedUser != null ? selectedUser.userId : null})}">
+                                            이전
+                                        </a>
+                                    </li>
 
-								<div class="ev-admin-empty" th:if="${userList == null or #lists.isEmpty(userList)}">
-									조회된 고객 데이터가 없습니다.
-								</div>
-							</div>
-						</section>
+                                    <li class="page-item"
+                                        th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+                                        th:classappend="${pageNumber == currentPage} ? ' active'">
+                                        <a class="page-link"
+                                           th:text="${pageNumber}"
+                                           th:href="@{/admin/user(status=${selectedStatus}, keyword=${keyword}, page=${pageNumber}, userId=${selectedUser != null ? selectedUser.userId : null})}">
+                                            1
+                                        </a>
+                                    </li>
 
-						<aside class="ev-admin-card">
-							<div class="ev-admin-card__body">
-								<h2 class="ev-admin-section-title">고객 상세 정보</h2>
+                                    <li class="page-item" th:classappend="${currentPage == totalPages} ? ' disabled'">
+                                        <a class="page-link"
+                                           th:href="@{/admin/user(status=${selectedStatus}, keyword=${keyword}, page=${currentPage + 1}, userId=${selectedUser != null ? selectedUser.userId : null})}">
+                                            다음
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </section>
 
-								<div th:if="${selectedUser != null}">
-									<dl class="ev-admin-detail-list">
-										<div class="ev-admin-detail-item">
-											<dt>이름</dt>
-											<dd th:text="${selectedUser.name}">홍길동</dd>
-										</div>
-										<div class="ev-admin-detail-item">
-											<dt>전화번호</dt>
-											<dd class="js-user-detail-phone" th:text="${selectedUser.phone}">01000000000</dd>
-										</div>
-										<div class="ev-admin-detail-item">
-											<dt>이메일</dt>
-											<dd th:text="${selectedUser.email}">sample@evcar.com</dd>
-										</div>
-										<div class="ev-admin-detail-item">
-											<dt>주소</dt>
-											<dd th:text="${selectedUser.address}">서울시 강남구</dd>
-										</div>
-										<div class="ev-admin-detail-item">
-											<dt>회원 상태</dt>
-											<dd>
-												<span class="ev-admin-badge"
-													th:classappend="${selectedUser.userStatus == 'WITHDRAWN'} ? ' ev-admin-badge--withdrawn' : ' ev-admin-badge--active'"
-													th:text="${selectedUser.userStatus == 'WITHDRAWN'} ? '탈퇴' : '활성'">
-													활성
-												</span>
-											</dd>
-										</div>
-										<div class="ev-admin-detail-item"
-											th:if="${selectedUser.userStatus == 'WITHDRAWN'}">
-											<dt>탈퇴일시</dt>
-											<dd th:text="${selectedUser.withdrawnAt}">2026-03-12 14:30</dd>
-										</div>
-										<div class="ev-admin-detail-item">
-											<!-- 관심차량 추후 연결 예정 -->
-										</div>
-										<div class="ev-admin-detail-item">
-											<!-- 상담이력 추후 연결 예정 -->
-										</div>
-									</dl>
+                    <aside class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <h2 class="ev-admin-section-title">고객 상세</h2>
 
-									<div class="ev-admin-divider"></div>
+                            <div th:if="${selectedUser != null}">
+                                <dl class="ev-admin-detail-list">
+                                    <div class="ev-admin-detail-item">
+                                        <dt>회원ID</dt>
+                                        <dd th:text="${selectedUser.userId}">user0001</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>로그인ID</dt>
+                                        <dd th:text="${selectedUser.loginId}">hong123</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>이름</dt>
+                                        <dd th:text="${selectedUser.name}">홍길동</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>전화번호</dt>
+                                        <dd th:text="${selectedUser.phone}">01012345678</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>이메일</dt>
+                                        <dd th:text="${selectedUser.email}">hong@example.com</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>주소</dt>
+                                        <dd th:text="${selectedUser.address}">서울시 강남구</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>상태</dt>
+                                        <dd th:text="${selectedUser.userStatus}">ACTIVE</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>보유차량여부</dt>
+                                        <dd th:text="${selectedUser.hasVehicle}">Y</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>차량연식</dt>
+                                        <dd th:text="${selectedUser.vehicleYear}">2021</dd>
+                                    </div>
+                                    <div class="ev-admin-detail-item">
+                                        <dt>주행거리</dt>
+                                        <dd th:text="${selectedUser.drivingDistance}">12000</dd>
+                                    </div>
+                                </dl>
+                            </div>
 
-									<div class="ev-admin-actions">
-										<button type="button"
-											class="ev-admin-btn ev-admin-btn--primary"
-											th:if="${selectedUser.userStatus != 'WITHDRAWN'}">
-											수정
-										</button>
-										<button type="button" class="ev-admin-btn ev-admin-btn--secondary">
-											상담이력 보기
-										</button>
-									</div>
-								</div>
-
-								<div class="ev-admin-empty ev-admin-user-detail-empty" th:if="${selectedUser == null}">
-									좌측 목록에서 고객을 선택하면 상세 정보가 표시됩니다.
-								</div>
-							</div>
-						</aside>
-					</div>
-				</div>
-			</main>
-		</div>
-	</div>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script th:src="@{/js/admin/admin-user.js}"></script>
+                            <div class="ev-admin-empty ev-admin-user-detail-empty" th:if="${selectedUser == null}">
+                                좌측 목록에서 회원을 선택하면 상세 정보가 우측 패널에 표시됩니다.
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/admin/admin-user.js}"></script>
 </body>
-
 </html>
