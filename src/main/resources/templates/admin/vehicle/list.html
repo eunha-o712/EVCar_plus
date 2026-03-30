@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량관리 - EVCar Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-vehicle.css}">
+</head>
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('vehicle')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; 차량관리</div>
+                    <h1 class="ev-admin-page-header__title">차량 관리</h1>
+                    <p class="ev-admin-page-header__desc">차량 목록 뼈대 화면입니다.</p>
+                </header>
+
+                <section class="ev-admin-card">
+                    <div class="ev-admin-card__body">
+                        <div class="ev-admin-toolbar">
+                            <div class="ev-admin-toolbar__row">
+                                <div class="ev-admin-filter-group">
+                                    <button type="button" class="ev-admin-chip is-active">전체</button>
+                                    <button type="button" class="ev-admin-chip">판매중</button>
+                                    <button type="button" class="ev-admin-chip">품절</button>
+                                </div>
+                            </div>
+
+                            <div class="ev-admin-toolbar__row">
+                                <input type="text"
+                                       class="ev-admin-input"
+                                       placeholder="브랜드명 또는 차량모델명 검색"
+                                       aria-label="브랜드명 또는 차량모델명 검색">
+                                <a th:href="@{/admin/vehicle/form}" class="ev-admin-btn ev-admin-btn--primary">
+                                    차량 등록
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ev-admin-table-wrap" th:if="${vehicleList != null and !#lists.isEmpty(vehicleList)}">
+                            <table class="ev-admin-table">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>브랜드명</th>
+                                    <th>차량모델명</th>
+                                    <th>차급</th>
+                                    <th>기본가</th>
+                                    <th>주행거리</th>
+                                    <th>상태</th>
+                                    <th>관리</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="vehicle, stat : ${vehicleList}">
+                                    <td th:text="${stat.count}">1</td>
+                                    <td th:text="${vehicle.brandName}">현대</td>
+                                    <td th:text="${vehicle.vehicleModelName}">아이오닉 5</td>
+                                    <td th:text="${vehicle.vehicleType}">중형SUV</td>
+                                    <td th:text="${vehicle.basePrice}">4695</td>
+                                    <td th:text="${vehicle.drivingRange} + 'km'">429km</td>
+                                    <td>
+                                        <span class="ev-admin-badge"
+                                              th:classappend="${vehicle.vehicleStatus == 'SOLD_OUT'} ? ' ev-admin-badge--danger' : ' ev-admin-badge--active'"
+                                              th:text="${vehicle.vehicleStatus == 'SOLD_OUT'} ? '품절' : '판매중'">
+                                            판매중
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/admin/vehicle/{id}/form(id=${vehicle.vehicleId})}"
+                                           class="ev-admin-btn ev-admin-btn--secondary ev-admin-btn--sm">
+                                            수정
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="ev-admin-empty" th:if="${vehicleList == null or #lists.isEmpty(vehicleList)}">
+                            등록된 차량 데이터가 없습니다.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:src="@{/js/common/common.js}"></script>
+<script th:src="@{/js/admin/admin-vehicle.js}"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+/* 페이지 기본 */
+.ev-mypage-main {
+    padding-top: 72px;
+    background: var(--bg-secondary);
+    min-height: 100vh;
+}
+
+/* 섹션 */
+.ev-mypage-section {
+    padding: 40px 16px 80px;
+}
+
+/* 전체 컨테이너 */
+.ev-mypage-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    gap: 24px;
+}
+
+/* =========================
+   사이드바
+========================= */
+.ev-mypage-sidebar {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 20px;
+    height: fit-content;
+}
+
+.ev-mypage-sidebar__title {
+    margin: 0 0 20px;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.ev-mypage-sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ev-mypage-sidebar__link {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.ev-mypage-sidebar__link:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.ev-mypage-sidebar__link--active {
+    background: var(--primary);
+    color: var(--text-on-dark);
+}
+
+/* =========================
+   메인 콘텐츠
+========================= */
+.ev-mypage-content {
+    min-width: 0;
+}
+
+/* 상단 헤더 */
+.ev-mypage-header {
+    margin-bottom: 24px;
+}
+
+.ev-mypage-eyebrow {
+    margin: 0 0 6px;
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.ev-mypage-title {
+    margin: 0 0 10px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.ev-mypage-description {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+/* =========================
+   카드 영역
+========================= */
+.ev-mypage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.ev-mypage-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    transition: all 0.25s ease;
+}
+
+.ev-mypage-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.ev-mypage-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.ev-mypage-card__desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+}
+
+/* =========================
+   반응형
+========================= */
+
+/* 태블릿 */
+@media (min-width: 768px) {
+    .ev-mypage-section {
+        padding: 48px 24px 96px;
+    }
+
+    .ev-mypage-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 데스크탑 */
+@media (min-width: 1024px) {
+    .ev-mypage-container {
+        grid-template-columns: 280px 1fr;
+        align-items: start;
+    }
+
+    .ev-mypage-section {
+        padding: 60px 32px 120px;
+    }
+
+    .ev-mypage-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

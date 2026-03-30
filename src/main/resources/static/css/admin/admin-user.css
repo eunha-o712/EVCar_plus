@@ -1,0 +1,30 @@
+.ev-admin-user-grid {
+    grid-template-columns: 1fr;
+}
+
+.ev-admin-user-search {
+    width: 100%;
+}
+
+.ev-admin-user-search .ev-admin-input {
+    min-width: 0;
+}
+
+.ev-admin-user-detail-empty {
+    min-height: 420px;
+}
+
+@media (min-width: 1280px) {
+    .ev-admin-user-grid {
+        grid-template-columns: minmax(0, 1.45fr) minmax(360px, 420px);
+        align-items: start;
+    }
+
+    .ev-admin-user-search {
+        width: auto;
+    }
+
+    .ev-admin-user-search .ev-admin-input {
+        width: 320px;
+    }
+}
