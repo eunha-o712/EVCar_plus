@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'evcar-wishlist';
 
     /*
-     * TODO: 팀플 백엔드 연동 시 아래 값을 false 로 변경하거나,
+     * TODO: 팀플 백엔드 연동 시 아래 값을 false로 변경하거나,
      * 테스트 버튼 영역 자체를 제거한 뒤 서버 조회/삭제만 사용
      */
     const USE_TEST_DATA = true;
 
     /*
      * TODO: 차량 목록/상세 페이지 연동 전 테스트용 샘플 데이터
-     * 팀원 API 또는 Thymeleaf 모델 연동 후 제거 가능
+     * 현재 프로젝트에 존재하는 static/images 파일 경로로 연결
      */
     const defaultWishlist = [
         {
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: '중형 SUV',
             model: '아이오닉 5',
             price: '5,200만원',
-            imageUrl: '/images/no-image.png',
+            imageUrl: '/images/ev_HYUNDAI_IONIQ5.png',
             detailUrl: '#'
         },
         {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: '중형 SUV',
             model: 'EV6',
             price: '4,870만원',
-            imageUrl: '/images/no-image.png',
+            imageUrl: '/images/ev_KIA_EV6.png',
             detailUrl: '#'
         }
     ];
@@ -241,11 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addWishlistToLocal({
             wishlistId: Date.now(),
-            brand: '기아',
+            brand: '현대',
             category: '대형 SUV',
-            model: 'EV9',
-            price: '7,337만원',
-            imageUrl: '/images/no-image.png',
+            model: '아이오닉 9',
+            price: '6,700만원',
+            imageUrl: '/images/ev_HYUNDAI_IONIQ9.png',
             detailUrl: '#'
         });
 

@@ -4,12 +4,16 @@ import com.evcar.dto.mypage.MyConsultationResponseDto;
 import com.evcar.dto.mypage.MyInquiryResponseDto;
 import com.evcar.dto.mypage.MyPageInfoResponseDto;
 import com.evcar.dto.mypage.MyPageInfoUpdateRequestDto;
+import com.evcar.dto.mypage.MyPageSummaryResponseDto;
+import com.evcar.dto.mypage.MyWishlistResponseDto;
 import com.evcar.dto.mypage.WithdrawRequestDto;
 import java.util.List;
 
 public interface MyPageService {
 
     MyPageInfoResponseDto getMyPageInfo(String userId);
+
+    MyPageSummaryResponseDto getMyPageSummary(String userId);
 
     void updateMyPageInfo(String userId, MyPageInfoUpdateRequestDto requestDto);
 
@@ -19,6 +23,11 @@ public interface MyPageService {
 
     List<MyInquiryResponseDto> getMyInquiries(String userId);
 
-    void withdraw(String userId, WithdrawRequestDto withdrawRequestDto);
-}
+    MyInquiryResponseDto getMyInquiryDetail(String userId, String inquiryId);
 
+    void withdraw(String userId, WithdrawRequestDto withdrawRequestDto);
+
+    List<MyWishlistResponseDto> getMyWishlist(String userId);
+
+    void deleteWishlist(String userId, String wishlistId);
+}

@@ -15,6 +15,7 @@ public class MyPageInfoResponseDto {
 
     private String userId;
     private String loginId;
+    private String userStatus;
     private String name;
     private LocalDate birthDate;
     private String gender;
@@ -31,6 +32,7 @@ public class MyPageInfoResponseDto {
         return MyPageInfoResponseDto.builder()
                 .userId(user.getUserId())
                 .loginId(user.getLoginId())
+                .userStatus(user.getUserStatus().name())
                 .name(user.getName())
                 .birthDate(user.getBirthDate())
                 .gender(user.getGender())
