@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - EVCar</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <!-- 마이페이지 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/myPageMain.css}">
+</head>
+<body>
+
+<!-- 헤더 -->
+<div th:replace="~{layout/header :: header}"></div>
+
+<!-- =========================
+     메인 영역
+========================= -->
+<main class="ev-mypage-main">
+    <section class="ev-mypage-section">
+        <div class="ev-mypage-container">
+
+            <!-- =========================
+                 사이드바
+            ========================= -->
+            <aside class="ev-mypage-sidebar">
+                <h2 class="ev-mypage-sidebar__title">마이페이지</h2>
+
+                <nav class="ev-mypage-sidebar__nav">
+                    <a class="ev-mypage-sidebar__link ev-mypage-sidebar__link--active"
+                       th:href="@{/mypage/main}">홈</a>
+
+                    <a class="ev-mypage-sidebar__link"
+                       th:href="@{/mypage/info}">내 정보</a>
+
+                    <a class="ev-mypage-sidebar__link"
+                       th:href="@{/mypage/wishlist}">관심 차량</a>
+
+                    <a class="ev-mypage-sidebar__link"
+                       th:href="@{/mypage/consultation}">상담 이력</a>
+
+                    <a class="ev-mypage-sidebar__link"
+                       th:href="@{/mypage/inquiry}">문의 내역</a>
+
+                    <a class="ev-mypage-sidebar__link"
+                       th:href="@{/mypage/withdraw}">회원탈퇴</a>
+                </nav>
+            </aside>
+
+            <!-- =========================
+                 콘텐츠 영역
+            ========================= -->
+            <div class="ev-mypage-content">
+
+                <!-- 상단 -->
+                <div class="ev-mypage-header">
+                    <p class="ev-mypage-eyebrow">My Page</p>
+                    <h1 class="ev-mypage-title">
+                        <span th:text="${myPageInfo != null ? myPageInfo.name : '홍길동'}"></span>님, 반갑습니다.
+                    </h1>
+                    <p class="ev-mypage-description">
+                        내 정보 조회 및 수정, 관심 차량 확인, 상담 이력과 문의 내역을 한 곳에서 관리할 수 있습니다.
+                    </p>
+                </div>
+
+                <!-- =========================
+                     카드 영역
+                ========================= -->
+                <div class="ev-mypage-grid">
+
+                    <!-- 내 정보 -->
+                    <div class="ev-mypage-card">
+                        <h2 class="ev-mypage-card__title">내 정보</h2>
+                        <p class="ev-mypage-card__desc">
+                            회원 기본 정보와 보유 차량 정보를 확인하고 수정합니다.
+                        </p>
+                        <a th:href="@{/mypage/info}" class="btn btn-ev-primary">이동</a>
+                    </div>
+
+                    <!-- 관심 차량 -->
+                    <div class="ev-mypage-card">
+                        <h2 class="ev-mypage-card__title">관심 차량</h2>
+                        <p class="ev-mypage-card__desc">
+                            관심 등록한 전기차 목록을 확인합니다.
+                        </p>
+                        <a th:href="@{/mypage/wishlist}" class="btn btn-ev-primary">이동</a>
+                    </div>
+
+                    <!-- 상담 이력 -->
+                    <div class="ev-mypage-card">
+                        <h2 class="ev-mypage-card__title">상담 이력</h2>
+                        <p class="ev-mypage-card__desc">
+                            상담 신청 내역을 조회하고 상태를 확인합니다.
+                        </p>
+                        <a th:href="@{/mypage/consultation}" class="btn btn-ev-primary">이동</a>
+                    </div>
+
+                    <!-- 문의 내역 -->
+                    <div class="ev-mypage-card">
+                        <h2 class="ev-mypage-card__title">문의 내역</h2>
+                        <p class="ev-mypage-card__desc">
+                            내가 작성한 문의와 답변 상태를 확인합니다.
+                        </p>
+                        <a th:href="@{/mypage/inquiry}" class="btn btn-ev-primary">이동</a>
+                    </div>
+
+                    <!-- 회원탈퇴 -->
+                    <div class="ev-mypage-card">
+                        <h2 class="ev-mypage-card__title">회원 탈퇴</h2>
+                        <p class="ev-mypage-card__desc">
+                            계정을 탈퇴합니다.
+                        </p>
+                        <a th:href="@{/mypage/withdraw}" class="btn btn-danger">탈퇴</a>
+                    </div>
+
+                </div>
+
+                <!-- =========================
+                     간단 정보 카드
+                ========================= -->
+                <div class="ev-mypage-card mt-4">
+                    <h2 class="ev-mypage-card__title">기본 회원 정보</h2>
+
+                    <div>
+                        <p>아이디 :
+                            <span th:text="${myPageInfo != null ? myPageInfo.loginId : 'user001'}"></span>
+                        </p>
+
+                        <p>이름 :
+                            <span th:text="${myPageInfo != null ? myPageInfo.name : '홍길동'}"></span>
+                        </p>
+
+                        <p>이메일 :
+                            <span th:text="${myPageInfo != null ? myPageInfo.email : 'user001@email.com'}"></span>
+                        </p>
+
+                        <p>전화번호 :
+                            <span th:text="${myPageInfo != null ? myPageInfo.phone : '010-1234-5678'}"></span>
+                        </p>
+
+                        <p>보유 차량 :
+                            <span th:text="${myPageInfo != null ? myPageInfo.vehicleModel : '없음'}"></span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- 푸터 -->
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<!-- 챗봇 -->
+<div th:replace="~{fragments/chatbotWidget :: chatbot}"></div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

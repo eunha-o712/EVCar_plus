@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ등록 - EVCar Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+</head>
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('faq')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; FAQ관리</div>
+                    <h1 class="ev-admin-page-header__title">FAQ 등록</h1>
+                    <p class="ev-admin-page-header__desc">
+                        구조명세서 기준 FAQ 등록 뼈대 화면입니다.
+                    </p>
+                </header>
+
+                <section class="ev-admin-card">
+                    <div class="ev-admin-card__body">
+                        <form class="ev-admin-form-grid" action="#" method="post">
+                            <div class="ev-admin-form-field">
+                                <label for="faqCategory" class="ev-admin-form-label">카테고리</label>
+                                <input type="text"
+                                       id="faqCategory"
+                                       name="faqCategory"
+                                       class="ev-admin-input"
+                                       placeholder="카테고리 입력">
+                            </div>
+
+                            <div class="ev-admin-form-field">
+                                <label for="faqQuestion" class="ev-admin-form-label">질문</label>
+                                <input type="text"
+                                       id="faqQuestion"
+                                       name="faqQuestion"
+                                       class="ev-admin-input"
+                                       placeholder="질문 입력">
+                            </div>
+
+                            <div class="ev-admin-form-field">
+                                <label for="faqAnswer" class="ev-admin-form-label">답변</label>
+                                <textarea id="faqAnswer"
+                                          name="faqAnswer"
+                                          class="ev-admin-textarea"
+                                          placeholder="답변 내용을 입력하세요."></textarea>
+                            </div>
+
+                            <div class="ev-admin-actions">
+                                <button type="submit" class="ev-admin-btn ev-admin-btn--primary">저장</button>
+                                <a th:href="@{/admin/faq}" class="ev-admin-btn ev-admin-btn--secondary">취소</a>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

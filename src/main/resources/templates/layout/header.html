@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<header th:fragment="header" class="ev-header ev-header--transparent">
+<header th:fragment="header" class="ev-header">
     <div class="ev-header__inner">
         <h1 class="ev-header__brand">
-            <a th:href="@{/}" class="ev-header__brand-link" aria-label="EV Consulting 메인으로 이동">
+            <a th:href="@{/main}" class="ev-header__brand-link" aria-label="EV Consulting 메인으로 이동">
                 <img th:src="@{/images/evcar_logo.png}"
                      alt="EV Consulting 로고"
                      class="ev-header__logo">
@@ -13,17 +13,35 @@
 
         <nav class="ev-header__nav" aria-label="주요 메뉴">
             <ul class="ev-header__menu">
-                <li class="ev-header__item">
+                <li class="ev-header__item ev-header__item--has-dropdown">
                     <a th:href="@{/company}" class="ev-header__link">회사소개</a>
+                    <div class="ev-header__dropdown">
+                        <a th:href="@{/company}" class="ev-header__dropdown-link">EV Consulting 이야기</a>
+                    </div>
                 </li>
-                <li class="ev-header__item">
+
+                <li class="ev-header__item ev-header__item--has-dropdown">
                     <a th:href="@{/vehicle}" class="ev-header__link">전기차조회</a>
+                    <div class="ev-header__dropdown">
+                        <a th:href="@{/vehicle/model}" class="ev-header__dropdown-link">모델조회</a>
+                        <a th:href="@{/vehicle/recommend}" class="ev-header__dropdown-link">AI 차량 추천</a>
+                    </div>
                 </li>
-                <li class="ev-header__item">
+
+                <li class="ev-header__item ev-header__item--has-dropdown">
                     <a th:href="@{/charging/map}" class="ev-header__link">충전소지도</a>
+                    <div class="ev-header__dropdown">
+                        <a th:href="@{/charging/map}" class="ev-header__dropdown-link">전국 충전소 지도</a>
+                    </div>
                 </li>
-                <li class="ev-header__item">
+
+                <li class="ev-header__item ev-header__item--has-dropdown">
                     <a th:href="@{/faq}" class="ev-header__link">고객센터</a>
+                    <div class="ev-header__dropdown">
+                        <a th:href="@{/consultation}" class="ev-header__dropdown-link">상담게시판</a>
+                        <a th:href="@{/inquiry}" class="ev-header__dropdown-link">문의게시판</a>
+                        <a th:href="@{/faq}" class="ev-header__dropdown-link">FAQ</a>
+                    </div>
                 </li>
             </ul>
 
