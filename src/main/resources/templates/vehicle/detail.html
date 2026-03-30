@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>차량 상세</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<style>
+body {
+	padding-top: 80px;
+	background: #f8f9fa;
+}
+
+/* 헤더 */
+.ev-header {
+	background: #1f2a44;
+	height: 70px;
+	display: flex;
+	align-items: center;
+	color: white;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 100;
+}
+
+.ev-header-inner {
+	width: 1300px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.ev-header a {
+	color: white;
+	text-decoration: none;
+}
+
+/* 전체 */
+.detail-wrap {
+	max-width: 1400px;
+	margin: 100px auto;
+}
+
+/* 이미지 영역 */
+.car-image {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16/9;
+	overflow: hidden;
+	border-radius: 16px;
+	background: #ddd;
+}
+
+.slide-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s ease;
+}
+
+.carousel-item:hover .slide-img {
+	transform: scale(1.05);
+}
+
+/* 오버레이 */
+.car-image::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 40%;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+}
+
+/* 썸네일 */
+.thumbnail-wrap {
+	display: flex;
+	gap: 10px;
+	margin-top: 15px;
+}
+
+.thumbnail-img {
+	width: 100px;
+	height: 70px;
+	object-fit: cover;
+	border-radius: 8px;
+	cursor: pointer;
+	opacity: 0.6;
+	transition: all 0.3s;
+}
+
+.thumbnail-img:hover, .thumbnail-img.active {
+	opacity: 1;
+	border: 2px solid #000;
+}
+
+/* 정보 영역 */
+.detail-info {
+	padding-left: 40px;
+	position: relative;
+}
+
+.title {
+	font-size: 2.8rem;
+	font-weight: 800;
+}
+
+.wishlist {
+	font-size: 28px;
+	cursor: pointer;
+	transition: transform 0.2s;
+}
+
+.wishlist:hover {
+	transform: scale(1.2);
+}
+
+/* 카드 UI */
+.spec-box {
+	margin-top: 30px;
+	background: white;
+	border-radius: 16px;
+	padding: 25px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.spec-row {
+	display: flex;
+	justify-content: space-between;
+	padding: 12px 0;
+	border-bottom: 1px solid #eee;
+}
+
+/* 버튼 */
+.catalog-btn {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 12px 25px;
+	border-radius: 8px;
+	background: #111;
+	color: white;
+	text-decoration: none;
+	transition: all 0.3s ease;
+}
+
+.catalog-btn:hover {
+	background: black;
+	transform: translateY(-3px);
+}
+
+/* 가격 완전 분리 */
+.price-main {
+	font-size: 34px;
+	font-weight: 900;
+	color: #111;
+	text-align: left;
+	margin-bottom: 18px;
+	letter-spacing: -0.5px;
+}
+
+/* 카드 정리 */
+.spec-box {
+	background: #fff;
+	border-radius: 18px;
+	padding: 28px 24px;
+	box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* 나머지는 보조 정보 */
+.spec-row strong {
+	font-size: 15px;
+	font-weight: 500;
+	color: #333;
+}
+</style>
+</head>
+
+<body>
+
+	<div class="ev-header">
+		<div class="ev-header-inner">
+			<div>
+				EV<br>Consulting
+			</div>
+
+			<div style="display: flex; gap: 30px;">
+				<a href="/">회사소개</a> <a href="/vehicle/list">전기차조회</a> <a
+					href="/charging/map">충전소지도</a> <a href="/faq">고객센터</a>
+			</div>
+
+			<div>
+				<a href="/login">로그인</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="detail-wrap">
+
+		<div class="row">
+
+			<!-- 🔥 이미지 영역 -->
+			<div class="col-md-8">
+
+				<div id="carCarousel" class="carousel slide">
+
+					<div class="carousel-inner car-image">
+
+						<div class="carousel-item" th:each="img, stat : ${images}"
+							th:classappend="${stat.index == 0} ? ' active'">
+
+							<img th:src="${img.imageUrl}" class="slide-img">
+						</div>
+
+					</div>
+
+					<button class="carousel-control-prev" type="button"
+						data-bs-target="#carCarousel" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon"></span>
+					</button>
+
+					<button class="carousel-control-next" type="button"
+						data-bs-target="#carCarousel" data-bs-slide="next">
+						<span class="carousel-control-next-icon"></span>
+					</button>
+
+				</div>
+
+				<!--  썸네일 -->
+				<div class="thumbnail-wrap">
+					<img th:each="img, stat : ${images}" th:src="${img.imageUrl}"
+						class="thumbnail-img"
+						th:classappend="${stat.index == 0} ? ' active'"
+						th:attr="data-index=${stat.index}">
+				</div>
+
+			</div>
+
+			<!-- 차량 정보 -->
+			<div class="col-md-4 detail-info">
+
+				<div style="display: flex; justify-content: space-between;">
+					<div class="title" th:text="${vehicle.modelName}"></div>
+
+					<div class="wishlist" id="wishlistBtn"
+						th:data-id="${vehicle.vehicleId}">
+						<span th:if="${vehicle.wished}">❤️</span> <span
+							th:unless="${vehicle.wished}">🤍</span>
+					</div>
+				</div>
+
+				<div style="color: #777; margin-top: 10px;">
+					<span th:text="${vehicle.brand}"></span> | <span
+						th:text="${vehicle.vehicleClass}"></span>
+				</div>
+
+				<div class="spec-box">
+
+					<div class="price-main">
+						₩ <span th:text="${vehicle.priceBasic}"></span>만원 ~
+					</div>
+
+					<div class="spec-row">
+						<span>1회충전 주행거리</span> <strong
+							th:text="${vehicle.drivingRange} + 'km'"></strong>
+					</div>
+
+					<div class="spec-row">
+						<span>충전시간</span> <strong th:text="${vehicle.fastChargingTime}"></strong>
+					</div>
+
+					<div class="spec-row">
+						<span>충전방식</span> <strong class="badge-custom"
+							th:text="${vehicle.chargingMethod}"></strong>
+					</div>
+
+					<div class="spec-row">
+						<span>배터리</span> <strong
+							th:text="${vehicle.batteryCapacity} + ' kWh'"></strong>
+					</div>
+
+				</div>
+
+				<a th:href="@{${vehicle.catalogUrl}}" target="_blank"
+					class="catalog-btn"> 카탈로그 보기 ↗ </a>
+
+			</div>
+		</div>
+
+		<div class="mt-4">
+			<a href="/vehicle/list" class="btn btn-secondary">목록으로</a>
+		</div>
+
+	</div>
+
+	<script>
+'use strict';
+
+/* 썸네일 클릭 → 슬라이드 이동 */
+const thumbnails = document.querySelectorAll('.thumbnail-img');
+const carousel = document.querySelector('#carCarousel');
+
+thumbnails.forEach((thumb, index) => {
+	thumb.addEventListener('click', () => {
+
+		document.querySelectorAll('.carousel-item').forEach(el => el.classList.remove('active'));
+		document.querySelectorAll('.thumbnail-img').forEach(el => el.classList.remove('active'));
+
+		document.querySelectorAll('.carousel-item')[index].classList.add('active');
+		thumb.classList.add('active');
+	});
+});
+
+/* 위시리스트 */
+document.getElementById("wishlistBtn").addEventListener("click", function () {
+
+	const vehicleId = this.dataset.id;
+	const isWished = this.textContent.trim() === "❤️";
+
+	const url = isWished ? "/wishlist/delete" : "/wishlist/add";
+
+	fetch(url, {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: `vehicleId=${vehicleId}`
+	}).then(() => {
+		this.textContent = isWished ? "🤍" : "❤️";
+	});
+});
+</script>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
