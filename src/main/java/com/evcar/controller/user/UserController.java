@@ -2,6 +2,8 @@ package com.evcar.controller.user;
 
 import com.evcar.dto.user.UserSignupDto;
 import com.evcar.service.user.UserService;
+
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,39 +31,48 @@ public class UserController {
     }
 
     @PostMapping
-    public String signup(@ModelAttribute UserSignupDto dto, Model model) {
+    public String signup(@ModelAttribute UserSignupDto dto,
+                         Model model,
+                         HttpSession session) {
 
-        System.out.println("===== DTO 전체 =====");
-        System.out.println(dto);
+        userService.signup(dto);
 
-        System.out.println("loginId = " + dto.getLoginId());
-        System.out.println("password = " + dto.getPassword());
-        System.out.println("name = " + dto.getName());
-        System.out.println("email = " + dto.getEmail());
-        System.out.println("phone = " + dto.getPhone());
+        session.setAttribute("signupUser", dto); // 🔥 여기 추가
 
-        try {
-            userService.signup(dto);
+        return "redirect:/signup/complete";
 
-            System.out.println("회원가입 완료");
-
-            model.addAttribute("signupUser", dto);
-            return "user/signupcomplete";
-
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            model.addAttribute("userSignupDto", dto);
-            return "user/signup";
-        }
     }
+    
     @GetMapping("/check-id")
     @ResponseBody
-    public boolean checkDuplicate(@RequestParam("loginId") String loginId) {
-        return userService.isUserLoginIdDuplicate(loginId);
+    public String checkId(@RequestParam("loginId") String loginId) {
+
+        boolean exists = userService.isUserLoginIdDuplicate(loginId);
+
+        return exists ? "true" : "false";
     }
+
     @GetMapping("/check-email")
     @ResponseBody
-    public boolean checkEmailDuplicate(@RequestParam("email") String email) {
-        return userService.isUserEmailDuplicate(email);
+    public String checkEmail(@RequestParam("email") String email) {
+
+        boolean exists = userService.isUserEmailDuplicate(email);
+
+        return exists ? "true" : "false";
+    }
+    
+    @GetMapping("/complete")
+    public String signupComplete(HttpSession session, Model model) {
+
+        Object user = session.getAttribute("signupUser");
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("signupUser", user);
+        session.removeAttribute("signupUser");
+
+        return "user/signupcomplete";
     }
 }
