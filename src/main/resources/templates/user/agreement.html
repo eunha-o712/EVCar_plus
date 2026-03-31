@@ -3,89 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>약관 동의</title>
-
-<style>
-
-body{
-    margin:0;
-    font-family:"돋움", Dotum, sans-serif;
-    background:#f3f4f6;
-}
-
-.container{
-    max-width:900px;
-    width:90%;
-    margin:60px auto;
-}
-
-.title{
-    text-align:center;
-    font-size:32px;
-    font-weight:bold;
-    margin-bottom:30px;
-}
-
-.agree-box{
-    background:white;
-    padding:20px;
-    margin-bottom:20px;
-    border:1px solid #ddd;
-}
-
-.agree-content{
-    height:150px;
-    overflow-y:auto;
-    border:1px solid #ccc;
-    padding:10px;
-    margin-top:10px;
-    font-size:13px;
-    background:#fafafa;
-}
-
-.check-area{
-    margin:20px 0;
-}
-
-.button-area{
-    text-align:center;
-    margin-top:30px;
-}
-
-.btn{
-    padding:12px 40px;
-    border:none;
-    cursor:pointer;
-    font-size:16px;
-}
-
-.next-btn{
-    background:#3f6fb5;
-    color:white;
-}
-
-.back-btn{
-    background:#6c757d;
-    color:white;
-}
-
-.alert{
-    margin-top:15px;
-    color:red;
-    text-align:center;
-}
-
-</style>
-
+	<link rel="stylesheet" th:href="@{/css/user/agreement.css}" />
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
 </head>
-
 <body>
-
+<div th:replace="~{layout/header :: header}"></div>
 <div class="container">
 
 <div class="title">약관 동의</div>
 
 <!-- ✅ 중요: signup으로 값 전달 -->
-<form action="/signup" method="get">
+<form action="/signup" method="get" onsubmit="return validateAgree()">
 
 <!-- 개인정보 -->
 <div class="agree-box">
@@ -212,26 +142,12 @@ body{
 
 </div>
 
-<script>
 
-// 전체 동의
-document.getElementById("agreeAll").addEventListener("change", function(){
-    document.getElementById("agreePrivacy").checked = this.checked;
-    document.getElementById("agreeTerms").checked = this.checked;
-});
-
-// 개별 체크 → 전체 동의 반영
-document.getElementById("agreePrivacy").addEventListener("change", checkAll);
-document.getElementById("agreeTerms").addEventListener("change", checkAll);
-
-function checkAll(){
-    const p = document.getElementById("agreePrivacy").checked;
-    const t = document.getElementById("agreeTerms").checked;
-    document.getElementById("agreeAll").checked = (p && t);
-}
-
-
-</script>
-
+<div th:replace="~{layout/footer :: footer}"></div>
+<script th:src="@{/js/user/agreement.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
 </body>
 </html>

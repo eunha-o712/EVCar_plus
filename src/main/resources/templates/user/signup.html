@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+
 
 <!-- 카카오 주소 API -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -11,10 +15,6 @@
 <script src="/js/country-code.js"></script>
 
 <style>
-
-*{
-box-sizing:border-box;
-}
 
 body{
 margin:0;
@@ -146,9 +146,12 @@ font-size:13px;
 }
 
 </style>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
 </head>
-
 <body>
+<div th:replace="~{layout/header :: header}"></div>
 
 <div class="container">
 
@@ -209,15 +212,7 @@ font-size:13px;
 <div class="label">생년월일(필수) *</div>
 
 <div class="input-box" style="position:relative;">
-
-    <!-- 사용자 입력 -->
-    <input type="text" id="birthDate" name="birthDate"
-           maxlength="10" placeholder="YYYY-MM-DD" />
-
-    <!-- 숨겨진 달력 -->
-    <input type="date" id="birthPicker"
-           style="position:absolute; right:10px; top:5px; opacity:0; width:30px; cursor:pointer;" />
-
+    <input type="date" id="birthDate" name="birthDate" min="1900-01-01" max="2099-12-31">
 </div>
 </div>
 
@@ -225,7 +220,6 @@ font-size:13px;
 
 <div class="form-row">
 <div class="label">성별(필수) *</div>
-
 <div class="gender-box">
 <label><input type="radio" name="gender" value="남" required> 남</label>
 <label><input type="radio" name="gender" value="여" required> 여</label>
@@ -239,62 +233,44 @@ font-size:13px;
 <div class="label">전화번호(필수) *</div>
 
 <div class="input-box" style="display:flex; gap:5px;">
-
 <select id="countryCode" style="width:120px;"></select>
-
 <input id="phone" placeholder="숫자만 입력 합니다." style="flex:1;" />
-
 <input type="hidden" name="phone" id="fullPhone" />
-
 </div>
-
 </div>
 
 <!-- 주소 -->
 
 <div class="form-row">
 <div class="label">주소(필수) *</div>
-
 <div class="input-box id-area">
-
-<input name="address" id="address" />
-
-<button type="button" class="address-btn" onclick="searchAddress()">
-주소검색
-</button>
-
+<input name="address" id="address" readonly/>
+<button type="button" class="address-btn" onclick="searchAddress()">주소검색</button>
 </div>
-
 </div>
 
 <!-- 상세주소 -->
 <div class="form-row">
 <div class="label">상세주소</div>
-
 <div class="input-box">
 <input name="addressDetail" placeholder="나머지 주소를 입력해 주세요" />
 </div>
-
 </div>
 
 <!-- 이메일 -->
 
 <div class="form-row">
 <div class="label">이메일(필수) *</div>
-
 <div class="input-box email-box">
-
 <input type="text" id="emailId" />
-
 <span>@</span>
-
 <input type="text" id="emailDomain" />
-
 <select id="domainSelect">
 <option value="">직접입력</option>
 <option value="naver.com">naver.com</option>
 <option value="daum.net">daum.net</option>
 <option value="gmail.com">gmail.com</option>
+<option value="gmail.com">nate.com</option>
 </select>
 
 <button type="button" class="check-btn" onclick="checkEmail()">중복확인</button>
@@ -330,7 +306,7 @@ font-size:13px;
 
 <div class="button-area">
 
-<button type="submit" class="submit-btn">
+<button type="button" class="submit-btn">
 가입하기
 </button>
 
@@ -350,23 +326,160 @@ font-size:13px;
 
 <script>
 
-/* 비밀번호 확인 */
+let isIdChecked = false;
+let isEmailChecked = false;
 
+document.addEventListener('DOMContentLoaded', function() {
+
+    const form = document.querySelector('form');
+
+    document.getElementById('emailId').addEventListener('input', () => isEmailChecked = false);
+    document.getElementById('emailDomain').addEventListener('input', () => isEmailChecked = false);
+
+    document.querySelector('.submit-btn').addEventListener('click', function() {
+
+        const form = document.querySelector('form');
+
+        const loginId = document.getElementById('loginId').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const passwordConfirm = document.getElementById('passwordConfirm').value.trim();
+        const name = document.querySelector('input[name="name"]').value.trim();
+        const birthDate = document.getElementById('birthDate').value.trim();
+        const gender = document.querySelector('input[name="gender"]:checked');
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const emailId = document.getElementById('emailId').value.trim();
+        const emailDomain = document.getElementById('emailDomain').value.trim();
+
+        if (!loginId) return alert('아이디를 입력하세요.');
+        if (!password) return alert('비밀번호를 입력하세요.');
+        if (!passwordConfirm) return alert('비밀번호 확인을 입력하세요.');
+        if (password !== passwordConfirm) return alert('비밀번호가 일치하지 않습니다.');
+        if (!name) return alert('이름을 입력하세요.');
+        if (!birthDate) return alert('생년월일을 입력하세요.');
+        if (!gender) return alert('성별을 선택하세요.');
+        if (!phone) return alert('전화번호를 입력하세요.');
+        if (!address) return alert('주소를 입력하세요.');
+        if (!emailId || !emailDomain) return alert('이메일을 입력하세요.');
+        const email = emailId + '@' + emailDomain;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]+(\.[a-zA-Z]+)*$/;
+
+        if (!emailRegex.test(email)) {
+            return alert('이메일 도메인을 올바르게 입력하세요.');
+        }
+        if (!isIdChecked) return alert('아이디 중복확인을 해주세요.');
+        if (!isEmailChecked) return alert('이메일 중복확인을 해주세요.');
+
+        document.getElementById('emailFull').value = emailId + '@' + emailDomain;
+        document.getElementById('fullPhone').value =
+            document.getElementById('countryCode').value + phone;
+
+        form.submit();
+    });
+
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+/* 비밀번호 확인 */
 const pw=document.getElementById("password");
 const pwConfirm=document.getElementById("passwordConfirm");
 const msg=document.getElementById("pwMsg");
 
 pwConfirm.addEventListener("keyup",function(){
-
-if(pw.value===pwConfirm.value){
-msg.textContent="비밀번호가 일치합니다.";
-msg.style.color="green";
-}else{
-msg.textContent="비밀번호가 일치하지 않습니다.";
-msg.style.color="red";
-}
-
+    if(pw.value===pwConfirm.value){
+        msg.textContent="비밀번호가 일치합니다.";
+        msg.style.color="green";
+    }else{
+        msg.textContent="비밀번호가 일치하지 않습니다.";
+        msg.style.color="red";
+    }
 });
+
+
+/* 전화번호 자동 하이픈 */
+const phoneInput = document.getElementById("phone");
+const countryCode = document.getElementById("countryCode");
+const fullPhone = document.getElementById("fullPhone");
+
+phoneInput.addEventListener("input", function () {
+
+    let numbers = this.value.replace(/[^0-9]/g, "");
+
+    if (numbers.length > 11) {
+        numbers = numbers.substring(0, 11);
+    }
+
+    let formatted = "";
+
+    if (numbers.length <= 3) {
+        formatted = numbers;
+    } else if (numbers.length <= 7) {
+        formatted = numbers.slice(0, 3) + "-" + numbers.slice(3);
+    } else {
+        formatted =
+            numbers.slice(0, 3) + "-" +
+            numbers.slice(3, 7) + "-" +
+            numbers.slice(7, 11);
+    }
+
+    this.value = formatted;
+
+    fullPhone.value = countryCode.value + "-" + formatted;
+});
+
+/* 국가코드 변경 시 */
+countryCode.addEventListener("change", function () {
+    fullPhone.value = this.value + "-" + phoneInput.value;
+});
+
+/* 주소 */
+window.searchAddress = function(){
+    new daum.Postcode({
+        oncomplete:function(data){
+            document.getElementById("address").value = data.address;
+        }
+    }).open();
+};
+
+/* 이메일 선택 */
+const domainSelect=document.getElementById("domainSelect");
+const domainInput=document.getElementById("emailDomain");
+
+domainSelect.addEventListener("change",function(){
+    if(this.value!==""){
+        domainInput.value=this.value;
+        domainInput.readOnly=true;
+    }else{
+        domainInput.value="";
+        domainInput.readOnly=false;
+    }
+});
+
+/* 차량 활성화 */
+const carName=document.getElementById("carName");
+const carYear=document.getElementById("carYear");
+const mileage=document.getElementById("carMileage");
+
+carYear.disabled = true;
+mileage.disabled = true;
+
+carName.addEventListener("input", function () {
+    const hasValue = this.value.trim() !== "";
+    carYear.disabled = !hasValue;
+    mileage.disabled = !hasValue;
+
+    if (!hasValue) {
+        carYear.value = "";
+        mileage.value = "";
+    }
+});
+
+}); 
+</script>
+<script>
 
 /* 전화번호 */
 
@@ -449,22 +562,7 @@ domainInput.readOnly=false;
 
 });
 
-/* 이메일 합치기 */
 
-document.querySelector("form").onsubmit = function(){
-
-    const id = document.getElementById("emailId").value;
-    const domain = document.getElementById("emailDomain").value;
-
-    if(!id || !domain){
-        alert("이메일을 입력해주세요.");
-        return false;   // ❗ 이게 핵심 (submit 막는 방식 변경)
-    }
-
-    document.getElementById("emailFull").value = id + "@" + domain;
-
-    return true;   // 정상 submit
-};
 
 /* 차량 활성화 */
 
@@ -507,9 +605,11 @@ async function checkId() {
     if (isDuplicate) {
         msg.innerText = "이미 사용중인 아이디입니다.";
         msg.style.color = "red";
+        isIdChecked = false;
     } else {
         msg.innerText = "사용 가능한 아이디입니다.";
         msg.style.color = "green";
+        isIdChecked = true;
     }
 }  
 
@@ -567,9 +667,11 @@ async function checkEmail() {
     if (isDuplicate) {
         msg.innerText = "이미 사용중인 이메일입니다.";
         msg.style.color = "red";
+        isEmailChecked = false;
     } else {
         msg.innerText = "사용 가능한 이메일입니다.";
         msg.style.color = "green";
+        isEmailChecked = true;
     }
 }
 /* 차량 연식 YYYY-MM 포맷 */
@@ -596,5 +698,11 @@ carYearInput.addEventListener("input", function () {
 });
 </script>
 
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
 </body>
 </html>
