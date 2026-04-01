@@ -5,5 +5,5 @@ import com.evcar.dto.vehicle.VehicleImageResponseDto;
 import java.util.List;
 
 public interface VehicleImageService {
-    List<VehicleImageResponseDto> getImages(Long vehicleId);
+    List<VehicleImageResponseDto> getImages(String id);
 }

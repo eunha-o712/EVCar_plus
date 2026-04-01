@@ -2,7 +2,7 @@ package com.evcar.dto.vehicle;
 
 public class VehicleListDto {
 
-    private Long vehicleId;
+    private String vehicleId;
     private String brand;
     private String modelName;
     private String vehicleClass;
@@ -16,7 +16,7 @@ public class VehicleListDto {
     // 생성자
     public VehicleListDto() {}
 
-    public VehicleListDto(Long vehicleId, String brand, String modelName,
+    public VehicleListDto(String vehicleId, String brand, String modelName,
                           String vehicleClass, Integer priceBasic,
                           Integer pricePremium, Integer drivingRange,
                           String imageUrl, String catalogUrl) {
@@ -32,8 +32,8 @@ public class VehicleListDto {
     }
 
     // Getters & Setters
-    public Long getVehicleId() { return vehicleId; }
-    public void setVehicleId(Long vehicleId) { this.vehicleId = vehicleId; }
+    public String getVehicleId() { return vehicleId; }
+    public void setVehicleId(String string) { this.vehicleId = string; }
 
     public String getBrand() { return brand; }
     public void setBrand(String brand) { this.brand = brand; }

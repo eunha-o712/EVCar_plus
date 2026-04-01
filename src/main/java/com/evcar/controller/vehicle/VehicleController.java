@@ -37,38 +37,48 @@ public class VehicleController {
 		return "vehicle/list";
 	}
 
-	// 필터 목록
+	// 🔥 필터 목록 (수정됨)
 	@GetMapping("/list")
 	public String vehicleList(@RequestParam(name = "brand", defaultValue = "전체") String brand,
 			@RequestParam(name = "vehicleClass", defaultValue = "전체") String vehicleClass, Model model) {
+
+		String originalBrand = brand; // 화면 유지용
 
 		if ("전체".equals(brand))
 			brand = null;
 		if ("전체".equals(vehicleClass))
 			vehicleClass = null;
 
+		// 🔥 여기 핵심 (DB 값으로 변환)
+		if ("현대".equals(brand))
+			brand = "HYUNDAI";
+		if ("기아".equals(brand))
+			brand = "KIA";
+
 		List<VehicleListDto> vehicleList = vehicleService.getVehicleList(brand, vehicleClass);
 
 		model.addAttribute("vehicleList", vehicleList);
-		model.addAttribute("selectedBrand", brand == null ? "전체" : brand);
+		model.addAttribute("selectedBrand", originalBrand == null ? "전체" : originalBrand);
 		model.addAttribute("selectedClass", vehicleClass == null ? "전체" : vehicleClass);
 		model.addAttribute("totalCount", vehicleList.size());
 
 		return "vehicle/list";
 	}
 
-	// 🔥 상세 페이지 (수정 완료)
+	// 상세 페이지
 	@GetMapping("/{id}")
-	public String detail(@PathVariable("id") Long id, Model model) {
+	public String detail(@PathVariable("id") String id, Model model) {
 
-		// 차량 정보
 		VehicleDetailDto dto = vehicleService.getDetail(id);
 		dto.setWished(wishlistService.isWished(id));
 
-		// 이미지 조회
 		List<VehicleImageResponseDto> images = vehicleImageService.getImages(id);
-		
-		System.out.println("이미지 개수: " + images.size());
+
+		System.out.println("images size = " + images.size());
+
+		for (VehicleImageResponseDto img : images) {
+		    System.out.println("img url = " + img.getImageUrl());
+		}
 
 		model.addAttribute("vehicle", dto);
 		model.addAttribute("images", images);

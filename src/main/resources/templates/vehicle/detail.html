@@ -13,18 +13,26 @@
 
 <body>
 
-	<!-- 헤더 -->
 	<div th:replace="~{layout/header :: header}"></div>
 
 	<div class="detail-wrap">
 		<div class="row">
 			<div class="col-md-8">
-				<div id="carCarousel" class="carousel slide">
+
+				<!-- 🔥 이미지 없을 때 -->
+				<div th:if="${#lists.isEmpty(images)}"
+					class="text-center text-muted">이미지가 없습니다.</div>
+
+				<!-- 🔥 캐러셀 -->
+				<div id="carCarousel" class="carousel slide"
+					th:if="${!#lists.isEmpty(images)}">
 					<div class="carousel-inner car-image">
-						<div class="carousel-item" th:each="img, stat : ${images}"
-							th:classappend="${stat.index == 0} ? ' active'">
+
+						<div th:each="img, stat : ${images}"
+							th:class="${stat.index == 0} ? 'carousel-item active' : 'carousel-item'">
 							<img th:src="${img.imageUrl}" class="slide-img">
 						</div>
+
 					</div>
 
 					<button class="carousel-control-prev" type="button"
@@ -38,17 +46,20 @@
 					</button>
 				</div>
 
-				<div class="thumbnail-wrap">
+				<!-- 🔥 썸네일 -->
+				<div class="thumbnail-wrap" th:if="${!#lists.isEmpty(images)}">
 					<img th:each="img, stat : ${images}" th:src="${img.imageUrl}"
 						class="thumbnail-img"
 						th:classappend="${stat.index == 0} ? ' active'"
 						th:attr="data-index=${stat.index}">
 				</div>
+
 			</div>
 
 			<div class="col-md-4 detail-info">
 				<div style="display: flex; justify-content: space-between;">
-					<div class="title" th:text="${vehicle.modelName}"></div>
+
+					<div class="title" th:text="${vehicle.modelNameDisplay}"></div>
 
 					<div class="wishlist" id="wishlistBtn"
 						th:data-id="${vehicle.vehicleId}">
@@ -58,8 +69,8 @@
 				</div>
 
 				<div style="color: #777; margin-top: 6px;">
-					<span th:text="${vehicle.brand}"></span> | <span
-						th:text="${vehicle.vehicleClass}"></span>
+					<span th:text="${vehicle.brandKor}"></span> | <span
+						th:text="${vehicle.vehicleClassKor}"></span>
 				</div>
 
 				<div class="spec-box">
@@ -72,12 +83,15 @@
 							th:text="${vehicle.drivingRange} + 'km'"></strong>
 					</div>
 
+					<!-- 🔥 수정: 충전시간 -->
 					<div class="spec-row">
-						<span>충전시간</span> <strong th:text="${vehicle.fastChargingTime}"></strong>
+						<span>충전시간</span> <strong
+							th:text="${vehicle.fastChargingTimeDisplay}"></strong>
 					</div>
 
+					<!-- 🔥 수정: 충전방식 -->
 					<div class="spec-row">
-						<span>충전방식</span> <strong th:text="${vehicle.chargingMethod}"></strong>
+						<span>충전방식</span> <strong th:text="${vehicle.chargingMethodKor}"></strong>
 					</div>
 
 					<div class="spec-row">
@@ -96,7 +110,6 @@
 		</div>
 	</div>
 
-	<!-- 푸터 -->
 	<div th:replace="~{layout/footer :: footer}"></div>
 
 	<script>

@@ -8,7 +8,7 @@ import com.evcar.domain.vehicle.Vehicle;
 import java.util.List;
 import java.util.Optional;
 
-public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
+public interface VehicleRepository extends JpaRepository<Vehicle, String> {
 
     @Query("SELECT v FROM Vehicle v WHERE v.vehicleStatus = 'ACTIVE' " +
            "AND (:brand IS NULL OR v.brand = :brand) " +
@@ -17,5 +17,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     List<Vehicle> findByFilter(@Param("brand") String brand,
                               @Param("vehicleClass") String vehicleClass);
 
-    Optional<Vehicle> findByVehicleId(int vehicleId);
+    Optional<Vehicle> findByVehicleId(String vehicleId);
 }

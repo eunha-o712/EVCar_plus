@@ -6,7 +6,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Table(name = "wishlist", uniqueConstraints = {
         @UniqueConstraint(columnNames = "vehicle_id")
 })
@@ -14,10 +15,10 @@ public class Wishlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long wishlistId;
+    private String wishlistId; 
 
     @Column(name = "vehicle_id", nullable = false)
-    private Long vehicleId;
+    private String vehicleId; 
 
     private LocalDateTime createdAt = LocalDateTime.now();
 }

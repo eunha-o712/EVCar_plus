@@ -16,7 +16,7 @@ public class VehicleImageServiceImpl implements VehicleImageService {
     private final VehicleImageRepository vehicleImageRepository;
 
     @Override
-    public List<VehicleImageResponseDto> getImages(Long vehicleId) {
+    public List<VehicleImageResponseDto> getImages(String vehicleId) {
         return vehicleImageRepository.findByVehicleIdOrderByImageOrderAsc(vehicleId)
                 .stream()
                 .map(img -> VehicleImageResponseDto.from(img.getImageUrl()))

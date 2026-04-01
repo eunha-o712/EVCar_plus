@@ -2,64 +2,67 @@ package com.evcar.service.wishlist;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.evcar.domain.vehicle.Vehicle;
 import com.evcar.domain.wishlist.Wishlist;
 import com.evcar.dto.vehicle.VehicleListDto;
 import com.evcar.repository.vehicle.VehicleRepository;
 import com.evcar.repository.wishlist.WishlistRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class WishlistServiceImpl implements WishlistService {
 
-    private final WishlistRepository wishlistRepository;
-    private final VehicleRepository vehicleRepository;
+	private final WishlistRepository wishlistRepository;
+	private final VehicleRepository vehicleRepository;
 
-    @Override
-    public boolean isWished(Long vehicleId) {
-        return wishlistRepository.existsByVehicleId(vehicleId);
-    }
+	
+	public WishlistServiceImpl(WishlistRepository wishlistRepository, VehicleRepository vehicleRepository) {
+		this.wishlistRepository = wishlistRepository;
+		this.vehicleRepository = vehicleRepository;
+	}
 
-    @Override
-    public void add(Long vehicleId) {
-        if (!wishlistRepository.existsByVehicleId(vehicleId)) {
-            Wishlist w = new Wishlist();
-            w.setVehicleId(vehicleId);
-            wishlistRepository.save(w);
-        }
-    }
+	@Override
+	public boolean isWished(String vehicleId) {
+		return wishlistRepository.existsByVehicleId(vehicleId);
+	}
 
-    @Override
-    public void remove(Long vehicleId) {
-        if (wishlistRepository.existsByVehicleId(vehicleId)) {
-            wishlistRepository.deleteByVehicleId(vehicleId);
-        }
-    }
+	@Override
+	public void add(String vehicleId) {
+		if (!wishlistRepository.existsByVehicleId(vehicleId)) {
+			Wishlist w = new Wishlist();
+			w.setVehicleId(vehicleId);
+			wishlistRepository.save(w);
+		}
+	}
 
-    @Override
-    public List<VehicleListDto> getWishlistVehicles() {
-        List<Wishlist> wishlist = wishlistRepository.findAll();
+	@Override
+	public void remove(String vehicleId) {
+		if (wishlistRepository.existsByVehicleId(vehicleId)) {
+			wishlistRepository.deleteByVehicleId(vehicleId);
+		}
+	}
 
-        return wishlist.stream()
-                .map(w -> {
-                    // vehicle 정보 조회
-                    var vehicle = vehicleRepository.findById(w.getVehicleId()).orElse(null);
+	@Override
+	public List<VehicleListDto> getWishlistVehicles() {
+		List<Wishlist> wishlist = wishlistRepository.findAll();
 
-                    if (vehicle == null) return null;
+		return wishlist.stream().map(w -> {
 
-                    // DTO 변환 (필드 맞게 수정 필요)
-                    VehicleListDto dto = new VehicleListDto();
-                    dto.setBrand(vehicle.getBrand());
-                    dto.setModelName(vehicle.getModelName()); // 필드명 맞게 수정
-                    
-                    return dto;
-                })
-                .filter(v -> v != null)
-                .collect(Collectors.toList());
-    }
+			// 🔥 var → 명확한 타입으로 변경
+			Vehicle vehicle = vehicleRepository.findById(w.getVehicleId()).orElse(null);
+
+			if (vehicle == null)
+				return null;
+
+			VehicleListDto dto = new VehicleListDto();
+			dto.setBrand(vehicle.getBrand());
+			dto.setModelName(vehicle.getModelName());
+
+			return dto;
+		}).filter(v -> v != null).collect(Collectors.toList());
+	}
 }

@@ -30,17 +30,18 @@ public class VehicleServiceImpl implements VehicleService {
 
         return vehicles.stream().map(v -> {
 
-            VehicleListDto dto = new VehicleListDto(
-                    v.getVehicleId(),
-                    v.getBrand(),
-                    v.getModelName(),
-                    v.getVehicleClass(),
-                    v.getPriceBasic(),
-                    v.getPricePremium(),
-                    v.getDrivingRange(),
-                    v.getImageUrl(),
-                    v.getCatalogUrl()
-            );
+            // 🔥 생성자 대신 setter 방식으로 변경
+            VehicleListDto dto = new VehicleListDto();
+
+            dto.setVehicleId(v.getVehicleId());
+            dto.setBrand(v.getBrand());
+            dto.setModelName(v.getModelName());
+            dto.setVehicleClass(v.getVehicleClass());
+            dto.setPriceBasic(v.getPriceBasic());
+            dto.setPricePremium(v.getPricePremium());
+            dto.setDrivingRange(v.getDrivingRange());
+            dto.setImageUrl(v.getImageUrl());
+            dto.setCatalogUrl(v.getCatalogUrl());
 
             dto.setWished(wishlistService.isWished(v.getVehicleId()));
 
@@ -51,9 +52,10 @@ public class VehicleServiceImpl implements VehicleService {
 
     // 차량 상세
     @Override
-    public VehicleDetailDto getDetail(Long vehicleId) {
+    public VehicleDetailDto getDetail(String id) {
 
-        Vehicle v = vehicleRepository.findById(vehicleId)
+        // 🔥 변수명 오류 수정 (vehicleId → id)
+        Vehicle v = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("차량 없음"));
 
         VehicleDetailDto dto = new VehicleDetailDto();
@@ -69,7 +71,7 @@ public class VehicleServiceImpl implements VehicleService {
         dto.setSlowChargingTime(v.getSlowChargingTime());
         dto.setChargingMethod(v.getChargingMethod());
 
-        // 🔥 여기만 수정 (null 방어)
+        // 🔥 null 방어
         dto.setBatteryCapacity(
                 v.getBatteryCapacity() != null ? v.getBatteryCapacity().doubleValue() : 0.0
         );
@@ -80,7 +82,8 @@ public class VehicleServiceImpl implements VehicleService {
         return dto;
     }
 
-    public Vehicle getVehicleDetail(Long id) {
+    // 🔥 Long → String으로 수정
+    public Vehicle getVehicleDetail(String id) {
         return vehicleRepository.findById(id).orElse(null);
     }
 }
