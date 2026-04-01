@@ -4,6 +4,7 @@ import com.evcar.domain.charging.ChargingStation;
 import com.evcar.dto.charging.ChargingStationResponseDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ChargingStationService {
 
@@ -14,9 +15,9 @@ public interface ChargingStationService {
 
     List<ChargingStation> findByRegion(String sido, String sigungu);
 
-    // 🔥 이걸로 맞춰
     List<ChargingStationResponseDto> getStationsByRegion(String sido, String sigungu);
 
-    // (선택) 유지하려면 같이 선언
     List<ChargingStationResponseDto> getStationsByZcode(String zcode);
+
+    Map<String, List<String>> getAllRegions();
 }

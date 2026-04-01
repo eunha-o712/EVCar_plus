@@ -10,6 +10,9 @@ public class ChargingStationResponseDto {
 
     private String stationId;
     private String stationName;
-    private Double lat;
-    private Double lng;
+    private String address;
+    private double lat;
+    private double lng;
+    private String chargerType;
+    private String status;
 }

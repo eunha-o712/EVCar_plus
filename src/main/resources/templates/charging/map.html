@@ -1,71 +1,108 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>충전소 지도</title>
 
+    <!-- 🔥 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+
+    <!-- 🔥 지도 CSS -->
+    <link rel="stylesheet" th:href="@{/css/map/map.css}">
+
     <!-- 🔥 카카오맵 -->
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=45ba50972b453c86407e783b76d96dbf"></script>
-
-    <style>
-        body {
-            margin: 0;
-        }
-
-        #map {
-            width: 100%;
-            height: 100vh;
-        }
-
-        /* 🔥 필터 UI */
-        .filter-box {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 999;
-            background: white;
-            padding: 12px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-
-        select, button {
-            margin: 5px;
-            padding: 6px;
-        }
-    </style>
 </head>
 
 <body>
 
-<!-- 🔥 필터 -->
-<div class="filter-box">
+<!-- 🔥 헤더 직접 포함 -->
+<header class="ev-header">
+    <div class="ev-header__inner">
 
-    <select id="sido">
-        <option value="">시/도 선택</option>
+        <h1 class="ev-header__brand">
+            <a href="/" class="ev-header__brand-link">
+                <img src="/images/logo.png" class="ev-header__logo">
+            </a>
+        </h1>
 
-        <!-- 🔥🔥🔥 여기 핵심 수정 -->
-        <option value="서울">서울</option>
-        <option value="경기">경기</option>
-        <option value="인천">인천</option>
+        <nav class="ev-header__nav">
+            <ul class="ev-header__menu">
+                <li class="ev-header__item"><a href="/" class="ev-header__link">회사소개</a></li>
+                <li class="ev-header__item"><a href="/vehicle/list" class="ev-header__link">전기차조회</a></li>
+                <li class="ev-header__item"><a href="/charging/map-page" class="ev-header__link">충전소지도</a></li>
+                <li class="ev-header__item"><a href="/customer" class="ev-header__link">고객센터</a></li>
+            </ul>
+        </nav>
 
-    </select>
+        <div class="ev-header__auth">
+            <a href="/login" class="ev-header__auth-link">로그인</a>
+            <span class="ev-header__auth-divider">·</span>
+            <a href="/signup" class="ev-header__auth-link">회원가입</a>
+        </div>
 
-    <select id="sigungu">
-        <option value="">시/군/구 선택</option>
-        <option value="강남구">강남구</option>
-        <option value="서초구">서초구</option>
-    </select>
+    </div>
+</header>
 
-    <button id="searchBtn">검색</button>
+<!-- 🔥 본문 -->
+<div class="ev-container">
+
+    <div class="ev-filter-box">
+        <select id="sido">
+            <option value="">시/도 선택</option>
+        </select>
+
+        <select id="sigungu">
+            <option value="">시/군/구 선택</option>
+        </select>
+
+        <button id="searchBtn">검색</button>
+    </div>
+
+    <div class="ev-content">
+
+        <div class="ev-map">
+            <div id="map"></div>
+        </div>
+
+        <div class="ev-panel">
+
+            <h3 class="ev-panel-title">충전소 상세 정보</h3>
+
+            <div id="stationDetail">
+                <p>충전소를 선택하세요</p>
+            </div>
+
+            <h4 class="ev-panel-sub">충전기 목록</h4>
+
+            <div id="chargerList">
+                <p>데이터 없음</p>
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-<!-- 지도 -->
-<div id="map"></div>
+<!-- 🔥 푸터 -->
+<footer class="ev-footer">
+    <div class="ev-footer__inner">
 
-<!-- JS -->
-<script src="/js/charging/map.js"></script>
+        <div class="ev-footer__bottom">
+            <p class="ev-footer__copyright">
+                © EV Consulting. All rights reserved.
+            </p>
+        </div>
+
+    </div>
+</footer>
+
+<!-- 🔥 JS -->
+<script th:src="@{/js/charging/map.js}"></script>
 
 </body>
 </html>

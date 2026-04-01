@@ -1,0 +1,158 @@
+/* =========================
+   🔥 공통 (팀원 CSS)
+========================= */
+body {
+   padding-top: 80px;
+   background: #f8f9fa;
+}
+
+/* =========================
+   🔥 헤더
+========================= */
+.ev-header {
+   background: linear-gradient(90deg, #0a0f3c, #1b3c5a);
+   height: 80px;
+   display: flex;
+   align-items: center;
+   position: fixed;
+   top: 0;
+   width: 100%;
+   z-index: 1000;
+}
+
+.ev-header__inner {
+   max-width: 1300px;
+   width: 100%;
+   margin: 0 auto;
+   display: flex;
+   align-items: center;
+   position: relative;
+}
+
+.ev-header__menu {
+   display: flex;
+   gap: 40px;
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   position: absolute;
+   left: 50%;
+   transform: translateX(-50%);
+}
+
+.ev-header__link {
+   color: #fff;
+   text-decoration: none;
+   font-weight: 500;
+   font-size: 15px;
+   padding: 6px 14px;
+   border-radius: 999px;
+}
+
+.ev-header__link:hover {
+   background: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================
+   🔥 지도 페이지 (네 코드)
+========================= */
+.ev-container {
+    width: 100%;
+    height: calc(100vh - 80px); /* 헤더 제외 */
+    display: flex;
+    flex-direction: column;
+}
+
+.ev-filter-box {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    background: #0f172a;
+    gap: 10px;
+}
+
+/* select & button 공통 */
+.ev-filter-box select,
+.ev-filter-box button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+}
+
+/* 🔥 select 글씨 안보이는 문제 해결 */
+.ev-filter-box select {
+    background: white;
+    color: #111;
+}
+
+/* 버튼 */
+.ev-filter-box button {
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
+
+/* =========================
+   🔥 콘텐츠 영역
+========================= */
+.ev-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.ev-map {
+    width: 70%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* =========================
+   🔥 오른쪽 패널
+========================= */
+.ev-panel {
+    width: 30%;
+    padding: 20px;
+    background: #f8fafc;
+    overflow-y: auto;
+}
+
+/* 카드 UI (추가)
+👉 기존 디자인이랑 자연스럽게 맞춤
+*/
+.ev-card {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   🔥 푸터 (팀원 CSS)
+========================= */
+.ev-footer {
+   background: #0d1117;
+   color: #aaa;
+   padding: 25px 0 10px;
+   margin-top: 60px;
+}
+
+.ev-footer__inner {
+   max-width: 1300px;
+   margin: 0 auto;
+   padding: 0 40px;
+}
+
+.ev-footer__bottom {
+   text-align: center;
+}
+
+.ev-footer__copyright {
+   font-size: 0.8rem;
+   color: #555;
+}

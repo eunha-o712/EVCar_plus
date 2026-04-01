@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -16,64 +16,98 @@ public class ChargingStationServiceImpl implements ChargingStationService {
 
     private final ChargingStationRepository chargingStationRepository;
 
-    // 🔵 지도 범위 조회
     @Override
-    public List<ChargingStation> findByMapBounds(
-            double swLat, double neLat,
-            double swLng, double neLng
-    ) {
-        return chargingStationRepository.findByLatBetweenAndLngBetween(
-                swLat, neLat, swLng, neLng
-        );
+    public List<ChargingStation> findByMapBounds(double swLat, double neLat, double swLng, double neLng) {
+        return List.of();
     }
 
-    // 🔵 지역 조회 (엔티티 그대로)
     @Override
     public List<ChargingStation> findByRegion(String sido, String sigungu) {
-        return chargingStationRepository.findBySidoAndSigungu(sido, sigungu);
+        return List.of();
     }
 
-    // 🔥🔥🔥 핵심: 지역 → zcode → 전체 조회
+    // 🔥 지역 검색 (정상)
     @Override
     public List<ChargingStationResponseDto> getStationsByRegion(String sido, String sigungu) {
 
-        // 1️⃣ 지역으로 조회해서 zcode 찾기
-        List<ChargingStation> regionList = chargingStationRepository.findBySidoAndSigungu(sido, sigungu);
+        String keyword = sido + " " + sigungu;
 
-        if (regionList.isEmpty()) {
-            return List.of();
-        }
+        List<ChargingStation> list = chargingStationRepository.findByAddressContaining(keyword);
 
-        // 2️⃣ zcode 추출
-        String zcode = regionList.get(0).getZcode();
-
-        // 3️⃣ zcode로 전체 충전소 조회
-        List<ChargingStation> list = chargingStationRepository.findByZcode(zcode);
-
-        // 4️⃣ DTO 변환
         return list.stream()
-                .map(s -> ChargingStationResponseDto.builder()
-                        .stationId(s.getStationId())
-                        .stationName(s.getStationName())
-                        .lat(s.getLat())
-                        .lng(s.getLng())
+                .map(c -> ChargingStationResponseDto.builder()
+                        .stationId(c.getStationId())
+                        .stationName(c.getStationName())
+                        .address(c.getAddress())
+                        .lat(c.getLat())
+                        .lng(c.getLng())
                         .build())
                 .toList();
     }
 
-    // 🔵 기존 유지 (필요하면 사용)
     @Override
     public List<ChargingStationResponseDto> getStationsByZcode(String zcode) {
+        return List.of();
+    }
 
-        List<ChargingStation> list = chargingStationRepository.findByZcode(zcode);
+    // 🔥🔥🔥 여기 핵심 (서울만 나오는 문제 해결)
+    @Override
+    public Map<String, List<String>> getAllRegions() {
 
-        return list.stream()
-                .map(s -> ChargingStationResponseDto.builder()
-                        .stationId(s.getStationId())
-                        .stationName(s.getStationName())
-                        .lat(s.getLat())
-                        .lng(s.getLng())
-                        .build())
-                .toList();
+        List<ChargingStation> list = chargingStationRepository.findAll();
+
+        Map<String, Set<String>> temp = new HashMap<>();
+
+        for (ChargingStation s : list) {
+
+            if (s.getAddress() == null) continue;
+
+            // 🔥 1. 공백 정리 (중요)
+            String addr = s.getAddress().trim().replaceAll("\\s+", " ");
+
+            // 🔥 2. 최소 길이 체크
+            if (addr.length() < 5) continue;
+
+            String[] parts = addr.split(" ");
+
+            String sido;
+            String sigungu;
+
+            // 🔥 3. 정상 케이스 (공백 있음)
+            if (parts.length >= 2) {
+                sido = parts[0];
+                sigungu = parts[1];
+            }
+            // 🔥 4. 공백 없는 케이스 대응 (서울특별시강남구)
+            else {
+                // 시/도 기준 분리
+                if (addr.startsWith("서울")) {
+                    sido = "서울특별시";
+                    sigungu = addr.substring(5, Math.min(8, addr.length()));
+                } else if (addr.startsWith("경기")) {
+                    sido = "경기도";
+                    sigungu = addr.substring(3, Math.min(6, addr.length()));
+                } else if (addr.startsWith("인천")) {
+                    sido = "인천광역시";
+                    sigungu = addr.substring(5, Math.min(8, addr.length()));
+                } else if (addr.startsWith("부산")) {
+                    sido = "부산광역시";
+                    sigungu = addr.substring(5, Math.min(8, addr.length()));
+                } else {
+                    continue; // 모르는 형태는 스킵
+                }
+            }
+
+            temp.putIfAbsent(sido, new HashSet<>());
+            temp.get(sido).add(sigungu);
+        }
+
+        Map<String, List<String>> result = new HashMap<>();
+
+        for (String key : temp.keySet()) {
+            result.put(key, new ArrayList<>(temp.get(key)));
+        }
+
+        return result;
     }
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChargingStationDTO {
+public class ChargingStationDto {
     private Long stationId;
     private String stationName;
     private double latitude;
