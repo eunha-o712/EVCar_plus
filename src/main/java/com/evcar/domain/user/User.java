@@ -1,23 +1,12 @@
 package com.evcar.domain.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -30,11 +19,6 @@ public class User {
 
     @Column(name = "login_id", nullable = false, unique = true, length = 20)
     private String loginId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_status", nullable = false, length = 10)
-    @Builder.Default
-    private UserStatus userStatus = UserStatus.ACTIVE;
 
     @Column(name = "password", nullable = false, length = 255)
     private String password;
@@ -57,12 +41,17 @@ public class User {
     @Column(name = "address_detail", nullable = false, length = 255)
     private String addressDetail;
 
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 20)
     private UserRole role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status", nullable = false, length = 10)
+    @Builder.Default
+    private UserStatus userStatus = UserStatus.ACTIVE;
 
     @Column(name = "has_vehicle", length = 10)
     private String hasVehicle;
@@ -89,6 +78,8 @@ public class User {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        if (this.role == null) this.role = UserRole.USER;
+        if (this.userStatus == null) this.userStatus = UserStatus.ACTIVE;
     }
 
     @PreUpdate

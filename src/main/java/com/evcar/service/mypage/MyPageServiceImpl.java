@@ -13,6 +13,7 @@ import com.evcar.dto.mypage.MyWishlistResponseDto;
 import com.evcar.dto.mypage.WithdrawRequestDto;
 import com.evcar.repository.consultation.ConsultationRepository;
 import com.evcar.repository.inquiry.InquiryRepository;
+import com.evcar.repository.mypage.MyWishlistQueryRepository;
 import com.evcar.repository.user.UserRepository;
 import java.time.LocalDate;
 import java.time.Year;
@@ -27,14 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MyPageServiceImpl implements MyPageService {
 
-	private static final String CONSULT_STATUS_IN_PROGRESS = "IN_PROGRESS";
+    private static final String CONSULT_STATUS_IN_PROGRESS = "IN_PROGRESS";
     private static final ZoneId KOREA_ZONE_ID = ZoneId.of("Asia/Seoul");
     private static final int MIN_VEHICLE_YEAR = 1900;
 
     private final UserRepository userRepository;
     private final ConsultationRepository consultationRepository;
     private final InquiryRepository inquiryRepository;
-
+    private final MyWishlistQueryRepository myWishlistQueryRepository;
+    
+    
     @Override
     public MyPageInfoResponseDto getMyPageInfo(String userId) {
         User user = getUserByUserId(userId);
@@ -67,7 +70,7 @@ public class MyPageServiceImpl implements MyPageService {
         User user = getUserByUserId(userId);
 
         String name = hasText(requestDto.getName()) ? requestDto.getName().trim() : user.getName();
-        LocalDate birthDate = requestDto.getBirthDate() != null ? requestDto.getBirthDate() : user.getBirthDate();
+        LocalDate birthDate = user.getBirthDate();
         String gender = hasText(requestDto.getGender()) ? requestDto.getGender() : user.getGender();
         String phone = hasText(requestDto.getPhone()) ? requestDto.getPhone().trim() : user.getPhone();
         String address = hasText(requestDto.getAddress()) ? requestDto.getAddress().trim() : user.getAddress();
@@ -178,96 +181,51 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     @Transactional
     public void withdraw(String userId, WithdrawRequestDto withdrawRequestDto) {
-        System.out.println("===== withdraw debug start =====");
-        System.out.println("userId = [" + userId + "]");
-        System.out.println("password = [" + withdrawRequestDto.getPassword() + "]");
-        System.out.println("withdrawReason = [" + withdrawRequestDto.getWithdrawReason() + "]");
-        System.out.println("agreeWithdraw = [" + withdrawRequestDto.getAgreeWithdraw() + "]");
-        System.out.println("isInvalid = [" + withdrawRequestDto.isInvalid() + "]");
-
         if (withdrawRequestDto.isInvalid()) {
-            System.out.println(">>> invalid request dto");
             throw new IllegalArgumentException("회원탈퇴 입력값을 확인해주세요.");
         }
 
         User user = getUserByUserId(userId);
-        System.out.println("loadedUserId = [" + user.getUserId() + "]");
-        System.out.println("loadedUserStatus = [" + user.getUserStatus() + "]");
 
         if (user.getUserStatus() == UserStatus.WITHDRAWN) {
-            System.out.println(">>> already withdrawn user");
             throw new IllegalArgumentException("이미 탈퇴 처리된 회원입니다.");
         }
 
         boolean hasInProgressConsultation =
                 consultationRepository.existsByUserUserIdAndConsultStatus(user.getUserId(), CONSULT_STATUS_IN_PROGRESS);
 
-        System.out.println("hasInProgressConsultation = [" + hasInProgressConsultation + "]");
-        System.out.println("CONSULT_STATUS_IN_PROGRESS = [" + CONSULT_STATUS_IN_PROGRESS + "]");
-
         if (hasInProgressConsultation) {
-            System.out.println(">>> blocked by in-progress consultation");
             throw new IllegalArgumentException("현재 진행중인 상담이 있어 탈퇴가 불가능합니다. 상담 완료 또는 취소 후 다시 시도해주세요.");
         }
 
-        boolean passwordMatched = user.getPassword().equals(withdrawRequestDto.getPassword());
-        System.out.println("passwordMatched = [" + passwordMatched + "]");
-
-        if (!passwordMatched) {
-            System.out.println(">>> password mismatch");
+        if (!user.getPassword().equals(withdrawRequestDto.getPassword())) {
             throw new IllegalArgumentException("비밀번호를 확인하세요.");
         }
 
+        String finalWithdrawReason = withdrawRequestDto.getFinalWithdrawReason();
+        System.out.println("withdrawReason = [" + finalWithdrawReason + "]");
+
         user.withdraw();
-        System.out.println(">>> withdraw success");
-        System.out.println("===== withdraw debug end =====");
     }
 
-    @Override
-    public List<MyWishlistResponseDto> getMyWishlist(String userId) {
-        getUserByUserId(userId);
-
-        return List.of(
-                MyWishlistResponseDto.builder()
-                        .wishlistId("wish0001")
-                        .brand("현대")
-                        .modelName("아이오닉 5")
-                        .vehicleClass("중형 SUV")
-                        .priceBasic(5200)
-                        .imageUrl("/images/ev_HYUNDAI_IONIQ5.png")
-                        .detailUrl("/vehicle/detail?vehicleId=vehicle0001")
-                        .build(),
-                MyWishlistResponseDto.builder()
-                        .wishlistId("wish0002")
-                        .brand("기아")
-                        .modelName("EV6")
-                        .vehicleClass("중형 SUV")
-                        .priceBasic(4870)
-                        .imageUrl("/images/ev_KIA_EV6.png")
-                        .detailUrl("/vehicle/detail?vehicleId=vehicle0002")
-                        .build(),
-                MyWishlistResponseDto.builder()
-                        .wishlistId("wish0003")
-                        .brand("현대")
-                        .modelName("아이오닉 9")
-                        .vehicleClass("대형 SUV")
-                        .priceBasic(6700)
-                        .imageUrl("/images/ev_HYUNDAI_IONIQ9.png")
-                        .detailUrl("/vehicle/detail?vehicleId=vehicle0003")
-                        .build()
-        );
-    }
-
-    @Override
-    @Transactional
-    public void deleteWishlist(String userId, String wishlistId) {
-        getUserByUserId(userId);
-
-        if (wishlistId == null || wishlistId.isBlank()) {
-            throw new IllegalArgumentException("관심차량 식별값이 없습니다.");
+   
+        @Override
+        public List<MyWishlistResponseDto> getMyWishlist(String userId) {
+            getUserByUserId(userId);
+            return myWishlistQueryRepository.findMyWishlistByUserId(userId);
         }
-    }
 
+        @Override
+        @Transactional
+        public void deleteWishlist(String userId, String wishlistId) {
+            getUserByUserId(userId);
+
+            if (wishlistId == null || wishlistId.isBlank()) {
+                throw new IllegalArgumentException("관심차량 식별값이 없습니다.");
+            }
+
+            myWishlistQueryRepository.deleteMyWishlistByUserIdAndWishlistId(userId, wishlistId);
+        }
     private User getUserByUserId(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("회원정보를 찾을 수 없습니다."));

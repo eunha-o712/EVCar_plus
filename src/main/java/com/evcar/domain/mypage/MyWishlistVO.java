@@ -2,8 +2,8 @@ package com.evcar.domain.mypage;
 
 public class MyWishlistVO {
 	
-	private Long wishlistId;
-	private Long vehicleId;
+	private String wishlistId;
+	private String vehicleId;
 	private String brand;
 	private String modelName;
 	private String priceBasic;
@@ -13,19 +13,19 @@ public class MyWishlistVO {
 		super();
 	}
 
-	public Long getWishlistId() {
+	public String getWishlistId() {
 		return wishlistId;
 	}
 
-	public void setWishlistId(Long wishlistId) {
+	public void setWishlistId(String wishlistId) {
 		this.wishlistId = wishlistId;
 	}
 
-	public Long getVehicleId() {
+	public String getVehicleId() {
 		return vehicleId;
 	}
 
-	public void setVehicleId(Long vehicleId) {
+	public void setVehicleId(String vehicleId) {
 		this.vehicleId = vehicleId;
 	}
 
@@ -60,6 +60,8 @@ public class MyWishlistVO {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+
+	
 
 	
 }

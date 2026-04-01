@@ -1,6 +1,8 @@
 package com.evcar.dto.mypage;
 
+
 import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class MyPageInfoUpdateRequestDto {
-
+	private LocalDate birthDate;
     private String name;
-    private LocalDate birthDate;
     private String gender;
     private String phone;
     private String address;

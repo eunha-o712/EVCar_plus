@@ -280,7 +280,6 @@ public class MyPageController {
     private MyPageInfoUpdateRequestDto toUpdateRequestDto(MyPageInfoResponseDto responseDto) {
         return MyPageInfoUpdateRequestDto.builder()
                 .name(responseDto.getName())
-                .birthDate(responseDto.getBirthDate())
                 .gender(responseDto.getGender())
                 .phone(responseDto.getPhone())
                 .address(responseDto.getAddress())

@@ -1,72 +1,75 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const withdrawForm = document.getElementById('withdrawForm');
-    const withdrawPassword = document.getElementById('withdrawPassword');
-    const withdrawReason = document.getElementById('withdrawReason');
-    const withdrawAgree = document.getElementById('withdrawAgree');
-    const withdrawErrorMessage = document.getElementById('withdrawErrorMessage');
-    const withdrawSubmitButton = document.getElementById('withdrawSubmitButton');
+    const form = document.getElementById('withdrawForm');
+    const reasonRadios = document.querySelectorAll('input[name="withdrawReason"]');
+    const reasonDetailBox = document.getElementById('withdrawReasonDetailBox');
+    const reasonDetailInput = document.getElementById('withdrawReasonDetail');
+    const passwordInput = document.getElementById('withdrawPassword');
+    const agreeCheckbox = document.getElementById('withdrawAgree');
+    const errorMessage = document.getElementById('withdrawErrorMessage');
 
-    if (!withdrawForm || !withdrawPassword || !withdrawReason || !withdrawAgree || !withdrawErrorMessage || !withdrawSubmitButton) {
-        return;
-    }
+    const toggleOtherReason = () => {
+        const selectedReason = document.querySelector('input[name="withdrawReason"]:checked');
+        const isOtherSelected = selectedReason && selectedReason.value === '기타';
+
+        if (isOtherSelected) {
+            reasonDetailBox.classList.remove('ev-withdraw-hidden');
+            reasonDetailInput.disabled = false;
+        } else {
+            reasonDetailBox.classList.add('ev-withdraw-hidden');
+            reasonDetailInput.value = '';
+            reasonDetailInput.disabled = true;
+        }
+    };
 
     const showError = (message) => {
-        withdrawErrorMessage.textContent = message;
+        errorMessage.textContent = message;
     };
 
     const clearError = () => {
-        withdrawErrorMessage.textContent = '';
+        errorMessage.textContent = '';
     };
 
-    const validateWithdrawForm = () => {
-        const password = withdrawPassword.value.trim();
-        const reason = withdrawReason.value.trim();
-        const agreed = withdrawAgree.checked;
+    reasonRadios.forEach((radio) => {
+        radio.addEventListener('change', () => {
+            toggleOtherReason();
+            clearError();
+        });
+    });
 
-        if (password === '') {
-            showError('비밀번호를 입력해주세요.');
-            withdrawPassword.focus();
-            return false;
+    toggleOtherReason();
+
+    form.addEventListener('submit', (event) => {
+        const selectedReason = document.querySelector('input[name="withdrawReason"]:checked');
+
+        if (!passwordInput.value.trim()) {
+            event.preventDefault();
+            showError('현재 비밀번호를 입력해주세요.');
+            passwordInput.focus();
+            return;
         }
 
-        if (reason === '') {
-            showError('탈퇴 사유를 입력해주세요.');
-            withdrawReason.focus();
-            return false;
+        if (!selectedReason) {
+            event.preventDefault();
+            showError('탈퇴 사유를 선택해주세요.');
+            return;
         }
 
-        if (!agreed) {
+        if (selectedReason.value === '기타' && !reasonDetailInput.value.trim()) {
+            event.preventDefault();
+            showError('기타 사유를 입력해주세요.');
+            reasonDetailInput.focus();
+            return;
+        }
+
+        if (!agreeCheckbox.checked) {
+            event.preventDefault();
             showError('회원탈퇴 안내사항 동의가 필요합니다.');
-            withdrawAgree.focus();
-            return false;
+            agreeCheckbox.focus();
+            return;
         }
 
         clearError();
-        return true;
-    };
-
-    withdrawPassword.addEventListener('input', clearError);
-    withdrawReason.addEventListener('input', clearError);
-    withdrawAgree.addEventListener('change', clearError);
-
-    withdrawForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        if (!validateWithdrawForm()) {
-            return;
-        }
-
-        const confirmed = window.confirm(
-            '정말 회원탈퇴를 진행하시겠습니까?\n탈퇴 후 계정 정보는 복구할 수 없습니다.'
-        );
-
-        if (!confirmed) {
-            return;
-        }
-
-        withdrawSubmitButton.disabled = true;
-        withdrawForm.submit();
     });
 });

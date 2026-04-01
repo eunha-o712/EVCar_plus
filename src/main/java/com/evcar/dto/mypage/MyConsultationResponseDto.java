@@ -48,4 +48,14 @@ public class MyConsultationResponseDto {
             default -> consultStatus;
         };
     }
+    public String getPurchasePlanLabel() {
+        return switch (purchasePlan) {
+            case "IMMEDIATE" -> "즉시";
+            case "1_MONTH" -> "1개월 이내";
+            case "3_MONTH" -> "3개월 이내";
+            case "6_MONTH" -> "6개월 이내";
+            case "UNDECIDED" -> "미정";
+            default -> purchasePlan;
+        };
+    }
 }
