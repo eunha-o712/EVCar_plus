@@ -61,8 +61,14 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public String findUserLoginId(IdRecoveryDto dto) {
 
+        // 🔥 반드시 있어야 함
+        String email = dto.getEmailId() + "@" + dto.getEmailDomain();
+
+        System.out.println("이름 = " + dto.getName());
+        System.out.println("이메일 = " + email);
+
         User user = userRepository
-                .findByNameAndEmail(dto.getName(), dto.getEmail())
+                .findByNameAndEmail(dto.getName(), email)
                 .orElseThrow(() -> new IllegalArgumentException("입력하신 정보와 일치하는 회원이 없습니다."));
 
         return user.getLoginId();

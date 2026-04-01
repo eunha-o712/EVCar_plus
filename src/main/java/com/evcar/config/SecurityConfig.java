@@ -7,24 +7,25 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * Security 비활성 설정
- * 👉 Spring 기본 로그인 막고 우리가 만든 로그인 사용
- */
 @Configuration
 public class SecurityConfig {
 
-    // 비밀번호 암호화
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    http
-	        .csrf(csrf -> csrf.disable())
-	        .formLogin(form -> form.disable())
-	        .httpBasic(basic -> basic.disable())
-	        .authorizeHttpRequests(auth -> auth
-	            .anyRequest().permitAll()
-	        );
+    // 🔥 추가 (핵심)
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	    return http.build();
-	}
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()
+            );
+
+        return http.build();
+    }
 }

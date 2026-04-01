@@ -35,7 +35,7 @@ public class LoginController {
     // 로그인 처리
     @GetMapping("/main")
     public String index() {
-        return "index";
+    	return "main/index";
     }
     @PostMapping
     public String login(@ModelAttribute LoginRequestDto dto,
@@ -95,11 +95,14 @@ public class LoginController {
 
             loginService.verifyUser(dto);
 
-            model.addAttribute("loginId", loginId);
-            model.addAttribute("name", name);
-            model.addAttribute("email", email);
+            model.addAttribute("passwordResetDto",
+                    PasswordResetDto.builder()
+                            .loginId(loginId)
+                            .name(name)
+                            .email(email)
+                            .build());
 
-            return "user/signupcomplete";
+            return "login/pwreset";
 
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -112,5 +115,21 @@ public class LoginController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
+    }
+    // 비밀번호 변경
+    @PostMapping("/change-pw")
+    public String changePassword(@ModelAttribute PasswordResetDto dto, Model model) {
+
+        try {
+            loginService.resetPassword(dto);
+
+            model.addAttribute("successMessage", "비밀번호가 변경되었습니다.");
+
+            return "login/pwreset";
+
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "login/pwreset";
+        }
     }
 }
