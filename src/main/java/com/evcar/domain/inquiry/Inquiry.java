@@ -54,7 +54,7 @@ public class Inquiry {
         LocalDate now = LocalDate.now();
         this.createdAt = now;
         this.updatedAt = now;
-        if (this.replyStatus == null || this.replyStatus.isBlank()) {
+        if (this.replyStatus == null || this.replyStatus.trim().isEmpty()) {
             this.replyStatus = "WAITING";
         }
     }
@@ -64,7 +64,8 @@ public class Inquiry {
         this.updatedAt = LocalDate.now();
     }
 
-    public boolean isAnswered() {
-        return replyContent != null && !replyContent.isBlank();
+    public void updateReply(String replyContent, String replyStatus) {
+        this.replyContent = replyContent;
+        this.replyStatus = replyStatus;
     }
 }

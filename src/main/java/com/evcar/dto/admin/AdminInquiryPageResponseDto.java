@@ -23,4 +23,8 @@ public class AdminInquiryPageResponseDto {
     private boolean hasNextGroup;
     private int previousGroupPage;
     private int nextGroupPage;
+
+    private long allCount;
+    private long waitingCount;
+    private long completedCount;
 }

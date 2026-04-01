@@ -23,4 +23,15 @@ public class AdminInquiryDetailDto {
     private String replyStatus;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
+    public String getReplyStatusDesc() {
+        if ("WAITING".equals(this.replyStatus)) {
+            return "대기";
+        }
+        return "완료";
+    }
+
+    public boolean isCompleted() {
+        return "REPLIED".equals(this.replyStatus) || "CLOSED".equals(this.replyStatus);
+    }
 }

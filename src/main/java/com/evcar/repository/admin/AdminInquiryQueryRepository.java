@@ -11,6 +11,12 @@ public interface AdminInquiryQueryRepository {
 
     long countInquiries(String replyStatus, String keyword);
 
+    long countAllInquiries(String keyword);
+
+    long countWaitingInquiries(String keyword);
+
+    long countCompletedInquiries(String keyword);
+
     Optional<AdminInquiryDetailDto> findInquiryDetail(String inquiryId);
 
     void updateReply(String inquiryId, String replyContent, String replyStatus);

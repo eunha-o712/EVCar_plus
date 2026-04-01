@@ -48,12 +48,17 @@
     color: #dce7f5;
     font-size: 14px;
     font-weight: 500;
+    gap: 6px;
 }
 
 .ev-inquiry-filter-button.is-active {
     background: #00b4d8;
     border-color: #00b4d8;
     color: #081018;
+}
+
+.ev-inquiry-filter-count {
+    font-weight: 700;
 }
 
 .ev-inquiry-search-box {

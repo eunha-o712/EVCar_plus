@@ -27,7 +27,8 @@ public class MyInquiryResponseDto {
                 .content(inquiry.getContent())
                 .replyContent(inquiry.getReplyContent())
                 .createdAt(inquiry.getCreatedAt())
-                .answered(inquiry.isAnswered())
+                // [수정된 부분] replyStatus 값을 확인하여 boolean으로 변환
+                .answered("COMPLETED".equals(inquiry.getReplyStatus()))
                 .build();
     }
 }

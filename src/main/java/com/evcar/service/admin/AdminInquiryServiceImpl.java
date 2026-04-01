@@ -1,9 +1,10 @@
 package com.evcar.service.admin;
 
+import com.evcar.domain.inquiry.Inquiry;
 import com.evcar.dto.admin.AdminInquiryDetailDto;
 import com.evcar.dto.admin.AdminInquiryPageResponseDto;
-import com.evcar.dto.admin.AdminInquiryReplyRequestDto;
 import com.evcar.repository.admin.AdminInquiryQueryRepository;
+import com.evcar.repository.inquiry.InquiryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,8 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
 
     private static final int PAGE_GROUP_SIZE = 10;
 
-    private final AdminInquiryQueryRepository adminInquiryRepository;
+    private final AdminInquiryQueryRepository adminInquiryQueryRepository;
+    private final InquiryRepository inquiryRepository;
 
     @Override
     public AdminInquiryPageResponseDto getInquiryPage(int page, int size, String replyStatus, String keyword) {
@@ -24,8 +26,8 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
         int pageSize = size <= 0 ? 10 : size;
         int offset = (currentPage - 1) * pageSize;
 
-        long totalCount = adminInquiryRepository.countInquiries(replyStatus, keyword);
-        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+        long filteredCount = adminInquiryQueryRepository.countInquiries(replyStatus, keyword);
+        int totalPages = (int) Math.ceil((double) filteredCount / pageSize);
 
         if (totalPages == 0) {
             totalPages = 1;
@@ -41,11 +43,15 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
         boolean hasPreviousGroup = startPage > 1;
         boolean hasNextGroup = endPage < totalPages;
 
+        long allCount = adminInquiryQueryRepository.countAllInquiries(keyword);
+        long waitingCount = adminInquiryQueryRepository.countWaitingInquiries(keyword);
+        long completedCount = adminInquiryQueryRepository.countCompletedInquiries(keyword);
+
         return AdminInquiryPageResponseDto.builder()
-                .inquiries(adminInquiryRepository.findInquiryPage(offset, pageSize, replyStatus, keyword))
+                .inquiries(adminInquiryQueryRepository.findInquiryPage(offset, pageSize, replyStatus, keyword))
                 .currentPage(currentPage)
                 .totalPages(totalPages)
-                .totalCount(totalCount)
+                .totalCount(filteredCount)
                 .pageSize(pageSize)
                 .startPage(startPage)
                 .endPage(endPage)
@@ -53,21 +59,28 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
                 .hasNextGroup(hasNextGroup)
                 .previousGroupPage(hasPreviousGroup ? startPage - 1 : 1)
                 .nextGroupPage(hasNextGroup ? endPage + 1 : totalPages)
+                .allCount(allCount)
+                .waitingCount(waitingCount)
+                .completedCount(completedCount)
                 .build();
     }
 
     @Override
     public AdminInquiryDetailDto getInquiryDetail(String inquiryId) {
-        return adminInquiryRepository.findInquiryDetail(inquiryId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문의입니다."));
+        return adminInquiryQueryRepository.findInquiryDetail(inquiryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문의입니다. ID: " + inquiryId));
     }
 
     @Override
     @Transactional
-    public void saveReply(String inquiryId, AdminInquiryReplyRequestDto requestDto) {
-        String replyContent = requestDto.getReplyContent() == null ? "" : requestDto.getReplyContent().trim();
-        String replyStatus = StringUtils.hasText(replyContent) ? "COMPLETED" : "WAITING";
+    public void saveReply(String inquiryId, String replyContent) {
+        String content = replyContent == null ? "" : replyContent.trim();
+        String status = StringUtils.hasText(content) ? "REPLIED" : "WAITING";
 
-        adminInquiryRepository.updateReply(inquiryId, replyContent, replyStatus);
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문의입니다. ID: " + inquiryId));
+
+        inquiry.updateReply(content, status);
+        inquiryRepository.save(inquiry);
     }
 }

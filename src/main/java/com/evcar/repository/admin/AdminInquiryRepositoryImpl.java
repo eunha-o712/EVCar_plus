@@ -17,6 +17,9 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class AdminInquiryRepositoryImpl implements AdminInquiryQueryRepository {
 
+    private static final String STATUS_WAITING = "WAITING";
+    private static final String STATUS_COMPLETED = "COMPLETED";
+
     @PersistenceContext
     private final EntityManager entityManager;
 
@@ -31,6 +34,7 @@ public class AdminInquiryRepositoryImpl implements AdminInquiryQueryRepository {
                     i.reply_status,
                     i.created_at,
                     CASE
+                        WHEN i.reply_status IN ('REPLIED', 'CLOSED') THEN 1
                         WHEN i.reply_content IS NULL OR TRIM(i.reply_content) = '' THEN 0
                         ELSE 1
                     END AS has_reply
@@ -39,20 +43,8 @@ public class AdminInquiryRepositoryImpl implements AdminInquiryQueryRepository {
                 WHERE 1 = 1
                 """);
 
-        if (StringUtils.hasText(replyStatus)) {
-            sql.append(" AND i.reply_status = :replyStatus ");
-        }
-
-        if (StringUtils.hasText(keyword)) {
-            sql.append("""
-                     AND (
-                        i.title LIKE CONCAT('%', :keyword, '%')
-                        OR i.content LIKE CONCAT('%', :keyword, '%')
-                        OR u.name LIKE CONCAT('%', :keyword, '%')
-                        OR i.user_id LIKE CONCAT('%', :keyword, '%')
-                    )
-                    """);
-        }
+        appendReplyStatusCondition(sql, replyStatus);
+        appendKeywordCondition(sql, keyword);
 
         sql.append("""
                 ORDER BY i.created_at DESC, i.inquiry_id DESC
@@ -81,26 +73,29 @@ public class AdminInquiryRepositoryImpl implements AdminInquiryQueryRepository {
                 WHERE 1 = 1
                 """);
 
-        if (StringUtils.hasText(replyStatus)) {
-            sql.append(" AND i.reply_status = :replyStatus ");
-        }
-
-        if (StringUtils.hasText(keyword)) {
-            sql.append("""
-                     AND (
-                        i.title LIKE CONCAT('%', :keyword, '%')
-                        OR i.content LIKE CONCAT('%', :keyword, '%')
-                        OR u.name LIKE CONCAT('%', :keyword, '%')
-                        OR i.user_id LIKE CONCAT('%', :keyword, '%')
-                    )
-                    """);
-        }
+        appendReplyStatusCondition(sql, replyStatus);
+        appendKeywordCondition(sql, keyword);
 
         Query query = entityManager.createNativeQuery(sql.toString());
         bindConditions(query, replyStatus, keyword);
 
         Number count = (Number) query.getSingleResult();
         return count.longValue();
+    }
+
+    @Override
+    public long countAllInquiries(String keyword) {
+        return countInquiries(null, keyword);
+    }
+
+    @Override
+    public long countWaitingInquiries(String keyword) {
+        return countInquiries(STATUS_WAITING, keyword);
+    }
+
+    @Override
+    public long countCompletedInquiries(String keyword) {
+        return countInquiries(STATUS_COMPLETED, keyword);
     }
 
     @Override
@@ -153,10 +148,37 @@ public class AdminInquiryRepositoryImpl implements AdminInquiryQueryRepository {
                 .executeUpdate();
     }
 
-    private void bindConditions(Query query, String replyStatus, String keyword) {
-        if (StringUtils.hasText(replyStatus)) {
-            query.setParameter("replyStatus", replyStatus);
+    private void appendReplyStatusCondition(StringBuilder sql, String replyStatus) {
+        if (!StringUtils.hasText(replyStatus)) {
+            return;
         }
+
+        if (STATUS_WAITING.equals(replyStatus)) {
+            sql.append(" AND i.reply_status = 'WAITING' ");
+            return;
+        }
+
+        if (STATUS_COMPLETED.equals(replyStatus)) {
+            sql.append(" AND i.reply_status IN ('REPLIED', 'CLOSED') ");
+        }
+    }
+
+    private void appendKeywordCondition(StringBuilder sql, String keyword) {
+        if (!StringUtils.hasText(keyword)) {
+            return;
+        }
+
+        sql.append("""
+                 AND (
+                    i.title LIKE CONCAT('%', :keyword, '%')
+                    OR i.content LIKE CONCAT('%', :keyword, '%')
+                    OR u.name LIKE CONCAT('%', :keyword, '%')
+                    OR i.user_id LIKE CONCAT('%', :keyword, '%')
+                )
+                """);
+    }
+
+    private void bindConditions(Query query, String replyStatus, String keyword) {
         if (StringUtils.hasText(keyword)) {
             query.setParameter("keyword", keyword.trim());
         }
