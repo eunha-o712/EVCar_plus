@@ -1,9 +1,242 @@
-.ev-admin-form-field--full {
-    grid-column: 1 / -1;
+.ev-admin-alert {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    color: #052e16;
+    background: rgba(74, 222, 128, 0.9);
+    font-weight: 600;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.35s ease, transform 0.35s ease, margin 0.35s ease, padding 0.35s ease;
+}
+
+.ev-admin-alert.is-hiding {
+    opacity: 0;
+    transform: translateY(-8px);
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.ev-admin-vehicle-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.ev-admin-vehicle-search {
+    min-width: 280px;
+    flex: 1;
+}
+
+.ev-admin-vehicle-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.ev-admin-vehicle-table th,
+.ev-admin-vehicle-table td {
+    vertical-align: middle;
+}
+
+.ev-admin-vehicle-table td {
+    white-space: nowrap;
+}
+
+.ev-admin-vehicle-table .ev-admin-badge--success,
+.ev-admin-vehicle-table .ev-admin-badge--danger,
+.ev-admin-vehicle-table .ev-admin-badge--active,
+.ev-admin-vehicle-table .ev-admin-badge--withdrawn {
+    color: #ffffff;
+}
+
+.ev-admin-select,
+.ev-admin-select option {
+    color: #ffffff;
+    background: #31496d;
+}
+
+.ev-admin-input[type="number"]::-webkit-outer-spin-button,
+.ev-admin-input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.ev-admin-input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.ev-admin-vehicle-table th:nth-child(1),
+.ev-admin-vehicle-table td:nth-child(1) {
+    padding-left: 14px;
+}
+
+.ev-admin-vehicle-col-image {
+    width: 122px;
+}
+
+.ev-admin-vehicle-col-id {
+    width: 96px;
+}
+
+.ev-admin-vehicle-col-brand {
+    width: 102px;
+}
+
+.ev-admin-vehicle-col-model {
+    width: 200px;
+}
+
+.ev-admin-vehicle-col-class {
+    width: 150px;
+}
+
+.ev-admin-vehicle-col-price {
+    width: 114px;
+}
+
+.ev-admin-vehicle-col-status {
+    width: 94px;
+}
+
+.ev-admin-vehicle-col-date {
+    width: 174px;
+}
+
+.ev-admin-vehicle-col-actions {
+    width: 144px;
+}
+
+.ev-admin-vehicle-model-cell {
+    white-space: normal;
+}
+
+.ev-admin-vehicle-model {
+    display: block;
+    font-weight: 600;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.ev-admin-vehicle-thumb-box {
+    width: 84px;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ev-admin-vehicle-thumb {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ev-admin-vehicle-thumb-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--ev-admin-text-muted);
+}
+
+.ev-admin-vehicle-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.ev-admin-vehicle-actions form {
+    margin: 0;
+}
+
+.ev-admin-vehicle-preview-wrap {
+    margin-top: 20px;
+}
+
+.ev-admin-preview--vehicle {
+    min-height: 320px;
+}
+
+.ev-admin-vehicle-preview-image {
+    display: block;
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 16px;
+    object-fit: contain;
+}
+
+.ev-admin-upload-dropzone {
+    position: relative;
+    border: 1px dashed rgba(83, 216, 255, 0.45);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.03);
+    min-height: 150px;
+    padding: 20px;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.ev-admin-upload-dropzone:hover,
+.ev-admin-upload-dropzone.is-dragover,
+.ev-admin-upload-dropzone:focus-within {
+    border-color: rgba(83, 216, 255, 0.95);
+    background: rgba(83, 216, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(83, 216, 255, 0.08);
+}
+
+.ev-admin-upload-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.ev-admin-upload-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    min-height: 108px;
+    pointer-events: none;
+}
+
+.ev-admin-upload-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ev-admin-text);
+}
+
+.ev-admin-upload-desc {
+    font-size: 0.9rem;
+    color: var(--ev-admin-text-muted);
+}
+
+.ev-admin-upload-file-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ev-admin-accent);
+    word-break: break-all;
+}
+
+.ev-admin-actions {
+    margin-top: 28px;
+    padding-top: 16px;
 }
 
 @media (min-width: 1024px) {
-    .ev-admin-form-grid {
-        align-items: start;
+    .ev-admin-vehicle-search-form {
+        width: auto;
+        min-width: 420px;
     }
 }
