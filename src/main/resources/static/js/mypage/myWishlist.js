@@ -3,23 +3,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wishlistGrid = document.getElementById('wishlistGrid');
     const wishlistEmpty = document.getElementById('wishlistEmpty');
-    const wishlistMoreWrap = document.getElementById('wishlistMoreWrap');
-    const wishlistMoreButton = document.getElementById('wishlistMoreButton');
     const addSampleVehicleButton = document.getElementById('addSampleVehicleButton');
     const resetWishlistButton = document.getElementById('resetWishlistButton');
 
-    if (!wishlistGrid || !wishlistEmpty || !wishlistMoreWrap || !wishlistMoreButton) {
+    if (!wishlistGrid || !wishlistEmpty) {
         return;
     }
 
     const STORAGE_KEY = 'evcar-wishlist';
-	const USE_TEST_DATA = true;
-    const DEFAULT_VISIBLE_COUNT = 3;
-    let isExpanded = false;
 
     /*
-     * TODO: 차량 목록/상세 및 위시리스트 실연동 완료 후 false로 변경하거나
-     * 개발용 테스트(localStorage/버튼) 영역 전체 제거
+     * TODO: 팀플 백엔드 연동 시 아래 값을 false 로 변경하거나,
+     * 테스트 버튼 영역 자체를 제거한 뒤 서버 조회/삭제만 사용
+     */
+    const USE_TEST_DATA = true;
+
+    /*
+     * TODO: 차량 목록/상세 페이지 연동 전 테스트용 샘플 데이터
+     * 팀원 API 또는 Thymeleaf 모델 연동 후 제거 가능
      */
     const defaultWishlist = [
         {
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: '중형 SUV',
             model: '아이오닉 5',
             price: '5,200만원',
-            imageUrl: '/images/ev_HYUNDAI_IONIQ5.png',
+            imageUrl: '/images/no-image.png',
             detailUrl: '#'
         },
         {
@@ -37,33 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
             category: '중형 SUV',
             model: 'EV6',
             price: '4,870만원',
-            imageUrl: '/images/ev_KIA_EV6.png',
+            imageUrl: '/images/no-image.png',
             detailUrl: '#'
-        },
-		{
-		        wishlistId: 3,
-		        brand: '현대',
-		        category: '대형 SUV',
-		        model: '아이오닉 9',
-		        price: '6,700만원',
-		        imageUrl: '/images/ev_HYUNDAI_IONIQ9.png',
-		        detailUrl: '#'
-		    },
-		    {
-		        wishlistId: 4,
-		        brand: '기아',
-		        category: '중형 SUV',
-		        model: 'EV3',
-		        price: '4,200만원',
-		        imageUrl: '/images/ev_KIA_EV6.png',
-		        detailUrl: '#'
-		    }
+        }
     ];
 
     const createCardHtml = (item) => {
         return `
             <article class="ev-wishlist-card" data-wishlist-id="${item.wishlistId}">
-                <button type="button" class="ev-wishlist-favorite" aria-label="관심차량 삭제">♥</button>
+                <button type="button" class="ev-wishlist-favorite" aria-label="관심차량">♥</button>
                 <div class="ev-wishlist-image-wrap">
                     <img class="ev-wishlist-image" src="${item.imageUrl}" alt="${item.model}">
                 </div>
@@ -86,41 +69,28 @@ document.addEventListener('DOMContentLoaded', () => {
         wishlistEmpty.classList.toggle('ev-wishlist-empty--hidden', !isEmpty);
     };
 
-    const renderMoreButton = (wishlist) => {
-        const shouldShowMoreButton = wishlist.length > DEFAULT_VISIBLE_COUNT;
+    const bindEvents = () => {
+        const deleteButtons = wishlistGrid.querySelectorAll('.ev-delete-btn');
+        deleteButtons.forEach((button) => {
+            button.addEventListener('click', async (event) => {
+                const card = event.target.closest('.ev-wishlist-card');
+                await handleDelete(card);
+            });
+        });
 
-        wishlistMoreWrap.classList.toggle('ev-wishlist-more--hidden', !shouldShowMoreButton);
-
-        if (shouldShowMoreButton) {
-            wishlistMoreButton.textContent = isExpanded ? '접기' : '더보기';
-        }
+        const favoriteButtons = wishlistGrid.querySelectorAll('.ev-wishlist-favorite');
+        favoriteButtons.forEach((button) => {
+            button.addEventListener('click', async (event) => {
+                const card = event.target.closest('.ev-wishlist-card');
+                await handleDelete(card);
+            });
+        });
     };
-
-	const bindEvents = () => {
-	    const deleteButtons = wishlistGrid.querySelectorAll('.ev-delete-btn');
-	    deleteButtons.forEach((button) => {
-	        button.addEventListener('click', async (event) => {
-	            const card = event.target.closest('.ev-wishlist-card');
-	            await handleDelete(card);
-	        });
-	    });
-
-	    const favoriteButtons = wishlistGrid.querySelectorAll('.ev-wishlist-favorite');
-	    favoriteButtons.forEach((button) => {
-	        button.addEventListener('click', async (event) => {
-	            const card = event.target.closest('.ev-wishlist-card');
-	            await handleDelete(card);
-	        });
-	    });
-	};
 
     const renderWishlist = async () => {
         const wishlist = await getWishlist();
-        const visibleWishlist = isExpanded ? wishlist : wishlist.slice(0, DEFAULT_VISIBLE_COUNT);
-
-        wishlistGrid.innerHTML = visibleWishlist.map(createCardHtml).join('');
+        wishlistGrid.innerHTML = wishlist.map(createCardHtml).join('');
         renderEmptyState(wishlist);
-        renderMoreButton(wishlist);
         bindEvents();
     };
 
@@ -129,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-		const wishlistId = card.dataset.wishlistId;
+        const wishlistId = Number(card.dataset.wishlistId);
 
         if (!wishlistId) {
             window.alert('관심 차량 식별값이 없습니다.');
@@ -137,25 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const confirmed = window.confirm('관심차량에서 삭제하시겠습니까?');
+
         if (!confirmed) {
             return;
         }
 
         await removeWishlistItem(wishlistId);
-
-        const updatedWishlist = await getWishlist();
-        if (updatedWishlist.length <= DEFAULT_VISIBLE_COUNT) {
-            isExpanded = false;
-        }
-
         await renderWishlist();
     };
 
     /*
      * =========================
-     * 개발용 localStorage 영역
+     * 테스트용 localStorage 영역
      * =========================
      */
+
     const getWishlistFromLocal = () => {
         const stored = localStorage.getItem(STORAGE_KEY);
 
@@ -189,16 +155,22 @@ document.addEventListener('DOMContentLoaded', () => {
         saveWishlistToLocal(wishlist);
     };
 
-	const removeWishlistFromLocal = (wishlistId) => {
-	    const wishlist = getWishlistFromLocal();
-	    const filteredWishlist = wishlist.filter((item) => String(item.wishlistId) !== String(wishlistId));
-	    saveWishlistToLocal(filteredWishlist);
-	};
+    const removeWishlistFromLocal = (wishlistId) => {
+        const wishlist = getWishlistFromLocal();
+        const filteredWishlist = wishlist.filter((item) => item.wishlistId !== wishlistId);
+        saveWishlistToLocal(filteredWishlist);
+    };
+
     /*
      * =========================
-     * 서버 연동 영역
+     * 팀플용 서버 연동 영역
      * =========================
+     * TODO:
+     * 1. 팀원 API 확정 시 조회 URL 연결
+     * 2. 삭제 API는 /mypage/wishlist/delete 사용 가능
+     * 3. 추가 API 확정 시 addWishlistToServer 구현
      */
+
     const getWishlistFromServer = async () => {
         const response = await fetch('/mypage/wishlist/api', {
             method: 'GET',
@@ -230,11 +202,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const addWishlistToServer = async () => {
+        /*
+         * TODO: 차량 상세/목록 하트 연동 후 구현
+         * 예시:
+         * await fetch('/wishlist/add', { method: 'POST', body: ... })
+         */
+    };
+
     /*
      * =========================
      * 공통 분기 영역
      * =========================
      */
+
     const getWishlist = async () => {
         if (USE_TEST_DATA) {
             return getWishlistFromLocal();
@@ -254,29 +235,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addSampleWishlistItem = async () => {
         if (!USE_TEST_DATA) {
-            window.alert('개발용 테스트 모드가 아닙니다.');
+            window.alert('테스트 모드가 아닙니다.');
             return;
         }
 
         addWishlistToLocal({
             wishlistId: Date.now(),
-            brand: '현대',
+            brand: '기아',
             category: '대형 SUV',
-            model: '아이오닉 9',
-            price: '6,700만원',
-            imageUrl: '/images/ev_HYUNDAI_IONIQ9.png',
+            model: 'EV9',
+            price: '7,337만원',
+            imageUrl: '/images/no-image.png',
             detailUrl: '#'
         });
 
         await renderWishlist();
     };
-
-    if (wishlistMoreButton) {
-        wishlistMoreButton.addEventListener('click', async () => {
-            isExpanded = !isExpanded;
-            await renderWishlist();
-        });
-    }
 
     if (addSampleVehicleButton) {
         addSampleVehicleButton.addEventListener('click', async () => {
@@ -287,12 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetWishlistButton) {
         resetWishlistButton.addEventListener('click', async () => {
             if (!USE_TEST_DATA) {
-                window.alert('개발용 테스트 모드에서만 초기화할 수 있습니다.');
+                window.alert('테스트 모드에서만 초기화할 수 있습니다.');
                 return;
             }
 
             localStorage.removeItem(STORAGE_KEY);
-            isExpanded = false;
             await renderWishlist();
         });
     }
