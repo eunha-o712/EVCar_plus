@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -277,4 +278,86 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/admin/admin-vehicle.js}"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량관리 - EVCar Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-vehicle.css}">
+</head>
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('vehicle')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; 차량관리</div>
+                    <h1 class="ev-admin-page-header__title"
+                        th:text="${isEditMode} ? '차량 정보 수정' : '차량 신규등록'">
+                        차량 신규등록
+                    </h1>
+                    <p class="ev-admin-page-header__desc">차량 등록/수정 공용 폼 뼈대입니다.</p>
+                </header>
+
+                <section class="ev-admin-card">
+                    <div class="ev-admin-card__body">
+                        <form class="ev-admin-form-grid ev-admin-form-grid--2" action="#" method="post" enctype="multipart/form-data">
+                            <div class="ev-admin-form-field" th:if="${isEditMode}">
+                                <label class="ev-admin-form-label" for="vehicleStatus">차량 상태</label>
+                                <div class="ev-admin-inline">
+                                    <button type="button" class="ev-admin-chip is-active">판매중</button>
+                                    <button type="button" class="ev-admin-chip">품절</button>
+                                </div>
+                                <input type="hidden" id="vehicleStatus" name="vehicleStatus" value="ACTIVE">
+                            </div>
+
+                            <div class="ev-admin-form-field">
+                                <label class="ev-admin-form-label" for="brandName">브랜드명 *</label>
+                                <select id="brandName" name="brandName" class="ev-admin-select">
+                                    <option value="">선택</option>
+                                    <option value="HYUNDAI">현대</option>
+                                    <option value="KIA">기아</option>
+                                </select>
+                            </div>
+
+                            <div class="ev-admin-form-field">
+                                <label class="ev-admin-form-label" for="vehicleModelName">차량모델명 *</label>
+                                <input type="text"
+                                       id="vehicleModelName"
+                                       name="vehicleModelName"
+                                       class="ev-admin-input"
+                                       placeholder="모델명 입력">
+                            </div>
+
+                            <div class="ev-admin-form-field ev-admin-form-field--full">
+                                <div class="ev-admin-actions">
+                                    <button type="submit"
+                                            class="ev-admin-btn ev-admin-btn--primary"
+                                            th:text="${isEditMode} ? '저장하기' : '등록하기'">
+                                        등록하기
+                                    </button>
+                                    <a th:href="@{/admin/vehicle}" class="ev-admin-btn ev-admin-btn--secondary">
+                                        취소
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:src="@{/js/common/common.js}"></script>
+<script th:src="@{/js/admin/admin-vehicle.js}"></script>
+</body>
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 </html>

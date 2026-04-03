@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .ev-admin-consultation-grid {
     grid-template-columns: 1fr;
 }
@@ -47,4 +48,27 @@
     .ev-admin-consultation-search {
         width: 300px;
     }
+=======
+.ev-admin-consultation-grid {
+    grid-template-columns: 1fr;
+}
+
+.ev-admin-consultation-search {
+    min-width: 0;
+}
+
+.ev-admin-consultation-detail-empty {
+    min-height: 520px;
+}
+
+@media (min-width: 1280px) {
+    .ev-admin-consultation-grid {
+        grid-template-columns: minmax(0, 1.35fr) minmax(380px, 460px);
+        align-items: start;
+    }
+
+    .ev-admin-consultation-search {
+        width: 300px;
+    }
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 }

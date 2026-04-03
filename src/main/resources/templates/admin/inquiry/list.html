@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -235,4 +236,43 @@
 <script th:src="@{/js/common/common.js}"></script>
 <script th:src="@{/js/admin/admin-inquiry.js}"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의게시판관리 - EVCar Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+</head>
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('inquiry')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; 문의게시판관리</div>
+                    <h1 class="ev-admin-page-header__title">문의게시판 관리</h1>
+                    <p class="ev-admin-page-header__desc">문의게시판 목록 뼈대 화면입니다.</p>
+                </header>
+
+                <section class="ev-admin-card">
+                    <div class="ev-admin-card__body">
+                        <div class="ev-admin-empty">
+                            등록된 문의게시판 데이터가 없습니다.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:src="@{/js/common/common.js}"></script>
+</body>
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 </html>

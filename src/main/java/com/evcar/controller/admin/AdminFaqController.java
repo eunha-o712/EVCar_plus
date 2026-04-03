@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.evcar.controller.admin;
 
 import com.evcar.dto.admin.AdminFaqPageResponseDto;
@@ -50,4 +51,25 @@ public class AdminFaqController {
         adminFaqService.deleteFaq(faqId);
         return "redirect:/admin/faq?page=" + page;
     }
+=======
+package com.evcar.controller.admin;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/admin/faq")
+public class AdminFaqController {
+
+    @GetMapping("")
+    public String faqList() {
+        return "admin/faq/list";
+    }
+
+    @GetMapping("/form")
+    public String faqForm() {
+        return "admin/faq/form";
+    }
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 }

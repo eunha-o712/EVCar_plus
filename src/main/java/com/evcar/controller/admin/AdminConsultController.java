@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.evcar.controller.admin;
 
 import com.evcar.dto.admin.AdminConsultReplyRequestDto;
@@ -55,4 +56,26 @@ public class AdminConsultController {
                 + (keyword != null && !keyword.isBlank() ? "&keyword=" + keyword : "")
                 + "&page=" + page;
     }
+=======
+package com.evcar.controller.admin;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/admin/consultation")
+public class AdminConsultController {
+
+    @GetMapping("")
+    public String consultationList(Model model) {
+
+        model.addAttribute("consultationList", null);
+        model.addAttribute("selectedConsultation", null);
+
+        return "admin/consultation/list";
+    }
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -147,4 +148,158 @@
 <script th:src="@{/js/user/agreement.js}"></script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>약관 동의</title>
+	<link rel="stylesheet" th:href="@{/css/user/agreement.css}" />
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+<div class="container">
+
+<div class="title">약관 동의</div>
+
+<!-- ✅ 중요: signup으로 값 전달 -->
+<form action="/signup" method="get" onsubmit="return validateAgree()">
+
+<!-- 개인정보 -->
+<div class="agree-box">
+<label>
+<input type="checkbox" id="agreePrivacy">
+ 개인정보 수집 및 이용 동의 (필수)
+</label>
+
+<div class="agree-content">
+개인정보 수집 및 이용에 동의해야 서비스 이용이 가능합니다.<br/><br/>
+
+<strong>FL!P 개인정보 수집 및 이용 동의 (필수)</strong><br/><br/>
+
+                FL!P(이하 “회사”)는 회원가입 및 서비스 제공을 위해 아래와 같이 개인정보를 수집·이용합니다.<br/><br/>
+
+                <b>1. 개인정보 수집 및 이용 목적</b><br/>
+                - 회원가입 및 계정 관리<br/>
+                - 이용자 식별 및 본인 확인<br/>
+                - 고객 상담 및 서비스 제공<br/>
+                - 맞춤형 차량 추천 및 서비스 개선<br/><br/>
+
+                <b>2. 수집하는 개인정보 항목</b><br/>
+                - 회원가입 기본정보: 로그인아이디, 비밀번호, 이름, 생년월일, 성별, 전화번호, 주소, 이메일<br/>
+                - 선택정보: 차량 보유 여부, 보유차종, 차량 연식, 주행거리<br/><br/>
+
+                <b>3. 개인정보 보유 및 이용 기간</b><br/>
+                - 회원 탈퇴 시까지 보관<br/>
+                - 법령에 따라 보관이 필요한 경우 해당 기간 동안 보관<br/><br/>
+
+                <b>4. 동의 거부 권리</b><br/>
+                동의를 거부할 수 있으나, 서비스 이용이 제한됩니다.
+
+</div>
+</div>
+
+<!-- 이용약관 -->
+<div class="agree-box">
+<label>
+<input type="checkbox" id="agreeTerms">
+ 이용약관 동의 (필수)
+</label>
+
+<div class="agree-content">
+이용약관에 동의해야 회원가입이 가능합니다.<br/><br/>
+
+<strong>FL!P 이용약관 (필수)</strong><br/><br/>
+
+                <b>제1조 (목적)</b><br/>
+                본 약관은 FL!P(이하 “회사”)가 제공하는 전기차 정보 및 CRM 서비스 이용과 관련하여
+                회원의 권리, 의무 및 이용 조건을 규정함을 목적으로 합니다.<br/><br/>
+
+                <b>제2조 (약관의 효력 및 변경)</b><br/>
+                본 약관은 서비스 화면에 게시함으로써 효력이 발생합니다.<br/>
+                회사는 필요 시 약관을 변경할 수 있으며, 변경 시 사전 공지합니다.<br/>
+                변경된 약관에 동의하지 않을 경우 서비스 이용을 중단할 수 있습니다.<br/><br/>
+
+                <b>제3조 (용어 정의)</b><br/>
+                회원: 약관에 동의하고 가입한 이용자<br/>
+                계정(ID): 회원 식별을 위한 로그인아이디<br/>
+                서비스: 차량 정보 제공, 상담 관리, AI 추천 기능 등<br/><br/>
+
+                <b>제4조 (회원가입 및 이용계약)</b><br/>
+                회원가입은 약관 동의 후 신청하면 회사가 승인함으로써 성립됩니다.<br/>
+                회사는 다음 경우 가입을 제한할 수 있습니다.<br/>
+                허위 정보 입력<br/>
+                타인 정보 도용<br/>
+                서비스 운영에 지장을 주는 경우<br/><br/>
+
+                <b>제5조 (서비스 이용)</b><br/>
+                서비스는 연중무휴 24시간 제공을 원칙으로 합니다.<br/>
+                시스템 점검 등 필요 시 일부 서비스가 제한될 수 있습니다.<br/><br/>
+
+                <b>제6조 (회원의 의무)</b><br/>
+                회원은 다음 행위를 해서는 안 됩니다.<br/>
+                타인의 계정 도용<br/>
+                허위 정보 입력<br/>
+                서비스 방해 행위<br/>
+                불법 및 부정 사용<br/><br/>
+
+                <b>제7조 (회사의 의무)</b><br/>
+                회사는 회원의 개인정보를 보호하며, 안정적인 서비스 제공을 위해 노력합니다.<br/><br/>
+
+                <b>제8조 (계정 관리 책임)</b><br/>
+                회원은 자신의 ID와 비밀번호를 안전하게 관리해야 하며,<br/>
+                관리 소홀로 발생한 문제는 회원 본인의 책임입니다.<br/><br/>
+
+                <b>제9조 (서비스 제한 및 해지)</b><br/>
+                회사는 다음 경우 서비스 이용을 제한할 수 있습니다.<br/>
+                약관 위반<br/>
+                불법 행위<br/>
+                서비스 운영 방해<br/><br/>
+
+                <b>제10조 (면책조항)</b><br/>
+                회사는 천재지변, 시스템 장애 등 불가항력적인 사유로 인한 서비스 중단에 대해 책임을 지지 않습니다.<br/><br/>
+
+                <b>제11조 (관할법원)</b><br/>
+                서비스 이용과 관련된 분쟁은 대한민국 법을 따르며,<br/>
+                관할 법원은 회사 소재지 관할 법원으로 합니다.<br/>
+
+</div>
+</div>
+
+<!-- 전체 동의 -->
+<div class="check-area">
+<label>
+<input type="checkbox" id="agreeAll">
+ 전체 동의
+</label>
+</div>
+
+<!-- 👉 숨겨서 signup으로 전달 -->
+<input type="hidden" name="agreePrivacy" value="true">
+<input type="hidden" name="agreeTerms" value="true">
+
+<!-- 버튼 -->
+<div class="button-area">
+<button type="submit" class="btn next-btn">다음</button>
+<button type="button" class="btn back-btn" onclick="location.href='/login'">돌아가기</button>
+</div>
+
+<div class="alert" id="alertMsg"></div>
+
+</form>
+
+</div>
+
+
+<div th:replace="~{layout/footer :: footer}"></div>
+<script th:src="@{/js/user/agreement.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
+</body>
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 </html>

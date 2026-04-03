@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .ev-admin-alert {
     margin-bottom: 18px;
     padding: 14px 16px;
@@ -239,4 +240,14 @@
         width: auto;
         min-width: 420px;
     }
+=======
+.ev-admin-form-field--full {
+    grid-column: 1 / -1;
+}
+
+@media (min-width: 1024px) {
+    .ev-admin-form-grid {
+        align-items: start;
+    }
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 }

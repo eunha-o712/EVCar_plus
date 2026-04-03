@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 * {
     box-sizing: border-box;
 }
@@ -67,4 +68,75 @@ input {
     color: red;
     background: #fff;
     text-align: center;
+=======
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "돋움", Dotum, sans-serif;
+    background: #f3f4f6;
+}
+
+.container {
+    max-width: 500px;
+    width: 90%;
+    margin: 120px auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    height: 45px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-btn {
+    width: 100%;
+    height: 50px;
+    background: #3f6fb5;
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background: #355fa0;
+}
+
+.link-area {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.link-area a {
+    text-decoration: none;
+    color: #0066ff;
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.error-box {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid red;
+    color: red;
+    background: #fff;
+    text-align: center;
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 }

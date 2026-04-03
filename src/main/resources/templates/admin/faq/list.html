@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
@@ -120,3 +121,58 @@
 </body>
 
 </html>>
+=======
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ관리 - EVCar Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+</head>
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('faq')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; FAQ관리</div>
+                    <h1 class="ev-admin-page-header__title">FAQ 관리</h1>
+                    <p class="ev-admin-page-header__desc">
+                        구조명세서 기준 FAQ 목록 뼈대 화면입니다.
+                    </p>
+                </header>
+
+                <section class="ev-admin-card">
+                    <div class="ev-admin-card__body">
+                        <div class="ev-admin-toolbar">
+                            <div class="ev-admin-toolbar__row">
+                                <input type="text"
+                                       class="ev-admin-input"
+                                       placeholder="질문 또는 카테고리 검색"
+                                       aria-label="질문 또는 카테고리 검색">
+                            </div>
+
+                            <div class="ev-admin-toolbar__row">
+                                <a th:href="@{/admin/faq/form}" class="ev-admin-btn ev-admin-btn--primary">
+                                    FAQ 등록
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ev-admin-empty">
+                            등록된 FAQ 데이터가 없습니다.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e

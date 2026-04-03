@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
@@ -57,3 +58,64 @@
 </aside>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside class="ev-admin-sidebar" th:fragment="adminSidebar(activeMenu)">
+	<div class="ev-admin-sidebar__brand">
+	    <a th:href="@{/admin}" class="ev-admin-sidebar__brand-link" aria-label="관리자 메인으로 이동">
+	        <img th:src="@{/images/evcar_logo.png}"
+	             alt="EV Consulting 로고"
+	             class="ev-admin-sidebar__logo-image">
+	        <span class="ev-admin-sidebar__logo-text">EV ADMIN</span>
+	    </a>
+	</div>
+
+    <nav class="ev-admin-sidebar__nav">
+        <a th:href="@{/admin}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'dashboard'} ? ' is-active' : ''">
+            대시보드
+        </a>
+
+        <a th:href="@{/admin/user}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'user'} ? ' is-active' : ''">
+            고객관리
+        </a>
+
+        <a th:href="@{/admin/consultation}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'consultation'} ? ' is-active' : ''">
+            상담관리
+        </a>
+
+        <a th:href="@{/admin/vehicle}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'vehicle'} ? ' is-active' : ''">
+            차량관리
+        </a>
+
+        <a th:href="@{/admin/faq}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'faq'} ? ' is-active' : ''">
+            FAQ관리
+        </a>
+
+        <a th:href="@{/admin/inquiry}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'inquiry'} ? ' is-active' : ''">
+            문의게시판관리
+        </a>
+
+        <a th:href="@{/admin/stats}"
+           class="ev-admin-sidebar__link"
+           th:classappend="${activeMenu == 'stats'} ? ' is-active' : ''">
+            통계분석
+        </a>
+    </nav>
+</aside>
+</body>
+</html>l>
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e

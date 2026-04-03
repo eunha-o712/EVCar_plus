@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.evcar.controller.admin;
 
 import com.evcar.dto.admin.AdminInquiryDetailDto;
@@ -64,4 +65,20 @@ public class AdminInquiryController {
                 + "&keyword=" + (keyword == null ? "" : keyword)
                 + "&selectedId=" + inquiryId;
     }
+=======
+package com.evcar.controller.admin;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/admin/inquiry")
+public class AdminInquiryController {
+
+    @GetMapping("")
+    public String inquiryList() {
+        return "admin/inquiry/list";
+    }
+>>>>>>> ccef92c2bb418a9ae53ae1d629a62927994a692e
 }

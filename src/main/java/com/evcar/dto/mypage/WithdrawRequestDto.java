@@ -4,24 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class WithdrawRequestDto {
-	 
 	
-
-    private String password;
-    private String withdrawReason;
-    private Boolean agreeWithdraw;
-
-    public boolean isInvalid() {
-        return password == null || password.isBlank()
-                || withdrawReason == null || withdrawReason.isBlank()
-                || agreeWithdraw == null || !agreeWithdraw;
-    }
+	private String password;
+	private String withdrawReason;
+	private Boolean agreeWithdraw;
+	
+	public boolean isInvalid() {
+		return password ==null||password.isBlank()
+				||withdrawReason==null||withdrawReason.isBlank()
+				||agreeWithdraw==null||agreeWithdraw;
+	}
 }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원탈퇴 - EVCar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/mypage/myWithdraw.css}">
 </head>
 <body>
@@ -32,71 +32,57 @@
                     <p class="ev-withdraw-eyebrow">Account Withdrawal</p>
                     <h1 class="ev-withdraw-title">회원탈퇴</h1>
                     <p class="ev-withdraw-description">
-                        탈퇴 전 아래 안내사항을 반드시 확인해주세요.
+                        회원탈퇴 시 관심 차량, 문의 작성, 권한 등을 더 이상 이용할 수 없으며 복구는 불가능합니다.
                     </p>
                 </div>
 
-                <section class="ev-withdraw-warning-card">
-                    <h2 class="ev-withdraw-warning-card__title">탈퇴 전 확인사항</h2>
-                    <ul class="ev-withdraw-warning-list">
-                        <li>회원탈퇴 후 계정 정보는 복구할 수 없습니다.</li>
-                        <li>진행중인 상담이 있으면 탈퇴가 제한될 수 있습니다.</li>
-                        <li>관심 차량, 문의 내역 등 일부 이용 기록은 정책에 따라 처리됩니다.</li>
-                        <li>탈퇴 후 동일 계정 정보로 재이용 시 제한이 있을 수 있습니다.</li>
-                    </ul>
-                </section>
+                <div class="ev-withdraw-card">
+                    <form th:action="@{/mypage/withdraw}" th:object="${withdrawRequestDto}" method="post" id="withdrawForm">
+                        <div class="ev-withdraw-grid">
+                            <div class="ev-form-group">
+                                <label class="ev-form-label">아이디</label>
+                                <input type="text" class="ev-input" th:value="${myPageInfo.loginId}" readonly>
+                            </div>
 
-                <section class="ev-withdraw-form-card">
-                    <form th:action="@{/mypage/withdraw}"
-                          th:object="${withdrawRequestDto}"
-                          method="post"
-                          id="withdrawForm"
-                          novalidate>
+                            <div class="ev-form-group">
+                                <label class="ev-form-label" for="password">현재 비밀번호</label>
+                                <input type="password"
+                                       class="ev-input"
+                                       id="password"
+                                       th:field="*{password}"
+                                       placeholder="현재 비밀번호 입력">
+                            </div>
 
-                        <div class="ev-withdraw-form-group">
-                            <label class="ev-withdraw-label" for="withdrawPassword">비밀번호 확인</label>
-                            <input
-                                    type="password"
-                                    id="withdrawPassword"
-                                    th:field="*{password}"
-                                    class="ev-input"
-                                    placeholder="현재 비밀번호를 입력해주세요"
-                                    autocomplete="current-password">
-                            <p class="ev-withdraw-help">
-                                보안을 위해 현재 비밀번호를 다시 입력해주세요.
+                            <div class="ev-form-group ev-form-group--full">
+                                <label class="ev-form-label" for="withdrawReason">탈퇴 사유</label>
+                                <select class="ev-input" id="withdrawReason" th:field="*{withdrawReason}">
+                                    <option value="">선택</option>
+                                    <option value="LOW_USAGE">이용빈도 낮음</option>
+                                    <option value="SERVICE_DISSATISFACTION">서비스 불만</option>
+                                    <option value="ETC">기타</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ev-withdraw-guide">
+                            <p class="ev-withdraw-guide__text">
+                                현재 진행중인 상담이 있는 경우 회원탈퇴가 제한될 수 있습니다.
                             </p>
                         </div>
 
-                        <div class="ev-withdraw-form-group">
-                            <label class="ev-withdraw-label" for="withdrawReason">탈퇴 사유</label>
-                            <textarea
-                                    id="withdrawReason"
-                                    th:field="*{withdrawReason}"
-                                    class="ev-input ev-withdraw-textarea"
-                                    rows="4"
-                                    placeholder="탈퇴 사유를 입력해주세요"></textarea>
-                            <p class="ev-withdraw-help">
-                                서비스 개선을 위해 탈퇴 사유를 간단히 남겨주세요.
-                            </p>
-                        </div>
-
-                        <div class="ev-withdraw-agree-box">
-                            <label class="ev-withdraw-checkbox" for="withdrawAgree">
-                                <input type="checkbox" id="withdrawAgree" th:field="*{agreeWithdraw}">
-                                <span>안내사항을 모두 확인했으며, 회원탈퇴 시 정보 복구가 불가능함에 동의합니다.</span>
+                        <div class="ev-withdraw-agree">
+                            <label class="ev-check-label" for="agreeWithdraw">
+                                <input type="checkbox" id="agreeWithdraw" th:field="*{agreeWithdraw}">
+                                <span>위 내용을 확인했으며 회원탈퇴에 동의합니다.</span>
                             </label>
                         </div>
 
-                        <div class="ev-withdraw-error" id="withdrawErrorMessage" aria-live="polite"></div>
-
                         <div class="ev-withdraw-actions">
-                            <a class="btn btn-ev-secondary" th:href="@{/mypage/main}">취소</a>
-                            <button type="submit" class="btn btn-ev-danger" id="withdrawSubmitButton">
-                                회원탈퇴
-                            </button>
+                            <button type="submit" class="btn btn-ev-primary" id="withdrawSubmitBtn">탈퇴하기</button>
+                            <a th:href="@{/mypage/main}" class="btn btn-ev-secondary">취소</a>
                         </div>
                     </form>
-                </section>
+                </div>
             </div>
         </div>
     </section>
