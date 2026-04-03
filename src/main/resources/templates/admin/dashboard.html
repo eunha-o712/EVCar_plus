@@ -75,13 +75,10 @@
                     <div class="ev-dashboard-ai-box">
                         <div class="ev-dashboard-ai-badge">AI INSIGHT</div>
 
-                        <div class="ev-dashboard-ai-summary">
-                            최근 상담 데이터 기준으로
-                            <strong>진행 현황</strong>,
-                            <strong>인기 차량</strong>,
-                            <strong>지역 집중도</strong>를 빠르게 파악할 수 있습니다.
-                            FastAPI 분석 서버 연결 후 이 영역에 자동 해석 문장이 표시됩니다.
-                        </div>
+						<div class="ev-dashboard-ai-summary"
+						     th:text="${dashboard.aiSummary}">
+						    AI 분석 결과가 표시됩니다.
+						</div>
 
                         <ul class="ev-dashboard-ai-list">
                             <li>

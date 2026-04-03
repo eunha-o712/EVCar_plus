@@ -78,6 +78,8 @@ public class FastApiDashboardAnalysisServiceImpl implements FastApiDashboardAnal
     private String createFallbackSummary(AdminDashboardResponseDto dashboardResponseDto) {
         StringBuilder summaryBuilder = new StringBuilder();
 
+        summaryBuilder.append("[AI-OFFLINE] ");
+
         summaryBuilder.append("금일 예약은 ")
                 .append(dashboardResponseDto.getTodayReservationCount())
                 .append("건이며, ");
