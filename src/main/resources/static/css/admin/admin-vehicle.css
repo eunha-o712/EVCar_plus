@@ -44,13 +44,6 @@
     white-space: nowrap;
 }
 
-.ev-admin-vehicle-table .ev-admin-badge--success,
-.ev-admin-vehicle-table .ev-admin-badge--danger,
-.ev-admin-vehicle-table .ev-admin-badge--active,
-.ev-admin-vehicle-table .ev-admin-badge--withdrawn {
-    color: #ffffff;
-}
-
 .ev-admin-select,
 .ev-admin-select option {
     color: #ffffff;

@@ -29,24 +29,21 @@
                         <form class="ev-inquiry-search-form" method="get" th:action="@{/admin/inquiry}">
                             <input type="hidden" name="size" th:value="${size}">
 
-                            <div class="ev-inquiry-filter-group">
-                                <a class="ev-inquiry-filter-button"
-                                   th:classappend="${replyStatus == null or replyStatus == ''} ? ' is-active'"
-                                   th:href="@{/admin/inquiry(page=1,size=${size},keyword=${keyword})}">
+                            <div class="ev-admin-filter-group">
+                                <a class="ev-admin-chip"
+                                   th:classappend="${replyStatus == null || replyStatus == '' || replyStatus == 'ALL'} ? ' is-active'"
+                                   th:href="@{/admin/inquiry(size=${size}, keyword=${keyword})}">
                                     전체
-                                    <span class="ev-inquiry-filter-count" th:text="${pageResponse.allCount}">0</span>
                                 </a>
-                                <a class="ev-inquiry-filter-button"
+                                <a class="ev-admin-chip"
                                    th:classappend="${replyStatus == 'WAITING'} ? ' is-active'"
-                                   th:href="@{/admin/inquiry(page=1,size=${size},replyStatus='WAITING',keyword=${keyword})}">
+                                   th:href="@{/admin/inquiry(size=${size}, replyStatus='WAITING', keyword=${keyword})}">
                                     대기
-                                    <span class="ev-inquiry-filter-count" th:text="${pageResponse.waitingCount}">0</span>
                                 </a>
-                                <a class="ev-inquiry-filter-button"
+                                <a class="ev-admin-chip"
                                    th:classappend="${replyStatus == 'COMPLETED'} ? ' is-active'"
-                                   th:href="@{/admin/inquiry(page=1,size=${size},replyStatus='COMPLETED',keyword=${keyword})}">
+                                   th:href="@{/admin/inquiry(size=${size}, replyStatus='COMPLETED', keyword=${keyword})}">
                                     완료
-                                    <span class="ev-inquiry-filter-count" th:text="${pageResponse.completedCount}">0</span>
                                 </a>
                             </div>
 
@@ -56,6 +53,7 @@
                                        class="ev-inquiry-search-input"
                                        placeholder="제목 / 내용 / 작성자 / 회원ID 검색"
                                        th:value="${keyword}">
+                                <input type="hidden" name="replyStatus" th:value="${replyStatus}">
                                 <button type="submit" class="ev-inquiry-search-submit">검색</button>
                             </div>
                         </form>
@@ -106,12 +104,13 @@
                                         </td>
                                         <td class="ev-inquiry-title-cell" th:text="${item.title}">문의 제목</td>
                                         <td class="ev-inquiry-date-cell" th:text="${item.createdAt}">2025-01-01</td>
-                                        <td>
-                                            <span class="ev-inquiry-status"
-                                                  th:classappend="${item.completed} ? ' is-completed' : ' is-waiting'"
-                                                  th:text="${item.replyStatusDesc}">
-                                                대기
-                                            </span>
+                                        <td th:switch="${item != null ? item.replyStatus : ''}">
+                                            <span class="ev-admin-badge ev-admin-badge--pending" th:case="'WAITING'">대기</span>
+                                            <span class="ev-admin-badge ev-admin-badge--complete" th:case="'COMPLETED'">완료</span>
+                                            <span class="ev-admin-badge ev-admin-badge--complete" th:case="'REPLIED'">완료</span>
+                                            <span class="ev-admin-badge ev-admin-badge--complete" th:case="'CLOSED'">완료</span>
+                                            <span th:case="*"
+                                                  th:text="${item.replyStatusDesc != null ? item.replyStatusDesc : '-'}">-</span>
                                         </td>
                                         <td>
                                             <a class="ev-inquiry-detail-link"
@@ -155,9 +154,9 @@
                                     <h2 class="ev-inquiry-detail-title">문의 상세 / 답변 작성</h2>
                                     <p class="ev-inquiry-detail-subtitle">선택한 문의에 대한 답변을 등록하거나 수정할 수 있습니다.</p>
                                 </div>
-                                <span class="ev-inquiry-status"
-                                      th:classappend="${detail.completed} ? ' is-completed' : ' is-waiting'"
-                                      th:text="${detail.replyStatusDesc}">
+                                <span class="ev-admin-badge"
+                                      th:classappend="${detail.completed} ? ' ev-admin-badge--complete' : ' ev-admin-badge--pending'"
+                                      th:text="${detail.completed} ? '완료' : '대기'">
                                     대기
                                 </span>
                             </div>

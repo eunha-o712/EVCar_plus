@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" th:href="@{/css/common/common.css}">
     <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-analytics.css}">
 </head>
 <body>
 <div class="ev-admin-app">
@@ -18,28 +19,28 @@
                 <header class="ev-admin-page-header">
                     <div class="ev-admin-page-header__breadcrumb">관리자 &gt; 통계분석</div>
                     <h1 class="ev-admin-page-header__title">통계 분석</h1>
-                    <p class="ev-admin-page-header__desc">스토리보드 기준 통계분석 뼈대 화면입니다.</p>
+                    <p class="ev-admin-page-header__desc">상담 데이터 기반 정량 분석 화면입니다.</p>
                 </header>
 
                 <div class="ev-admin-dashboard-cards">
                     <div class="ev-admin-card">
                         <div class="ev-admin-card__body">
                             <p class="ev-admin-card__label">전체 상담</p>
-                            <h2 class="ev-admin-card__value">0건</h2>
+                            <h2 class="ev-admin-card__value" id="totalConsultationCount">0건</h2>
                         </div>
                     </div>
 
                     <div class="ev-admin-card">
                         <div class="ev-admin-card__body">
                             <p class="ev-admin-card__label">이번 달</p>
-                            <h2 class="ev-admin-card__value">0건</h2>
+                            <h2 class="ev-admin-card__value" id="monthlyConsultationCount">0건</h2>
                         </div>
                     </div>
 
                     <div class="ev-admin-card">
                         <div class="ev-admin-card__body">
                             <p class="ev-admin-card__label">계약 전환율</p>
-                            <h2 class="ev-admin-card__value">0%</h2>
+                            <h2 class="ev-admin-card__value" id="contractConversionRate">0%</h2>
                         </div>
                     </div>
                 </div>
@@ -48,28 +49,36 @@
                     <section class="ev-admin-card">
                         <div class="ev-admin-card__body">
                             <h2 class="ev-admin-section-title">월간 상담 추이</h2>
-                            <div class="ev-admin-empty">차트 데이터 연결 전입니다.</div>
+                            <div class="ev-admin-chart-box">
+                                <canvas id="monthlyConsultationChart"></canvas>
+                            </div>
                         </div>
                     </section>
 
                     <section class="ev-admin-card">
                         <div class="ev-admin-card__body">
                             <h2 class="ev-admin-section-title">차량 모델별 수요 분석</h2>
-                            <div class="ev-admin-empty">차량별 수요 통계 연결 전입니다.</div>
+                            <div class="ev-admin-chart-box">
+                                <canvas id="vehicleDemandChart"></canvas>
+                            </div>
                         </div>
                     </section>
 
                     <section class="ev-admin-card">
                         <div class="ev-admin-card__body">
                             <h2 class="ev-admin-section-title">지역별 상담 분포</h2>
-                            <div class="ev-admin-empty">지역별 통계 연결 전입니다.</div>
+                            <div class="ev-admin-chart-box">
+                                <canvas id="regionConsultationChart"></canvas>
+                            </div>
                         </div>
                     </section>
 
                     <section class="ev-admin-card">
                         <div class="ev-admin-card__body">
                             <h2 class="ev-admin-section-title">상담 결과 현황</h2>
-                            <div class="ev-admin-empty">결과 통계 연결 전입니다.</div>
+                            <div class="ev-admin-chart-box">
+                                <canvas id="consultationResultChart"></canvas>
+                            </div>
                         </div>
                     </section>
                 </div>
@@ -78,6 +87,8 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:src="@{/js/common/common.js}"></script>
+<script th:src="@{/js/admin/admin-analytics.js}"></script>
 </body>
 </html>

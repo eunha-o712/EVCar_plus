@@ -77,17 +77,21 @@
                                            required>
                                 </div>
 
-                                <div class="ev-admin-form-field">
-                                    <label class="ev-admin-form-label" for="vehicleClass">차급</label>
-                                    <input type="text"
-                                           id="vehicleClass"
-                                           name="vehicleClass"
-                                           class="ev-admin-input"
-                                           maxlength="30"
-                                           placeholder="예: 중형SUV"
-                                           th:value="${vehicleForm.vehicleClass}"
-                                           required>
-                                </div>
+								<div class="ev-admin-form-field">
+								    <label class="ev-admin-form-label" for="vehicleClass">차급</label>
+								    <select id="vehicleClass"
+								            name="vehicleClass"
+								            class="ev-admin-select"
+								            required>
+								        <option value="">선택</option>
+								        <option value="MINI_SUV" th:selected="${vehicleForm.vehicleClass == 'MINI_SUV'}">경형</option>
+								        <option value="SMALL_SUV" th:selected="${vehicleForm.vehicleClass == 'SMALL_SUV'}">소형</option>
+								        <option value="MID_SUV" th:selected="${vehicleForm.vehicleClass == 'MID_SUV'}">준중형</option>
+								        <option value="LARGE_SUV" th:selected="${vehicleForm.vehicleClass == 'LARGE_SUV'}">대형</option>
+								        <option value="MID_SEDAN" th:selected="${vehicleForm.vehicleClass == 'MID_SEDAN'}">세단</option>
+								        <option value="PERFORMANCE" th:selected="${vehicleForm.vehicleClass == 'PERFORMANCE'}">고성능</option>
+								    </select>
+								</div>
 
 								<div class="ev-admin-form-field">
 								    <label class="ev-admin-form-label" for="vehicleStatus">차량 상태</label>

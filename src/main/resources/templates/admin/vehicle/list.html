@@ -31,33 +31,23 @@
                             차량 정보가 수정되었습니다.
                         </div>
 
-                        <div class="ev-admin-toolbar">
-                            <form th:action="@{/admin/vehicle}" method="get" class="ev-admin-toolbar__row">
-                                <input type="hidden" name="keyword" th:value="${keyword}">
-                                <div class="ev-admin-filter-group">
-                                    <button type="submit"
-                                            name="status"
-                                            value=""
-                                            class="ev-admin-chip"
-                                            th:classappend="${selectedStatus == null or selectedStatus == ''} ? ' is-active' : ''">
-                                        전체
-                                    </button>
-                                    <button type="submit"
-                                            name="status"
-                                            value="ACTIVE"
-                                            class="ev-admin-chip"
-                                            th:classappend="${selectedStatus == 'ACTIVE'} ? ' is-active' : ''">
-                                        판매중
-                                    </button>
-                                    <button type="submit"
-                                            name="status"
-                                            value="SOLD_OUT"
-                                            class="ev-admin-chip"
-                                            th:classappend="${selectedStatus == 'SOLD_OUT'} ? ' is-active' : ''">
-                                        품절
-                                    </button>
-                                </div>
-                            </form>
+						<div class="ev-admin-toolbar__row ev-admin-filter-group">
+						    <a class="ev-admin-chip"
+						       th:classappend="${selectedStatus == null || selectedStatus == '' || selectedStatus == 'ALL'} ? ' is-active'"
+						       th:href="@{/admin/vehicle(keyword=${keyword})}">
+						        전체
+						    </a>
+						    <a class="ev-admin-chip"
+						       th:classappend="${selectedStatus == 'ON_SALE'} ? ' is-active'"
+						       th:href="@{/admin/vehicle(status='ON_SALE', keyword=${keyword})}">
+						        판매중
+						    </a>
+						    <a class="ev-admin-chip"
+						       th:classappend="${selectedStatus == 'SOLD_OUT'} ? ' is-active'"
+						       th:href="@{/admin/vehicle(status='SOLD_OUT', keyword=${keyword})}">
+						        품절
+						    </a>
+						</div>
 
                             <div class="ev-admin-toolbar__row">
                                 <form th:action="@{/admin/vehicle}" method="get" class="ev-admin-vehicle-search-form">
@@ -122,18 +112,22 @@
                                     </td>
                                     <td th:text="${vehicle.vehicleId}">HD0006</td>
                                     <td th:text="${vehicle.brand}">HYUNDAI</td>
-									<td class="ev-admin-vehicle-model-cell">
-									    <div class="ev-admin-vehicle-model" th:text="${vehicle.modelNameLabel}">아이오닉 5</div>
-									</td>
-									<td th:text="${vehicle.vehicleClassLabel}">중형 SUV</td>
-                                    <td th:text="${vehicle.priceBasicFormatted}">6,700만원</td>
-                                    <td>
-                                        <span class="ev-admin-badge"
-                                              th:classappend="${vehicle.vehicleStatus == 'SOLD_OUT'} ? ' ev-admin-badge--danger' : ' ev-admin-badge--success'"
-                                              th:text="${vehicle.vehicleStatusLabel}">
-                                            판매중
-                                        </span>
+                                    <td class="ev-admin-vehicle-model-cell">
+                                        <div class="ev-admin-vehicle-model" th:text="${vehicle.modelNameLabel}">아이오닉 5</div>
                                     </td>
+                                    <td th:text="${vehicle.vehicleClassLabel}">중형 SUV</td>
+                                    <td th:text="${vehicle.priceBasicFormatted}">6,700만원</td>
+									<td>
+									    <span class="ev-admin-badge ev-admin-badge--danger"
+									          th:if="${vehicle != null and vehicle.vehicleStatus == 'SOLD_OUT'}">
+									        품절
+									    </span>
+									    <span class="ev-admin-badge ev-admin-badge--success"
+									          th:unless="${vehicle != null and vehicle.vehicleStatus == 'SOLD_OUT'}"
+									          th:text="${vehicle != null and vehicle.vehicleStatusLabel != null ? vehicle.vehicleStatusLabel : '판매중'}">
+									        판매중
+									    </span>
+									</td>
                                     <td th:text="${vehicle.createdAtFormatted}">2024-11-20 00:00</td>
                                     <td th:text="${vehicle.updatedAtFormatted}">2025-03-15 00:00</td>
                                     <td>

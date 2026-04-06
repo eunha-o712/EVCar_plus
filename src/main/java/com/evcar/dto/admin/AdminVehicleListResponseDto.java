@@ -1,5 +1,6 @@
 package com.evcar.dto.admin;
 
+import com.evcar.common.enums.VehicleModelType;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,21 +36,7 @@ public class AdminVehicleListResponseDto {
     }
 
     public String getModelNameLabel() {
-        if (modelName == null) {
-            return "-";
-        }
-
-        return switch (modelName.toUpperCase()) {
-            case "IONIQ_5" -> "아이오닉 5";
-            case "IONIQ_5_N" -> "아이오닉 5 N";
-            case "IONIQ_6" -> "아이오닉 6";
-            case "IONIQ_9" -> "아이오닉 9";
-            case "CASPER_EV" -> "캐스퍼 일렉트릭";
-            case "EV3" -> "EV3";
-            case "EV6" -> "EV6";
-            case "EV9" -> "EV9";
-            default -> modelName;
-        };
+        return VehicleModelType.toLabel(modelName);
     }
 
     public String getVehicleClassLabel() {
@@ -58,11 +45,11 @@ public class AdminVehicleListResponseDto {
         }
 
         return switch (vehicleClass.toUpperCase()) {
-            case "MINI_SUV" -> "소형 SUV";
-            case "SMALL_SUV" -> "준중형 SUV";
-            case "MID_SUV" -> "중형 SUV";
-            case "LARGE_SUV" -> "대형 SUV";
-            case "MID_SEDAN" -> "중형 세단";
+            case "MINI_SUV" -> "경형";
+            case "SMALL_SUV" -> "소형";
+            case "MID_SUV" -> "준중형";
+            case "LARGE_SUV" -> "대형";
+            case "MID_SEDAN" -> "세단";
             case "PERFORMANCE" -> "고성능";
             default -> vehicleClass;
         };

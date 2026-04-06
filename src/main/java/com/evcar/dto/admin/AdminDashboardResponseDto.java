@@ -1,6 +1,9 @@
 package com.evcar.dto.admin;
 
 import java.util.List;
+
+import com.evcar.common.enums.VehicleModelType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,6 +40,10 @@ public class AdminDashboardResponseDto {
         private String modelName;
         private long consultationCount;
         private double percentage;
+
+        public String getModelNameLabel() {
+            return VehicleModelType.toLabel(modelName);
+        }
     }
 
     @Getter

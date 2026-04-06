@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     bindDeleteConfirm();
     bindFormValidation();
+    bindTextareaAutoResize();
 });
 
 function bindDeleteConfirm() {
@@ -49,4 +50,20 @@ function bindFormValidation() {
             answerInput.focus();
         }
     });
+}
+
+function bindTextareaAutoResize() {
+    const textarea = document.getElementById('answer');
+
+    if (!textarea) {
+        return;
+    }
+
+    const resize = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+    };
+
+    resize();
+    textarea.addEventListener('input', resize);
 }

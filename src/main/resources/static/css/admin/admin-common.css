@@ -292,56 +292,66 @@ textarea {
     justify-content: center;
     min-height: 40px;
     padding: 0 16px;
-    color: var(--ev-admin-text-muted);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #dce7f5;
+    background: #1b2230;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 999px;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
 }
 
-.ev-admin-chip:hover,
+.ev-admin-chip:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #f4f7fb;
+    background: #20293a;
+}
+
 .ev-admin-chip.is-active {
-    color: #071a2f;
-    background: linear-gradient(135deg, #8ee8ff 0%, var(--ev-admin-accent) 100%);
-    border-color: transparent;
+    background: #00b4d8;
+    border-color: #00b4d8;
+    color: #081018;
+    font-weight: 700;
 }
 
 .ev-admin-badge {
     display: inline-flex;
     align-items: center;
-    min-height: 30px;
-    padding: 0 12px;
+    justify-content: center;
+    min-width: 72px;
+    min-height: 32px;
+    padding: 6px 12px;
     border-radius: 999px;
-    font-size: 0.82rem;
+    font-size: 12px;
     font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 .ev-admin-badge--active,
-.ev-admin-badge--success {
-    color: #052e16;
-    background: rgba(34, 197, 94, 0.9);
+.ev-admin-badge--success,
+.ev-admin-badge--complete {
+    background: rgba(16, 185, 129, 0.18);
+    color: #7ff2c0;
+}
+
+.ev-admin-badge--pending {
+    background: rgba(245, 158, 11, 0.18);
+    color: #ffcf70;
+}
+
+.ev-admin-badge--progress {
+    background: rgba(59, 130, 246, 0.18);
+    color: #93c5fd;
 }
 
 .ev-admin-badge--withdrawn,
 .ev-admin-badge--danger {
-    color: #fff;
-    background: rgba(239, 68, 68, 0.9);
-}
-
-.ev-admin-badge--pending {
-    color: #3b2200;
-    background: rgba(245, 158, 11, 0.95);
-}
-
-.ev-admin-badge--progress {
-    color: #072c5e;
-    background: rgba(96, 165, 250, 0.95);
-}
-
-.ev-admin-badge--complete {
-    color: #052e16;
-    background: rgba(74, 222, 128, 0.95);
+    background: rgba(239, 68, 68, 0.18);
+    color: #fda4af;
 }
 
 .ev-admin-grid {
@@ -473,7 +483,6 @@ textarea {
     gap: 10px;
 }
 
-
 @media (min-width: 1024px) {
     .ev-admin-layout {
         display: grid;
@@ -516,51 +525,51 @@ textarea {
     .ev-admin-sidebar__logo-image {
         width: 72px;
     }
-	
-	.ev-admin-pagination {
-	    display: flex;
-	    justify-content: center;
-	    align-items: center;
-	    gap: 8px;
-	    margin-top: 24px;
-	}
 
-	.ev-admin-pagination__link {
-	    display: inline-flex;
-	    align-items: center;
-	    justify-content: center;
-	    min-width: 40px;
-	    height: 40px;
-	    padding: 0 10px;
-	    border: 1px solid rgba(255, 255, 255, 0.14);
-	    border-radius: 8px;
-	    background: rgba(255, 255, 255, 0.06);
-	    color: var(--ev-admin-text);
-	    text-decoration: none;
-	    font-size: 14px;
-	    font-weight: 500;
-	    transition: all 0.2s ease;
-	}
+    .ev-admin-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 24px;
+    }
 
-	.ev-admin-pagination__link:hover {
-	    border-color: var(--ev-admin-accent);
-	    color: var(--ev-admin-accent);
-	    background: rgba(255, 255, 255, 0.1);
-	}
+    .ev-admin-pagination__link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 10px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--ev-admin-text);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
 
-	.ev-admin-pagination__link.is-active {
-	    background: linear-gradient(135deg, #8ee8ff 0%, var(--ev-admin-accent) 100%);
-	    border-color: transparent;
-	    color: #071a2f;
-	    font-weight: 700;
-	}
+    .ev-admin-pagination__link:hover {
+        border-color: var(--ev-admin-accent);
+        color: var(--ev-admin-accent);
+        background: rgba(255, 255, 255, 0.1);
+    }
 
-	.ev-admin-pagination__link.is-disabled {
-	    pointer-events: none;
-	    opacity: 0.35;
-	}
+    .ev-admin-pagination__link.is-active {
+        background: linear-gradient(135deg, #8ee8ff 0%, var(--ev-admin-accent) 100%);
+        border-color: transparent;
+        color: #071a2f;
+        font-weight: 700;
+    }
 
-	.ev-admin-pagination__link--arrow {
-	    min-width: 36px;
-	}
+    .ev-admin-pagination__link.is-disabled {
+        pointer-events: none;
+        opacity: 0.35;
+    }
+
+    .ev-admin-pagination__link--arrow {
+        min-width: 36px;
+    }
 }

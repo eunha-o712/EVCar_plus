@@ -1,5 +1,6 @@
 package com.evcar.dto.admin;
 
+import com.evcar.common.enums.VehicleModelType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +18,8 @@ public class AdminConsultListResponseDto {
     private String vehicleModelName;
     private String consultationDateTime;
     private String consultStatus;
+
+    public String getVehicleModelNameLabel() {
+        return VehicleModelType.toLabel(vehicleModelName);
+    }
 }
