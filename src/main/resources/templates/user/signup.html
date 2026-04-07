@@ -332,6 +332,9 @@ let isEmailChecked = false;
 document.addEventListener('DOMContentLoaded', function() {
 
     const form = document.querySelector('form');
+    
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('birthDate').setAttribute('max', today);
 
     document.getElementById('emailId').addEventListener('input', () => isEmailChecked = false);
     document.getElementById('emailDomain').addEventListener('input', () => isEmailChecked = false);
@@ -357,6 +360,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (password !== passwordConfirm) return alert('비밀번호가 일치하지 않습니다.');
         if (!name) return alert('이름을 입력하세요.');
         if (!birthDate) return alert('생년월일을 입력하세요.');
+        const todayDate = new Date().toISOString().split('T')[0];
+        if (birthDate > todayDate) {
+        	return alert('생년월일은 미래 날짜를 선택할 수 없습니다.');
+        }
         if (!gender) return alert('성별을 선택하세요.');
         if (!phone) return alert('전화번호를 입력하세요.');
         if (!address) return alert('주소를 입력하세요.');
@@ -695,6 +702,13 @@ carYearInput.addEventListener("input", function () {
     }
 
     this.value = result;
+    const today = new Date().toISOString().slice(0, 7); // YYYY-MM
+
+    if (this.value > today) {
+        alert("보유차종 연식은 미래 날짜 입력 불가");
+        this.value = "";
+        return;
+    }
 });
 </script>
 
