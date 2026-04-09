@@ -26,4 +26,5 @@ public class AdminUserServiceImpl implements AdminUserService {
         return adminUserQueryRepository.findUserDetail(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원 정보를 찾을 수 없습니다."));
     }
+
 }

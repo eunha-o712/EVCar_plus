@@ -10,4 +10,5 @@ public interface AdminUserService {
     Page<AdminUserListResponseDto> getUserPage(String status, String keyword, Pageable pageable);
 
     AdminUserDetailResponseDto getUserDetail(String userId);
+
 }

@@ -41,4 +41,5 @@ public class AdminUserController {
 
         return "admin/user/list";
     }
+
 }

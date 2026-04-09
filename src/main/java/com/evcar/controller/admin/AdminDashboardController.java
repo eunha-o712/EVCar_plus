@@ -21,4 +21,5 @@ public class AdminDashboardController {
         model.addAttribute("dashboard", dashboard);
         return "admin/dashboard";
     }
+
 }

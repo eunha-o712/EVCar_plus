@@ -33,4 +33,5 @@ public class UserSignupDto {
 
     @Builder.Default
     private boolean agreePrivacy = false;
+
 }

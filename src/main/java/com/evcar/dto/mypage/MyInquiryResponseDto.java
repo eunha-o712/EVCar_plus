@@ -32,4 +32,5 @@ public class MyInquiryResponseDto {
                 .answered("REPLIED".equals(replyStatus) || "CLOSED".equals(replyStatus))
                 .build();
     }
+
 }

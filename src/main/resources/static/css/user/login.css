@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
 }
@@ -6,13 +7,20 @@ body {
     margin: 0;
     font-family: "돋움", Dotum, sans-serif;
     background: #f3f4f6;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 500px;
     width: 90%;
     margin: 120px auto;
+    flex: 1;
 }
+
+
 
 .title {
     text-align: center;

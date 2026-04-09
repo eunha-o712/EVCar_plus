@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InquiryRepository extends JpaRepository<Inquiry, String> {
 
     List<Inquiry> findByUserIdOrderByCreatedAtDesc(String userId);
+
 }

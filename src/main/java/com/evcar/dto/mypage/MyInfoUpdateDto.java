@@ -69,8 +69,5 @@ public class MyInfoUpdateDto {
 	public void setDrivingDistance(Integer drivingDistance) {
 		this.drivingDistance = drivingDistance;
 	}
-	
-	
-	
-	
+		
 }

@@ -48,4 +48,5 @@ public class MyConsultationResponseDto {
             default -> consultStatus;
         };
     }
+
 }

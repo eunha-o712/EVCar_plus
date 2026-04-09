@@ -64,4 +64,5 @@ public class AdminInquiryController {
                 + "&keyword=" + (keyword == null ? "" : keyword)
                 + "&selectedId=" + inquiryId;
     }
+
 }

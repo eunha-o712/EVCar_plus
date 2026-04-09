@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사소개 | EV Consulting</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/company/company.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-company">
+    <section class="ev-company-hero">
+        <div class="container ev-company-hero__inner">
+            <p class="ev-company-hero__eyebrow">EV Consulting</p>
+            <h1 class="ev-company-hero__title">
+                전기차 선택을 더 쉽고<br>
+                더 신뢰할 수 있게
+            </h1>
+            <p class="ev-company-hero__text">
+                EV Consulting은 복잡한 전기차 정보를 더 직관적으로 정리하고,
+                사용자에게 맞는 차량 탐색 경험을 제공하는 전기차 정보 서비스입니다.
+                차량 조회, 충전소 탐색, 고객 지원 기능을 하나의 흐름으로 연결해
+                더 편리한 전기차 라이프를 돕습니다.
+            </p>
+            <div class="ev-company-hero__actions">
+                <a th:href="@{/vehicle}" class="btn btn-ev-primary">전기차 조회하기</a>
+                <a th:href="@{/charging/map}" class="btn btn-ev-secondary">충전소 지도 보기</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev-company-section">
+        <div class="container">
+            <div class="ev-company-section__heading">
+                <p class="ev-company-section__label">Our Service</p>
+                <h2 class="ev-company-section__title">전기차 탐색의 핵심 기능</h2>
+                <p class="ev-company-section__desc">
+                    필요한 정보만 빠르게 확인할 수 있도록 주요 서비스를 단순하고 명확하게 구성했습니다.
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-xl-4">
+                    <article class="ev-company-card">
+                        <span class="ev-company-card__number">01</span>
+                        <h3 class="ev-company-card__title">전기차 조회</h3>
+                        <p class="ev-company-card__text">
+                            브랜드와 차급 기준으로 차량 정보를 확인하고,
+                            가격, 주행거리, 충전시간 등 핵심 스펙을 한눈에 비교할 수 있습니다.
+                        </p>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <article class="ev-company-card">
+                        <span class="ev-company-card__number">02</span>
+                        <h3 class="ev-company-card__title">충전소 지도</h3>
+                        <p class="ev-company-card__text">
+                            전국 충전소 위치와 상세 정보를 기반으로
+                            사용자 주변 또는 원하는 지역의 충전 인프라를 빠르게 탐색할 수 있습니다.
+                        </p>
+                    </article>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <article class="ev-company-card">
+                        <span class="ev-company-card__number">03</span>
+                        <h3 class="ev-company-card__title">고객 지원</h3>
+                        <p class="ev-company-card__text">
+                            FAQ와 상담, 문의 기능을 통해
+                            전기차 이용 과정에서 필요한 도움을 보다 편하게 받을 수 있습니다.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev-company-section ev-company-section--dark">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-12 col-lg-6">
+                    <p class="ev-company-section__label">Why EV Consulting</p>
+                    <h2 class="ev-company-section__title ev-company-section__title--light">
+                        복잡한 정보를<br>
+                        더 쉽게 전달합니다
+                    </h2>
+                    <p class="ev-company-section__desc ev-company-section__desc--light">
+                        전기차를 처음 알아보는 사용자도 쉽게 이해할 수 있도록
+                        핵심 정보 중심의 화면과 일관된 사용자 경험을 제공합니다.
+                    </p>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="ev-company-feature-list">
+                        <div class="ev-company-feature">
+                            <h3 class="ev-company-feature__title">명확한 정보 구성</h3>
+                            <p class="ev-company-feature__text">
+                                복잡한 차량 정보와 충전 정보를 사용자 관점에서 재구성했습니다.
+                            </p>
+                        </div>
+                        <div class="ev-company-feature">
+                            <h3 class="ev-company-feature__title">직관적인 탐색 경험</h3>
+                            <p class="ev-company-feature__text">
+                                필요한 페이지로 빠르게 이동할 수 있도록 단순한 메뉴 흐름을 유지합니다.
+                            </p>
+                        </div>
+                        <div class="ev-company-feature">
+                            <h3 class="ev-company-feature__title">신뢰 중심 서비스</h3>
+                            <p class="ev-company-feature__text">
+                                차량 조회부터 고객 지원까지 하나의 서비스 안에서 자연스럽게 연결됩니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

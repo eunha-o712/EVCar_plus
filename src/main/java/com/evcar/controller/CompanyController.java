@@ -5,17 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/main")
-public class MainController {
+@RequestMapping("/company")
+public class CompanyController {
 
     @GetMapping({"", "/"})
-    public String main() {
-        return "main/index";
+    public String company() {
+        return "company/company";
     }
-
-    @GetMapping("/index")
-    public String index() {
-        return "main/index";
-    }
-
 }

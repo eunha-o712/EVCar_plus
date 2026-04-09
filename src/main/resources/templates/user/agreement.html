@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>약관 동의</title>
-
-<!-- CSS -->
-<link rel="stylesheet" th:href="@{/css/user/agreement.css}" />
-
+	<link rel="stylesheet" th:href="@{/css/user/agreement.css}" />
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
 </head>
-
 <body>
-
+<div th:replace="~{layout/header :: header}"></div>
 <div class="container">
 
 <div class="title">약관 동의</div>
 
-<!-- signup으로 값 전달 -->
-<form action="/signup" method="get">
+<!-- ✅ 중요: signup으로 값 전달 -->
+<form action="/signup" method="get" onsubmit="return validateAgree()">
 
 <!-- 개인정보 -->
 <div class="agree-box">
@@ -30,7 +29,7 @@
 
 <strong>FL!P 개인정보 수집 및 이용 동의 (필수)</strong><br/><br/>
 
-                FL!P(이하 "회사")는 회원가입 및 서비스 제공을 위해 아래와 같이 개인정보를 수집·이용합니다.<br/><br/>
+                FL!P(이하 “회사”)는 회원가입 및 서비스 제공을 위해 아래와 같이 개인정보를 수집·이용합니다.<br/><br/>
 
                 <b>1. 개인정보 수집 및 이용 목적</b><br/>
                 - 회원가입 및 계정 관리<br/>
@@ -65,7 +64,7 @@
 <strong>FL!P 이용약관 (필수)</strong><br/><br/>
 
                 <b>제1조 (목적)</b><br/>
-                본 약관은 FL!P(이하 "회사")가 제공하는 전기차 정보 및 CRM 서비스 이용과 관련하여
+                본 약관은 FL!P(이하 “회사”)가 제공하는 전기차 정보 및 CRM 서비스 이용과 관련하여
                 회원의 권리, 의무 및 이용 조건을 규정함을 목적으로 합니다.<br/><br/>
 
                 <b>제2조 (약관의 효력 및 변경)</b><br/>
@@ -127,7 +126,7 @@
 </label>
 </div>
 
-<!-- 숨겨서 signup으로 전달 -->
+<!-- 👉 숨겨서 signup으로 전달 -->
 <input type="hidden" name="agreePrivacy" value="true">
 <input type="hidden" name="agreeTerms" value="true">
 
@@ -143,8 +142,12 @@
 
 </div>
 
-<!-- JS -->
-<script th:src="@{/js/user/agreement.js}"></script>
 
+<div th:replace="~{layout/footer :: footer}"></div>
+<script th:src="@{/js/user/agreement.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
 </body>
 </html>

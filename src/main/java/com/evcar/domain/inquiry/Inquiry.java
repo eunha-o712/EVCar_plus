@@ -68,4 +68,5 @@ public class Inquiry {
         this.replyContent = replyContent;
         this.replyStatus = replyStatus;
     }
+
 }

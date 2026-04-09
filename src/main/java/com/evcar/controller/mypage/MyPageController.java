@@ -289,4 +289,5 @@ public class MyPageController {
                 .drivingDistance(responseDto.getDrivingDistance())
                 .build();
     }
+
 }

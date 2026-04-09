@@ -50,4 +50,5 @@ public class AdminFaqController {
         adminFaqService.deleteFaq(faqId);
         return "redirect:/admin/faq?page=" + page;
     }
+
 }

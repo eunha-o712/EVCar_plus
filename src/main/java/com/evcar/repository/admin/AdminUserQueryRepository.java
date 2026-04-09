@@ -11,4 +11,5 @@ public interface AdminUserQueryRepository {
     Page<AdminUserListResponseDto> findUserPage(String status, String keyword, Pageable pageable);
 
     Optional<AdminUserDetailResponseDto> findUserDetail(String userId);
+
 }

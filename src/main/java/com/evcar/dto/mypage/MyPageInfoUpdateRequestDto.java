@@ -62,4 +62,5 @@ public class MyPageInfoUpdateRequestDto {
     private boolean hasText(String value) {
         return value != null && !value.trim().isEmpty();
     }
+
 }

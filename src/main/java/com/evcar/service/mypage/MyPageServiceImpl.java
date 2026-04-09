@@ -317,4 +317,5 @@ public class MyPageServiceImpl implements MyPageService {
         }
         return rawPassword.equals(savedPassword) || passwordEncoder.matches(rawPassword, savedPassword);
     }
+
 }

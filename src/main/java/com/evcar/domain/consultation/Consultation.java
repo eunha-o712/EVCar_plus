@@ -120,4 +120,5 @@ public class Consultation {
         this.consultStatus = STATUS_CANCELED;
         this.updatedAt = LocalDateTime.now();
     }
+
 }
