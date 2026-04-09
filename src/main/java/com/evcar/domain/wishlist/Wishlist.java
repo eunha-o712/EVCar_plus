@@ -15,8 +15,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "wishlist")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+
+public @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+
 @Builder
 public class Wishlist {
 

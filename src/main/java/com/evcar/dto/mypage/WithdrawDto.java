@@ -1,10 +1,10 @@
 package com.evcar.dto.mypage;
 
 public class WithdrawDto {
-	
+
 	private Long userId;
 	private String password;
-	
+
 	public WithdrawDto() {
 		super();
 	}
@@ -24,6 +24,5 @@ public class WithdrawDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
 }

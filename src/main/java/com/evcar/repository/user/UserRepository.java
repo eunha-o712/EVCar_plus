@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
+    Optional<User> findByUserId(String userId);
+
     @Query("SELECT COUNT(u) > 0 FROM User u WHERE u.loginId = :loginId")
     boolean existsByLoginId(@Param("loginId") String loginId);
 
@@ -29,5 +31,4 @@ public interface UserRepository extends JpaRepository<User, String> {
             nativeQuery = true
     )
     Optional<String> findLastUserId();
-
 }

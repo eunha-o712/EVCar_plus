@@ -26,7 +26,31 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         return List.of();
     }
 
-    // 🔥 지역 검색 (정상)
+    // 🔥 공통 변환 메서드 (핵심)
+    private ChargingStationResponseDto toDto(ChargingStation c) {
+        return ChargingStationResponseDto.builder()
+                .stationId(c.getStationId())
+                .stationName(c.getStationName())
+                .address(c.getAddress())
+                .lat(c.getLat())
+                .lng(c.getLng())
+                .operatorName(c.getOperatorName())
+                .operatorCall(c.getOperatorCall())
+                .useTime(c.getUseTime())
+                .parkingFree(
+                        c.getParkingFree() != null && c.getParkingFree().equalsIgnoreCase("Y")
+                                ? "무료"
+                                : "유료"
+                )
+                .note(
+                        (c.getNote() == null || c.getNote().isBlank())
+                                ? "이용 안내 없음"   // 🔥 핵심 수정
+                                : c.getNote()
+                )
+                .build();
+    }
+
+    // 🔥 지역 검색
     @Override
     public List<ChargingStationResponseDto> getStationsByRegion(String sido, String sigungu) {
 
@@ -35,22 +59,22 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         List<ChargingStation> list = chargingStationRepository.findByAddressContaining(keyword);
 
         return list.stream()
-                .map(c -> ChargingStationResponseDto.builder()
-                        .stationId(c.getStationId())
-                        .stationName(c.getStationName())
-                        .address(c.getAddress())
-                        .lat(c.getLat())
-                        .lng(c.getLng())
-                        .build())
+                .map(this::toDto)
                 .toList();
     }
 
+    // 🔥 zcode 검색
     @Override
     public List<ChargingStationResponseDto> getStationsByZcode(String zcode) {
-        return List.of();
+
+        List<ChargingStation> list = chargingStationRepository.findByZcodeWithChargers(zcode);
+
+        return list.stream()
+                .map(this::toDto)
+                .toList();
     }
 
-    // 🔥🔥🔥 여기 핵심 (서울만 나오는 문제 해결)
+    // 🔥 지역 목록
     @Override
     public Map<String, List<String>> getAllRegions() {
 
@@ -62,10 +86,8 @@ public class ChargingStationServiceImpl implements ChargingStationService {
 
             if (s.getAddress() == null) continue;
 
-            // 🔥 1. 공백 정리 (중요)
             String addr = s.getAddress().trim().replaceAll("\\s+", " ");
 
-            // 🔥 2. 최소 길이 체크
             if (addr.length() < 5) continue;
 
             String[] parts = addr.split(" ");
@@ -73,14 +95,10 @@ public class ChargingStationServiceImpl implements ChargingStationService {
             String sido;
             String sigungu;
 
-            // 🔥 3. 정상 케이스 (공백 있음)
             if (parts.length >= 2) {
                 sido = parts[0];
                 sigungu = parts[1];
-            }
-            // 🔥 4. 공백 없는 케이스 대응 (서울특별시강남구)
-            else {
-                // 시/도 기준 분리
+            } else {
                 if (addr.startsWith("서울")) {
                     sido = "서울특별시";
                     sigungu = addr.substring(5, Math.min(8, addr.length()));
@@ -94,7 +112,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
                     sido = "부산광역시";
                     sigungu = addr.substring(5, Math.min(8, addr.length()));
                 } else {
-                    continue; // 모르는 형태는 스킵
+                    continue;
                 }
             }
 

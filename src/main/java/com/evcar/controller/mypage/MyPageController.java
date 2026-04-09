@@ -1,5 +1,6 @@
 package com.evcar.controller.mypage;
 
+import com.evcar.domain.user.User;
 import com.evcar.domain.user.UserStatus;
 import com.evcar.dto.mypage.MyConsultationResponseDto;
 import com.evcar.dto.mypage.MyInquiryResponseDto;
@@ -22,272 +23,270 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/mypage")
 @RequiredArgsConstructor
 public class MyPageController {
 
-    private static final String DEV_PREVIEW_USER_ID = "user0001";
     private static final String ACCESS_DENIED_VIEW = "mypage/memberAccessDenied";
 
     private final MyPageService myPageService;
 
-    @GetMapping
+    @GetMapping("")
     public String myPageRedirect() {
         return "redirect:/mypage/main";
     }
 
     @GetMapping("/main")
-    public String myPageMain(
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
-        }
-
-        MyPageSummaryResponseDto summary = myPageService.getMyPageSummary(myPageInfo.getUserId());
-
-        model.addAttribute("currentUserId", myPageInfo.getUserId());
-        model.addAttribute("myPageInfo", myPageInfo);
-        model.addAttribute("summary", summary);
-        return "mypage/myPageMain";
+    public String myPageMain(HttpSession session, Model model) {
+        return handlePage(session, model, userId -> {
+            MyPageSummaryResponseDto summary = myPageService.getMyPageSummary(userId);
+            model.addAttribute("summary", summary);
+            return "mypage/myPageMain";
+        });
     }
 
     @GetMapping("/info")
-    public String myInfo(
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
-        }
+    public String myInfo(HttpSession session, Model model) {
+        return handlePage(session, model, userId -> {
+            MyPageInfoResponseDto info = getRequiredMyPageInfo(model, userId);
 
-        model.addAttribute("currentUserId", myPageInfo.getUserId());
-        model.addAttribute("myPageInfo", myPageInfo);
-        model.addAttribute("myPageInfoUpdateRequestDto", toUpdateRequestDto(myPageInfo));
-        return "mypage/myInfo";
+            if (!model.containsAttribute("myPageInfoUpdateRequestDto")) {
+                model.addAttribute("myPageInfoUpdateRequestDto", toUpdateRequestDto(info));
+            }
+
+            return "mypage/myInfo";
+        });
     }
 
     @PostMapping("/info")
-    public String updateMyInfo(
-            HttpSession session,
-            @ModelAttribute MyPageInfoUpdateRequestDto myPageInfoUpdateRequestDto,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, null, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
+    public String updateMyInfo(HttpSession session,
+                               @ModelAttribute MyPageInfoUpdateRequestDto dto,
+                               Model model,
+                               RedirectAttributes redirectAttributes) {
+
+        String userId = getUserId(session);
+        if (userId == null) {
+            return "redirect:/login";
         }
 
-        myPageService.updateMyPageInfo(myPageInfo.getUserId(), myPageInfoUpdateRequestDto);
-        return "redirect:/mypage/info";
+        try {
+            myPageService.updateMyPageInfo(userId, dto);
+            redirectAttributes.addFlashAttribute("message", "내 정보가 정상적으로 수정되었습니다.");
+            return "redirect:/mypage/info";
+        } catch (IllegalArgumentException e) {
+            try {
+                MyPageInfoResponseDto info = myPageService.getMyPageInfo(userId);
+                model.addAttribute("currentUserId", userId);
+                model.addAttribute("myPageInfo", info);
+            } catch (IllegalArgumentException ignored) {
+                model.addAttribute("currentUserId", userId);
+            }
+
+            model.addAttribute("myPageInfoUpdateRequestDto", dto);
+            model.addAttribute("infoErrorMessage", e.getMessage());
+            return "mypage/myInfo";
+        }
     }
 
     @GetMapping("/wishlist")
-    public String myWishlist(
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
-        }
-
-        model.addAttribute("currentUserId", myPageInfo.getUserId());
-        model.addAttribute("myPageInfo", myPageInfo);
-        return "mypage/myWishlist";
+    public String myWishlist(HttpSession session, Model model) {
+        return handlePage(session, model, userId -> "mypage/myWishlist");
     }
 
     @GetMapping("/wishlist/api")
     @ResponseBody
-    public List<MyWishlistResponseDto> getMyWishlistApi(
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
+    public List<MyWishlistResponseDto> wishlistApi(HttpSession session) {
+        String userId = getUserId(session);
+        if (userId == null) {
             return Collections.emptyList();
         }
 
-        return myPageService.getMyWishlist(myPageInfo.getUserId());
+        try {
+            return myPageService.getMyWishlist(userId);
+        } catch (IllegalArgumentException e) {
+            return Collections.emptyList();
+        }
     }
 
     @PostMapping("/wishlist/delete")
     @ResponseBody
-    public void deleteWishlist(
-            HttpSession session,
-            @RequestParam("wishlistId") String wishlistId,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, null, model);
-        if (myPageInfo == null) {
-            throw new IllegalArgumentException("사용자 정보가 없습니다.");
+    public void deleteWishlist(HttpSession session,
+                               @RequestParam("wishlistId") String wishlistId) {
+
+        String userId = getUserId(session);
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
         }
 
-        myPageService.deleteWishlist(myPageInfo.getUserId(), wishlistId);
+        myPageService.deleteWishlist(userId, wishlistId);
     }
 
     @GetMapping("/consultation")
-    public String myConsultation(
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
-        }
+    public String myConsultation(HttpSession session, Model model) {
+        return handlePage(session, model, userId -> {
+            List<MyConsultationResponseDto> consultations = myPageService.getMyConsultations(userId);
+            model.addAttribute("consultations", consultations);
+            return "mypage/myConsultation";
+        });
+    }
 
-        List<MyConsultationResponseDto> consultations = myPageService.getMyConsultations(myPageInfo.getUserId());
-        model.addAttribute("currentUserId", myPageInfo.getUserId());
-        model.addAttribute("consultations", consultations);
-        return "mypage/myConsultation";
+    @GetMapping("/consultation/{id}")
+    public String myConsultationDetail(@PathVariable("id") String id,
+                                       HttpSession session,
+                                       Model model) {
+
+        return handlePage(session, model, userId -> {
+            MyConsultationResponseDto consultation = myPageService.getMyConsultationDetail(userId, id);
+            model.addAttribute("consultation", consultation);
+            return "mypage/myConsultationDetail";
+        });
     }
 
     @PostMapping("/consultation/cancel")
-    public String cancelMyConsultation(
-            HttpSession session,
-            @RequestParam("consultId") String consultId,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, null, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
+    public String cancelConsult(HttpSession session,
+                                @RequestParam("consultId") String consultId,
+                                RedirectAttributes redirectAttributes) {
+
+        String userId = getUserId(session);
+        if (userId == null) {
+            return "redirect:/login";
         }
 
-        myPageService.cancelMyConsultation(myPageInfo.getUserId(), consultId);
+        try {
+            myPageService.cancelMyConsultation(userId, consultId);
+            redirectAttributes.addFlashAttribute("message", "상담이 정상적으로 취소되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
+
         return "redirect:/mypage/consultation";
     }
 
     @GetMapping("/inquiry")
-    public String myInquiry(
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
-        }
-
-        List<MyInquiryResponseDto> inquiries = myPageService.getMyInquiries(myPageInfo.getUserId());
-        model.addAttribute("currentUserId", myPageInfo.getUserId());
-        model.addAttribute("inquiries", inquiries);
-        return "mypage/myInquiry";
+    public String myInquiry(HttpSession session, Model model) {
+        return handlePage(session, model, userId -> {
+            List<MyInquiryResponseDto> inquiries = myPageService.getMyInquiries(userId);
+            model.addAttribute("inquiries", inquiries);
+            return "mypage/myInquiry";
+        });
     }
 
-    @GetMapping("/inquiry/{inquiryId}")
-    public String myInquiryDetail(
-            @PathVariable("inquiryId") String inquiryId,
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
-        }
+    @GetMapping("/inquiry/{id}")
+    public String myInquiryDetail(@PathVariable("id") String id,
+                                  HttpSession session,
+                                  Model model) {
 
-        MyInquiryResponseDto inquiry = myPageService.getMyInquiryDetail(myPageInfo.getUserId(), inquiryId);
-        model.addAttribute("currentUserId", myPageInfo.getUserId());
-        model.addAttribute("inquiry", inquiry);
-        return "mypage/myInquiryDetail";
+        return handlePage(session, model, userId -> {
+            MyInquiryResponseDto inquiry = myPageService.getMyInquiryDetail(userId, id);
+            model.addAttribute("inquiry", inquiry);
+            return "mypage/myInquiryDetail";
+        });
     }
 
     @GetMapping("/withdraw")
-    public String myWithdraw(
-            @RequestParam(value = "previewUserId", required = false) String previewUserId,
-            HttpSession session,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, previewUserId, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
-        }
-
-        model.addAttribute("currentUserId", myPageInfo.getUserId());
-        model.addAttribute("myPageInfo", myPageInfo);
-        model.addAttribute("withdrawRequestDto", WithdrawRequestDto.builder().build());
-        return "mypage/myWithdraw";
+    public String myWithdraw(HttpSession session, Model model) {
+        return handlePage(session, model, userId -> {
+            if (!model.containsAttribute("withdrawRequestDto")) {
+                model.addAttribute("withdrawRequestDto", WithdrawRequestDto.builder().build());
+            }
+            return "mypage/myWithdraw";
+        });
     }
 
     @PostMapping("/withdraw")
-    public String withdraw(
-            HttpSession session,
-            @ModelAttribute WithdrawRequestDto withdrawRequestDto,
-            Model model
-    ) {
-        MyPageInfoResponseDto myPageInfo = getAccessibleMyPageInfo(session, null, model);
-        if (myPageInfo == null) {
-            return ACCESS_DENIED_VIEW;
+    public String withdraw(HttpSession session,
+                           @ModelAttribute WithdrawRequestDto dto,
+                           RedirectAttributes redirectAttributes) {
+
+        String userId = getUserId(session);
+        if (userId == null) {
+            return "redirect:/login";
         }
 
-        myPageService.withdraw(myPageInfo.getUserId(), withdrawRequestDto);
-        session.invalidate();
-
-        model.addAttribute("message", "회원탈퇴가 완료되었습니다.");
-        return ACCESS_DENIED_VIEW;
+        try {
+            myPageService.withdraw(userId, dto);
+            session.invalidate();
+            return "redirect:/mypage/withdraw/success";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("withdrawErrorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("withdrawRequestDto", dto);
+            return "redirect:/mypage/withdraw";
+        }
     }
 
-    private MyPageInfoResponseDto getAccessibleMyPageInfo(
-            HttpSession session,
-            String previewUserId,
-            Model model
-    ) {
-        String userId = getUserId(session, previewUserId);
+    @GetMapping("/withdraw/success")
+    public String withdrawSuccess() {
+        return "mypage/withdrawSuccess";
+    }
 
-        MyPageInfoResponseDto myPageInfo;
+    private String handlePage(HttpSession session, Model model, PageHandler handler) {
+        String userId = getUserId(session);
+
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
         try {
-            myPageInfo = myPageService.getMyPageInfo(userId);
+            MyPageInfoResponseDto info = myPageService.getMyPageInfo(userId);
+
+            if (UserStatus.WITHDRAWN.name().equalsIgnoreCase(info.getUserStatus())) {
+                session.invalidate();
+                model.addAttribute("message", "탈퇴한 회원은 이용할 수 없습니다.");
+                return ACCESS_DENIED_VIEW;
+            }
+
+            model.addAttribute("currentUserId", userId);
+            model.addAttribute("myPageInfo", info);
+
+            return handler.handle(userId);
         } catch (IllegalArgumentException e) {
             model.addAttribute("message", "존재하지 않는 회원입니다.");
-            return null;
+            return ACCESS_DENIED_VIEW;
         }
-
-        if (UserStatus.WITHDRAWN.name().equalsIgnoreCase(myPageInfo.getUserStatus())) {
-            session.invalidate();
-            model.addAttribute("message", "탈퇴한 회원은 마이페이지를 이용할 수 없습니다.");
-            return null;
-        }
-
-        return myPageInfo;
     }
 
-    private String getUserId(HttpSession session, String previewUserId) {
-        if (previewUserId != null && !previewUserId.trim().isEmpty()) {
-            return previewUserId.trim();
+    private String getUserId(HttpSession session) {
+        Object userId = session.getAttribute("userId");
+        if (userId != null) {
+            return String.valueOf(userId);
         }
 
         Object loginUser = session.getAttribute("loginUser");
-        if (loginUser instanceof com.evcar.domain.user.User user) {
+        if (loginUser instanceof User user) {
             return user.getUserId();
         }
 
-        return DEV_PREVIEW_USER_ID;
+        return null;
     }
 
-    private MyPageInfoUpdateRequestDto toUpdateRequestDto(MyPageInfoResponseDto responseDto) {
+    private MyPageInfoResponseDto getRequiredMyPageInfo(Model model, String userId) {
+        Object info = model.getAttribute("myPageInfo");
+        if (info instanceof MyPageInfoResponseDto responseDto) {
+            return responseDto;
+        }
+        return myPageService.getMyPageInfo(userId);
+    }
+
+    private MyPageInfoUpdateRequestDto toUpdateRequestDto(MyPageInfoResponseDto dto) {
         return MyPageInfoUpdateRequestDto.builder()
-                .name(responseDto.getName())
-                .birthDate(responseDto.getBirthDate())
-                .gender(responseDto.getGender())
-                .phone(responseDto.getPhone())
-                .address(responseDto.getAddress())
-                .addressDetail(responseDto.getAddressDetail())
-                .email(responseDto.getEmail())
-                .hasVehicle(responseDto.getHasVehicle())
-                .vehicleModel(responseDto.getVehicleModel())
-                .vehicleYear(responseDto.getVehicleYear())
-                .drivingDistance(responseDto.getDrivingDistance())
+                .name(dto.getName())
+                .gender(dto.getGender())
+                .phone(dto.getPhone())
+                .address(dto.getAddress())
+                .addressDetail(dto.getAddressDetail())
+                .email(dto.getEmail())
+                .hasVehicle(dto.getHasVehicle())
+                .vehicleModel(dto.getVehicleModel())
+                .vehicleYear(dto.getVehicleYear())
+                .drivingDistance(dto.getDrivingDistance())
                 .build();
     }
 
+    @FunctionalInterface
+    private interface PageHandler {
+        String handle(String userId);
+    }
 }

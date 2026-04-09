@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MyWishlistResponseDto {
 
-    private String wishlistId;
-    private String brand;
-    private String modelName;
-    private String vehicleClass;
-    private Integer priceBasic;
-    private String imageUrl;
-    private String detailUrl;
+	private String wishlistId;
+	private String brand;
+	private String modelName;
+	private String vehicleClass;
+	private Integer priceBasic;
+	private String imageUrl;
+	private String detailUrl;
 }

@@ -3,19 +3,15 @@ package com.evcar.controller.vehicle;
 import com.evcar.dto.vehicle.VehicleDetailDto;
 import com.evcar.dto.vehicle.VehicleImageResponseDto;
 import com.evcar.dto.vehicle.VehicleListDto;
+import com.evcar.service.vehicle.VehicleImageService;
 import com.evcar.service.vehicle.VehicleService;
 import com.evcar.service.wishlist.WishlistService;
-import com.evcar.service.vehicle.VehicleImageService;
-
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,8 +22,11 @@ public class VehicleController {
     private final WishlistService wishlistService;
     private final VehicleImageService vehicleImageService;
 
+    
+
     @GetMapping
     public String vehicleHome(Model model) {
+
         List<VehicleListDto> vehicleList = vehicleService.getVehicleList(null, null);
 
         model.addAttribute("vehicleList", vehicleList);
@@ -39,23 +38,21 @@ public class VehicleController {
     }
 
     @GetMapping("/list")
-    public String vehicleList(
-            @RequestParam(name = "brand", defaultValue = "전체") String brand,
-            @RequestParam(name = "vehicleClass", defaultValue = "전체") String vehicleClass,
-            Model model) {
+    public String vehicleList(@RequestParam(name = "brand", defaultValue = "전체") String brand,
+                              @RequestParam(name = "vehicleClass", defaultValue = "전체") String vehicleClass,
+                              Model model) {
 
-        String originalBrand = brand;
-
-        if ("전체".equals(brand)) brand = null;
-        if ("전체".equals(vehicleClass)) vehicleClass = null;
-
-        if ("현대".equals(brand)) brand = "HYUNDAI";
-        if ("기아".equals(brand)) brand = "KIA";
+        if ("전체".equals(brand)) {
+            brand = null;
+        }
+        if ("전체".equals(vehicleClass)) {
+            vehicleClass = null;
+        }
 
         List<VehicleListDto> vehicleList = vehicleService.getVehicleList(brand, vehicleClass);
 
         model.addAttribute("vehicleList", vehicleList);
-        model.addAttribute("selectedBrand", originalBrand == null ? "전체" : originalBrand);
+        model.addAttribute("selectedBrand", brand == null ? "전체" : brand);
         model.addAttribute("selectedClass", vehicleClass == null ? "전체" : vehicleClass);
         model.addAttribute("totalCount", vehicleList.size());
 
@@ -63,16 +60,22 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable("id") String id, Model model) {
+    public String detail(@PathVariable("id") String id,
+                         jakarta.servlet.http.HttpSession session,
+                         Model model) {
 
         VehicleDetailDto dto = vehicleService.getDetail(id);
-        dto.setWished(wishlistService.isWished(id));
 
-        List<VehicleImageResponseDto> images = vehicleImageService.getImages(id);
+        Object userId = session.getAttribute("userId");
+        if (userId != null) {
+            dto.setWished(wishlistService.isWished(String.valueOf(userId), id));
+        } else {
+            dto.setWished(false);
+        }
 
         model.addAttribute("vehicle", dto);
-        model.addAttribute("images", images);
 
         return "vehicle/detail";
     }
+   
 }

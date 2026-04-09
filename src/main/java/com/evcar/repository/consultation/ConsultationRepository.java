@@ -3,6 +3,7 @@ package com.evcar.repository.consultation;
 import com.evcar.domain.consultation.Consultation;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,13 +12,23 @@ public interface ConsultationRepository extends JpaRepository<Consultation, Stri
 
     boolean existsByUserIdAndConsultStatus(String userId, String consultStatus);
 
+    List<Consultation> findAllByOrderByCreatedAtDesc();
+
     List<Consultation> findByUserIdOrderByCreatedAtDesc(String userId);
+
+    List<Consultation> findByConsultContentContainingIgnoreCaseOrderByCreatedAtDesc(String keyword);
+
+    Optional<Consultation> findTopByOrderByConsultIdDesc();
 
     long countByCreatedAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 
     long countByConsultResult(String consultResult);
 
-    long countByConsultResultAndCreatedAtBetween(String consultResult, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    long countByConsultResultAndCreatedAtBetween(
+            String consultResult,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime
+    );
 
     @Query("""
             select max(c.createdAt)
@@ -84,7 +95,7 @@ public interface ConsultationRepository extends JpaRepository<Consultation, Stri
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime
     );
-    
+
     @Query(value = """
             SELECT u.address AS regionName,
                    COUNT(*) AS consultationCount

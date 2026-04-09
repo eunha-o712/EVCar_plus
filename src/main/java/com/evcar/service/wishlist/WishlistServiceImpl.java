@@ -1,92 +1,73 @@
 package com.evcar.service.wishlist;
 
-import java.util.List;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.evcar.domain.vehicle.Vehicle;
 import com.evcar.domain.wishlist.Wishlist;
 import com.evcar.dto.vehicle.VehicleListDto;
 import com.evcar.repository.vehicle.VehicleRepository;
 import com.evcar.repository.wishlist.WishlistRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class WishlistServiceImpl implements WishlistService {
-
-    private static final String DEV_USER_ID = "user0001";
 
     private final WishlistRepository wishlistRepository;
     private final VehicleRepository vehicleRepository;
 
     @Override
-    public boolean isWished(String vehicleId) {
-        return wishlistRepository.existsByUserIdAndVehicleId(DEV_USER_ID, vehicleId);
+    public boolean isWished(String userId, String vehicleId) {
+        return wishlistRepository.existsByUserIdAndVehicleId(userId, vehicleId);
     }
 
     @Override
-    @Transactional
-    public void add(String vehicleId) {
-        if (wishlistRepository.existsByUserIdAndVehicleId(DEV_USER_ID, vehicleId)) {
+    public void addWishlist(String userId, String vehicleId) {
+        if (wishlistRepository.existsByUserIdAndVehicleId(userId, vehicleId)) {
             return;
         }
 
-        Vehicle vehicle = vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 차량입니다."));
-
-        Wishlist wishlist = Wishlist.builder()
-                .wishlistId(generateWishlistId())
-                .userId(DEV_USER_ID)
-                .vehicleId(vehicle.getVehicleId())
-                .createdAt(LocalDateTime.now())
-                .build();
+        Wishlist wishlist = new Wishlist();
+        wishlist.setWishlistId(UUID.randomUUID().toString());
+        wishlist.setUserId(userId);
+        wishlist.setVehicleId(vehicleId);
+        wishlist.setCreatedAt(LocalDateTime.now());
 
         wishlistRepository.save(wishlist);
     }
 
     @Override
-    @Transactional
-    public void remove(String vehicleId) {
-        wishlistRepository.findByUserIdAndVehicleId(DEV_USER_ID, vehicleId)
+    public void removeWishlist(String userId, String vehicleId) {
+        wishlistRepository.findByUserIdAndVehicleId(userId, vehicleId)
                 .ifPresent(wishlistRepository::delete);
     }
 
     @Override
-    public List<VehicleListDto> getWishlistVehicles() {
-        return wishlistRepository.findByUserIdOrderByCreatedAtDesc(DEV_USER_ID).stream()
-                .map(Wishlist::getVehicleId)
-                .map(this::getVehicle)
-                .map(this::toVehicleListDto)
-                .toList();
-    }
+    public List<VehicleListDto> getWishlistVehicles(String userId) {
+    	List<Wishlist> wishlists = wishlistRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        List<VehicleListDto> result = new ArrayList<>();
 
-    private Vehicle getVehicle(String vehicleId) {
-        return vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 차량입니다. vehicleId=" + vehicleId));
-    }
+        for (Wishlist wishlist : wishlists) {
+            vehicleRepository.findById(wishlist.getVehicleId()).ifPresent(vehicle -> {
+                VehicleListDto dto = new VehicleListDto(
+                        vehicle.getVehicleId(),
+                        vehicle.getBrand(),
+                        vehicle.getModelName(),
+                        vehicle.getVehicleClass(),
+                        vehicle.getPriceBasic(),
+                        vehicle.getPricePremium(),
+                        vehicle.getDrivingRange(),
+                        vehicle.getImageUrl(),
+                        vehicle.getCatalogUrl()
+                );
+                dto.setWished(true);
+                result.add(dto);
+            });
+        }
 
-    private VehicleListDto toVehicleListDto(Vehicle vehicle) {
-        return VehicleListDto.builder()
-                .vehicleId(vehicle.getVehicleId())
-                .brand(vehicle.getBrand())
-                .modelName(vehicle.getModelName())
-                .vehicleClass(vehicle.getVehicleClass())
-                .priceBasic(vehicle.getPriceBasic())
-                .imageUrl(vehicle.getImageUrl())
-                .build();
-    }
-
-    private String generateWishlistId() {
-        return wishlistRepository.findTopByOrderByWishlistIdDesc()
-                .map(Wishlist::getWishlistId)
-                .map(lastId -> {
-                    int nextNumber = Integer.parseInt(lastId.substring(4)) + 1;
-                    return String.format("wish%04d", nextNumber);
-                })
-                .orElse("wish0001");
+        return result;
     }
 }

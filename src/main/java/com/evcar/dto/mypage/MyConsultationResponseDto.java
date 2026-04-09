@@ -1,7 +1,7 @@
 package com.evcar.dto.mypage;
 
 import com.evcar.domain.consultation.Consultation;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class MyConsultationResponseDto {
     private String consultStatus;
     private String consultResult;
     private String adminReply;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private boolean cancelable;
 
     public static MyConsultationResponseDto from(Consultation consultation) {
@@ -34,7 +34,7 @@ public class MyConsultationResponseDto {
                 .consultStatus(consultation.getConsultStatus())
                 .consultResult(consultation.getConsultResult())
                 .adminReply(consultation.getAdminReply())
-                .createdAt(consultation.getCreatedAt() == null ? null : consultation.getCreatedAt().toLocalDate())
+                .createdAt(consultation.getCreatedAt())
                 .cancelable(consultation.canBeCanceled())
                 .build();
     }
@@ -49,4 +49,27 @@ public class MyConsultationResponseDto {
         };
     }
 
+    public String getPurchasePlanLabel() {
+        return switch (purchasePlan) {
+            case "IMMEDIATE" -> "즉시";
+            case "1_MONTH" -> "1개월 이내";
+            case "3_MONTH" -> "3개월 이내";
+            case "6_MONTH" -> "6개월 이내";
+            case "UNDECIDED" -> "미정";
+            default -> purchasePlan;
+        };
+    }
+
+    public String getConsultResultLabel() {
+        if (consultResult == null || consultResult.isBlank()) {
+            return "-";
+        }
+
+        return switch (consultResult) {
+            case "PURCHASE" -> "구매";
+            case "NOT_PURCHASE" -> "미구매";
+            case "UNDECIDED" -> "미정";
+            default -> consultResult;
+        };
+    }
 }

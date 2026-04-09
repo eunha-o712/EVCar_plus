@@ -13,6 +13,11 @@ public class ChargingStationResponseDto {
     private String address;
     private double lat;
     private double lng;
-    private String chargerType;
-    private String status;
+
+    // 🔥 추가
+    private String operatorName;
+    private String operatorCall;
+    private String useTime;
+    private String parkingFree;
+    private String note;
 }

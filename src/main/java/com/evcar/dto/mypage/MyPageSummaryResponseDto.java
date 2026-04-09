@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MyPageSummaryResponseDto {
 
-    private int wishlistCount;
-    private int consultationCount;
-    private int inquiryCount;
-    private int waitingInquiryCount;
+	private int wishlistCount;
+	private int consultationCount;
+	private int inquiryCount;
+	private int waitingInquiryCount;
 }
