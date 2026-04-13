@@ -23,8 +23,10 @@
                 <li class="ev-header__item ev-header__item--has-dropdown">
                     <a th:href="@{/vehicle}" class="ev-header__link">전기차조회</a>
                     <div class="ev-header__dropdown">
-                        <a th:href="@{/vehicle/model}" class="ev-header__dropdown-link">모델조회</a>
-                        <a th:href="@{/vehicle/recommend}" class="ev-header__dropdown-link">AI 차량 추천</a>
+                        <a th:href="@{/vehicle}" class="ev-header__dropdown-link">모델조회</a>
+						<a href="#" class="ev-header__dropdown-link ev-header__dropdown-link--disabled">
+						    AI 차량 추천
+						</a>
                     </div>
                 </li>
 

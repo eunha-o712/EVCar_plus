@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initBoardMenu();
     initMobileMenu();
     initModal();
+    initDisabledMenu();
 });
 
 function initBoardMenu() {
@@ -140,5 +141,16 @@ function initModal() {
         if (event.key === 'Escape') {
             closeAllModals();
         }
+    });
+}
+
+function initDisabledMenu() {
+    const disabledLinks = document.querySelectorAll('.ev-header__dropdown-link--disabled');
+
+    disabledLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            alert('서비스 준비중입니다.');
+        });
     });
 }

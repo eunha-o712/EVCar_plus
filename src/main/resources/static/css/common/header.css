@@ -3,6 +3,10 @@
     z-index: 1200;
 }
 
+.ev-header__dropdown-link--disabled {
+    opacity: 0.45;
+}
+
 .ev-navbar {
     position: fixed;
     top: 0;

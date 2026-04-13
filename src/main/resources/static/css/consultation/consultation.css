@@ -1,11 +1,22 @@
+:root {
+    --ev-admin-accent: #53d8ff;
+    --ev-admin-success: #22c55e;
+    --ev-admin-warning: #f59e0b;
+    --ev-admin-danger: #ef4444;
+}
+
 .ev-consultation-page {
-    background: linear-gradient(180deg, #071225 0%, #0b162a 320px, #f7f8fb 320px, #f7f8fb 100%);
+    background: #f7f8fb;
     min-height: 100vh;
 }
 
 .ev-consultation-hero {
-    padding: 112px 20px 72px;
+    position: relative;
+    background:
+        radial-gradient(circle at 85% 20%, rgba(0, 180, 216, 0.14), transparent 20%),
+        linear-gradient(90deg, #050b1c 0%, #07152f 45%, #0a2748 100%);
     color: #ffffff;
+    padding: 112px 20px 176px;
 }
 
 .ev-consultation-hero__inner,
@@ -42,7 +53,16 @@
 }
 
 .ev-consultation-section--list {
-    margin-top: -24px;
+    position: relative;
+    margin-top: -116px;
+    z-index: 2;
+}
+
+.ev-consultation-section--form,
+.ev-consultation-section--detail {
+    position: relative;
+    margin-top: -72px;
+    z-index: 2;
 }
 
 .ev-consultation-toolbar {
@@ -50,19 +70,19 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 20px;
-    padding: 18px 20px;
-    background: rgba(255, 255, 255, 0.94);
+    margin-bottom: 36px;
+    padding: 22px 20px;
+    background: rgba(255, 255, 255, 0.96);
     border: 1px solid #e7edf5;
     border-radius: 22px;
-    box-shadow: 0 14px 32px rgba(10, 25, 47, 0.06);
+    box-shadow: 0 18px 36px rgba(10, 25, 47, 0.08);
     backdrop-filter: blur(12px);
 }
 
 .ev-consultation-search {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex: 1;
     min-width: 0;
 }
@@ -78,6 +98,7 @@
     background: #ffffff;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: #16253d;
 }
 
 .ev-consultation-search__input:focus,
@@ -86,10 +107,6 @@
 .ev-consultation-form__textarea:focus {
     border-color: #73e5ff;
     box-shadow: 0 0 0 3px rgba(115, 229, 255, 0.14);
-}
-
-.ev-consultation-search__input {
-    max-width: 440px;
 }
 
 .ev-consultation-search__button,
@@ -107,6 +124,7 @@
     border: none;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    white-space: nowrap;
 }
 
 .ev-consultation-search__button,
@@ -136,15 +154,16 @@
 
 .ev-consultation-card-list {
     display: grid;
-    gap: 14px;
+    gap: 18px;
+    margin-top: 10px;
 }
 
 .ev-consultation-card {
     display: block;
     background: #ffffff;
     border: 1px solid #e7edf5;
-    border-radius: 20px;
-    padding: 20px 24px;
+    border-radius: 22px;
+    padding: 22px 24px;
     text-decoration: none;
     color: #16253d;
     box-shadow: 0 14px 30px rgba(10, 25, 47, 0.05);
@@ -170,7 +189,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 20px;
+    gap: 24px;
 }
 
 .ev-consultation-card__main {
@@ -196,11 +215,33 @@
     align-items: center;
     padding: 6px 12px;
     border-radius: 999px;
-    background: #e8f1ff;
-    color: #0d4fb8;
     font-size: 0.8rem;
     font-weight: 700;
     line-height: 1;
+}
+
+.ev-consultation-card__status--waiting,
+.ev-consultation-detail__status--waiting {
+    background: rgba(245, 158, 11, 0.14);
+    color: var(--ev-admin-warning);
+}
+
+.ev-consultation-card__status--progress,
+.ev-consultation-detail__status--progress {
+    background: rgba(83, 216, 255, 0.18);
+    color: #0891b2;
+}
+
+.ev-consultation-card__status--success,
+.ev-consultation-detail__status--success {
+    background: rgba(34, 197, 94, 0.14);
+    color: var(--ev-admin-success);
+}
+
+.ev-consultation-card__status--danger,
+.ev-consultation-detail__status--danger {
+    background: rgba(239, 68, 68, 0.14);
+    color: var(--ev-admin-danger);
 }
 
 .ev-consultation-card__date {
@@ -236,9 +277,7 @@
     color: #5c6d84;
 }
 
-.ev-consultation-empty,
-.ev-inquiry-empty,
-.ev-faq-empty {
+.ev-consultation-empty {
     background: #ffffff;
     border: 1px solid #e7edf5;
     border-radius: 20px;
@@ -252,7 +291,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-top: 28px;
+    margin-top: 34px;
     flex-wrap: wrap;
 }
 
@@ -339,7 +378,7 @@
 }
 
 .ev-consultation-detail__eyebrow {
-    margin-bottom: 8px;
+    margin: 0 0 8px;
     color: #6b7688;
     font-size: 0.9rem;
     letter-spacing: 0.08em;
@@ -347,9 +386,11 @@
 }
 
 .ev-consultation-detail__title {
+    margin: 0;
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: -0.02em;
+    color: #16253d;
 }
 
 .ev-consultation-detail__info {
@@ -368,6 +409,17 @@
     background: #f7f8fb;
 }
 
+.ev-consultation-detail__info strong {
+    color: #44546a;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.ev-consultation-detail__info span {
+    color: #16253d;
+    font-size: 1rem;
+}
+
 .ev-consultation-detail__content,
 .ev-consultation-detail__reply {
     padding: 24px;
@@ -381,12 +433,16 @@
 
 .ev-consultation-detail__content h3,
 .ev-consultation-detail__reply h3 {
-    margin-bottom: 12px;
+    margin: 0 0 12px;
     font-size: 1.1rem;
+    color: #16253d;
 }
 
-.ev-consultation-section--detail {
-    padding-top: 48px;
+.ev-consultation-detail__content p,
+.ev-consultation-detail__reply p {
+    margin: 0;
+    color: #44546a;
+    line-height: 1.7;
 }
 
 @media (min-width: 768px) {
@@ -397,16 +453,12 @@
 
 @media (max-width: 991px) {
     .ev-consultation-hero {
-        padding: 104px 20px 64px;
+        padding: 104px 20px 154px;
     }
 
     .ev-consultation-toolbar {
         flex-direction: column;
         align-items: stretch;
-    }
-
-    .ev-consultation-search__input {
-        max-width: none;
     }
 
     .ev-consultation-write {
@@ -430,12 +482,8 @@
 }
 
 @media (max-width: 767px) {
-    .ev-consultation-page {
-        background: linear-gradient(180deg, #071225 0%, #0b162a 260px, #f7f8fb 260px, #f7f8fb 100%);
-    }
-
     .ev-consultation-hero {
-        padding: 96px 16px 56px;
+        padding: 96px 16px 142px;
     }
 
     .ev-consultation-hero__title {
@@ -444,6 +492,15 @@
 
     .ev-consultation-section {
         padding: 0 16px 56px;
+    }
+
+    .ev-consultation-section--list {
+        margin-top: -92px;
+    }
+
+    .ev-consultation-section--form,
+    .ev-consultation-section--detail {
+        margin-top: -56px;
     }
 
     .ev-consultation-toolbar {
@@ -463,7 +520,7 @@
     }
 
     .ev-consultation-card {
-        padding: 18px 18px;
+        padding: 18px;
         border-radius: 18px;
     }
 

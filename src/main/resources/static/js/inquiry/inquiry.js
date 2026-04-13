@@ -1,15 +1,18 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const titleInput = document.getElementById('title');
-
-    if (!titleInput) {
-        return;
-    }
-
-    titleInput.addEventListener('input', () => {
-        if (titleInput.value.length > 200) {
-            titleInput.value = titleInput.value.substring(0, 200);
-        }
-    });
+    initDisabledPagination();
 });
+
+function initDisabledPagination() {
+    const disabledLinks = document.querySelectorAll('.ev-pagination__link.is-disabled');
+
+    disabledLinks.forEach((link) => {
+        link.setAttribute('tabindex', '-1');
+        link.setAttribute('aria-disabled', 'true');
+
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+        });
+    });
+}

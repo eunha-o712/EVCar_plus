@@ -1,163 +1,208 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>전기차 조회 - EV Consulting</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link th:href="@{/css/vehicle/vehicle-list.css}" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<link rel="stylesheet" th:href="@{/css/common/common.css}">
-<link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기차 조회 - EV Consulting</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/vehicle/vehicle-list.css}">
 </head>
 <body>
+<div th:replace="~{layout/header :: header}"></div>
 
-	<!-- 헤더 -->
-	<div th:replace="~{layout/header :: header}"></div>
+<main class="ev-vehicle-page">
+    <section class="ev-vehicle-hero">
+        <div class="ev-vehicle-hero__inner">
+            <p class="ev-vehicle-hero__eyebrow">EV MODEL SEARCH</p>
+            <h1 class="ev-vehicle-hero__title">전기차 조회</h1>
+            <p class="ev-vehicle-hero__desc">
+                브랜드와 차급 기준으로 원하는 전기차를 빠르게 탐색해 보세요.
+            </p>
+        </div>
+    </section>
 
-	<div class="container-fluid px-4 py-3">
+    <section class="ev-vehicle-section ev-vehicle-section--list">
+        <div class="ev-vehicle-filter-panel">
+            <div class="ev-vehicle-filter-group">
+                <span class="ev-vehicle-filter-group__label">브랜드</span>
 
-		<h2 class="fw-bold mb-3" style="font-size: 1.4rem;">전기차 조회</h2>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedBrand == '전체'} ? ' is-active'"
+                        data-brand="전체"
+                        th:data-class="${selectedClass}"
+                        onclick="filterByData(this)">
+                    전체
+                </button>
 
-		<!-- 브랜드 필터 -->
-		<div class="bg-white px-3 py-2 mb-2 rounded border">
-			<div class="d-flex align-items-center gap-2 flex-wrap">
-				<span class="filter-label">브랜드</span>
-				<button type="button" class="filter-btn"
-					th:each="brand : ${  {'전체','현대','기아'} }" th:text="${brand}"
-					th:classappend="${brand == selectedBrand} ? ' active'"
-					th:data-brand="${brand}" th:data-class="${selectedClass}"
-					onclick="filterByData(this)"></button>
-			</div>
-		</div>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedBrand == '현대'} ? ' is-active'"
+                        data-brand="현대"
+                        th:data-class="${selectedClass}"
+                        onclick="filterByData(this)">
+                    현대
+                </button>
 
-		<div class="bg-white px-3 py-2 mb-2 rounded border">
-			<div class="d-flex align-items-center gap-2 flex-wrap">
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedBrand == '기아'} ? ' is-active'"
+                        data-brand="기아"
+                        th:data-class="${selectedClass}"
+                        onclick="filterByData(this)">
+                    기아
+                </button>
+            </div>
 
-				<span class="filter-label">차급</span>
+            <div class="ev-vehicle-filter-group">
+                <span class="ev-vehicle-filter-group__label">차급</span>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == ''} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class=""
-					onclick="filterByData(this)">전체</button>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == '전체'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="전체"
+                        onclick="filterByData(this)">
+                    전체
+                </button>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == 'MINI'} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class="MINI"
-					onclick="filterByData(this)">경형</button>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'MINI_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="MINI_SUV"
+                        onclick="filterByData(this)">
+                    경형SUV
+                </button>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == 'MINI_SUV'} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class="MINI_SUV"
-					onclick="filterByData(this)">경형SUV</button>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'SMALL_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="SMALL_SUV"
+                        onclick="filterByData(this)">
+                    소형SUV
+                </button>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == 'SMALL_SUV'} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class="SMALL_SUV"
-					onclick="filterByData(this)">소형SUV</button>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'MID_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="MID_SUV"
+                        onclick="filterByData(this)">
+                    중형SUV
+                </button>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == 'MID_SUV'} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class="MID_SUV"
-					onclick="filterByData(this)">중형SUV</button>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'LARGE_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="LARGE_SUV"
+                        onclick="filterByData(this)">
+                    대형SUV
+                </button>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == 'LARGE_SUV'} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class="LARGE_SUV"
-					onclick="filterByData(this)">대형SUV</button>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'MID_SEDAN'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="MID_SEDAN"
+                        onclick="filterByData(this)">
+                    세단
+                </button>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == 'MID_SEDAN'} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class="MID_SEDAN"
-					onclick="filterByData(this)">세단</button>
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'PERFORMANCE'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="PERFORMANCE"
+                        onclick="filterByData(this)">
+                    고성능
+                </button>
+            </div>
+        </div>
 
-				<button type="button" class="filter-btn"
-					th:classappend="${selectedClass == 'PERFORMANCE'} ? ' active'"
-					th:data-brand="${selectedBrand}" data-class="PERFORMANCE"
-					onclick="filterByData(this)">고성능</button>
+        <div class="ev-vehicle-result">
+            조회 결과 <strong th:text="${totalCount}">0</strong>건
+        </div>
 
-			</div>
-		</div>
+        <div class="ev-vehicle-list-grid" th:if="${!#lists.isEmpty(vehicleList)}">
+            <article class="ev-vehicle-card"
+                     th:each="vehicle : ${vehicleList}"
+                     th:data-id="${vehicle.vehicleId}"
+                     onclick="goDetail(this)">
+                <div class="ev-vehicle-card__image-box">
+                    <img th:src="${vehicle.imageUrl}"
+                         th:alt="${vehicle.modelName}"
+                         onerror="this.src='/images/evcar_logo.png'">
+                </div>
 
-		<!-- 결과 건수 -->
-		<div class="result-header mb-3">
-			조회 결과 <strong th:text="${totalCount}">0</strong>건
-		</div>
+                <div class="ev-vehicle-card__body">
+                    <p class="ev-vehicle-card__brand" th:text="${vehicle.brand}">HYUNDAI</p>
+                    <h3 class="ev-vehicle-card__model" th:text="${vehicle.modelName}">CASPER EV</h3>
+                    <p class="ev-vehicle-card__price" th:text="${vehicle.priceBasicFormatted}">3,100만원 ~ 3,700만원</p>
+                </div>
+            </article>
+        </div>
 
-		<!-- 차량 카드 목록 -->
-		<div class="row g-3">
+        <div class="ev-vehicle-empty" th:if="${#lists.isEmpty(vehicleList)}">
+            조회된 차량이 없습니다.
+        </div>
 
-			<!-- 결과 없을 때 -->
-			<div class="col-12 text-center text-muted py-5"
-				th:if="${#lists.isEmpty(vehicleList)}">조회된 차량이 없습니다.</div>
+        <div class="ev-vehicle-pagination" th:if="${totalPages > 1}">
+            <button type="button"
+                    class="ev-vehicle-filter-chip"
+                    th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:text="${i + 1}"
+                    th:classappend="${i == currentPage} ? ' is-active'"
+                    th:data-brand="${selectedBrand}"
+                    th:data-class="${selectedClass}"
+                    th:data-page="${i}"
+                    onclick="goPage(this)">
+                1
+            </button>
+        </div>
+    </section>
+</main>
 
-			<!-- 차량 카드 -->
-			<div class="col-12 col-sm-6 col-md-4 col-lg-4"
-				th:each="v : ${vehicleList}">
-				<div class="vehicle-card" th:data-id="${v.vehicleId}"
-					onclick="goDetail(this)">
+<div th:replace="~{layout/footer :: footer}"></div>
 
-					<!-- 이미지 -->
-					<div class="vehicle-img-box">
-						<img th:src="${v.imageUrl}" th:alt="${v.modelName}"
-							onerror="this.src='/images/evcar_logo.png'">
-					</div>
+<button class="ev-vehicle-ai-fab" type="button" onclick="alert('AI 챗봇 준비 중입니다.')">AI</button>
 
-					<!-- 카드 정보 -->
-					<div class="card-body-inner">
-						<div class="card-brand" th:text="${v.brand}">브랜드</div>
-						<div class="card-model" th:text="${v.modelName}">모델명</div>
-						<div class="card-price" th:text="${v.priceBasicFormatted}">가격</div>
-					</div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script>
+    'use strict';
 
-				</div>
-			</div>
+    function filterByData(button) {
+        const brand = button.getAttribute('data-brand') || '전체';
+        const vehicleClass = button.getAttribute('data-class') || '전체';
 
-		</div>
+        location.href = '/vehicle/list?brand=' + encodeURIComponent(brand)
+            + '&vehicleClass=' + encodeURIComponent(vehicleClass);
+    }
 
-		<!-- 페이지네이션 -->
-		<div class="d-flex justify-content-center mt-4 gap-2"
-			th:if="${totalPages > 1}">
-			<button type="button" class="filter-btn"
-				th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-				th:text="${i + 1}" th:classappend="${i == currentPage} ? ' active'"
-				th:data-brand="${selectedBrand}" th:data-class="${selectedClass}"
-				th:data-page="${i}" onclick="goPage(this)"></button>
-		</div>
+    function goDetail(card) {
+        const vehicleId = card.getAttribute('data-id');
 
-	</div>
+        if (!vehicleId) {
+            return;
+        }
 
-	<!-- 푸터 -->
-	<div th:replace="~{layout/footer :: footer}"></div>
+        location.href = '/vehicle/' + vehicleId;
+    }
 
-	<!-- AI 플로팅 버튼 -->
-	<button class="ai-fab" onclick="alert('AI 챗봇 준비 중입니다.')">AI</button>
+    function goPage(button) {
+        const brand = button.getAttribute('data-brand') || '전체';
+        const vehicleClass = button.getAttribute('data-class') || '전체';
+        const page = button.getAttribute('data-page') || '0';
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-	<script>
-		function filterByData(btn) {
-			const brand = btn.getAttribute('data-brand');
-			const vehicleClass = btn.getAttribute('data-class');
-			location.href = '/vehicle/list?brand=' + encodeURIComponent(brand)
-					+ '&vehicleClass=' + encodeURIComponent(vehicleClass);
-		}
-
-		function goDetail(card) {
-			const id = card.getAttribute('data-id');
-			location.href = '/vehicle/' + id;
-		}
-
-		function goPage(btn) {
-			const brand = btn.getAttribute('data-brand');
-			const vehicleClass = btn.getAttribute('data-class');
-			const page = btn.getAttribute('data-page');
-			location.href = '/vehicle/list?brand=' + encodeURIComponent(brand)
-					+ '&vehicleClass=' + encodeURIComponent(vehicleClass)
-					+ '&page=' + page;
-		}
-	</script>
+        location.href = '/vehicle/list?brand=' + encodeURIComponent(brand)
+            + '&vehicleClass=' + encodeURIComponent(vehicleClass)
+            + '&page=' + encodeURIComponent(page);
+    }
+</script>
 </body>
 </html>

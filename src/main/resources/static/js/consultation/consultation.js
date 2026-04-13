@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     initPreferredDatetimePlaceholder();
-    initPaginationDisabledState();
+    initDisabledPagination();
 });
 
 function initPreferredDatetimePlaceholder() {
@@ -17,7 +17,7 @@ function initPreferredDatetimePlaceholder() {
     });
 }
 
-function initPaginationDisabledState() {
+function initDisabledPagination() {
     const disabledLinks = document.querySelectorAll('.ev-pagination__link.is-disabled');
 
     disabledLinks.forEach((link) => {

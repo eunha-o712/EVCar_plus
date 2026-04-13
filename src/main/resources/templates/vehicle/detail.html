@@ -1,159 +1,141 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>차량 상세</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량 상세 - EV Consulting</title>
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-
-<link th:href="@{/css/vehicle/vehicle-detail.css}" rel="stylesheet">
-
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<link rel="stylesheet" th:href="@{/css/common/common.css}">
-<link rel="stylesheet" th:href="@{/css/common/main.css}">
-
-
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/vehicle/vehicle-detail.css}">
 </head>
-
 <body>
+<div th:replace="~{layout/header :: header}"></div>
 
-	<div th:replace="~{layout/header :: header}"></div>
+<main class="ev-vehicle-detail-page">
+    <section class="ev-vehicle-detail-section">
+        <div class="ev-vehicle-detail-wrap">
+            <div class="ev-vehicle-detail-main">
+                <div class="ev-vehicle-detail-main__left">
+                    <div th:if="${#lists.isEmpty(images)}" class="ev-vehicle-detail-empty-image">
+                        이미지가 없습니다.
+                    </div>
 
-	<div class="detail-wrap">
-		<div class="row">
-			<div class="col-md-8">
+                    <div class="ev-vehicle-gallery" th:if="${!#lists.isEmpty(images)}">
+                        <div class="ev-vehicle-gallery__viewer">
+                            <div class="ev-vehicle-gallery__track" id="vehicleGalleryTrack">
+                                <div class="ev-vehicle-gallery__slide"
+                                     th:each="img, stat : ${images}"
+                                     th:classappend="${stat.index == 0} ? ' is-active' : ''">
+                                    <img th:src="${img.imageUrl}"
+                                         class="ev-vehicle-gallery__image"
+                                         alt="차량 이미지">
+                                </div>
+                            </div>
 
-				<!-- 🔥 이미지 없을 때 -->
-				<div th:if="${#lists.isEmpty(images)}"
-					class="text-center text-muted">이미지가 없습니다.</div>
+                            <button type="button"
+                                    class="ev-vehicle-gallery__nav ev-vehicle-gallery__nav--prev"
+                                    id="vehicleGalleryPrev"
+                                    aria-label="이전 이미지">
+                                ‹
+                            </button>
 
-				<!-- 🔥 캐러셀 -->
-				<div id="carCarousel" class="carousel slide"
-					th:if="${!#lists.isEmpty(images)}">
-					<div class="carousel-inner car-image">
+                            <button type="button"
+                                    class="ev-vehicle-gallery__nav ev-vehicle-gallery__nav--next"
+                                    id="vehicleGalleryNext"
+                                    aria-label="다음 이미지">
+                                ›
+                            </button>
+                        </div>
 
-						<div th:each="img, stat : ${images}"
-							th:class="${stat.index == 0} ? 'carousel-item active' : 'carousel-item'">
-							<img th:src="${img.imageUrl}" class="slide-img">
-						</div>
+                        <div class="ev-vehicle-gallery__thumbs">
+                            <button type="button"
+                                    class="ev-vehicle-gallery__thumb"
+                                    th:each="img, stat : ${images}"
+                                    th:classappend="${stat.index == 0} ? ' is-active' : ''"
+                                    th:attr="data-index=${stat.index}">
+                                <img th:src="${img.imageUrl}"
+                                     class="ev-vehicle-gallery__thumb-image"
+                                     alt="차량 썸네일">
+                            </button>
+                        </div>
+                    </div>
 
-					</div>
+                    <div class="ev-vehicle-detail-actions">
+                        <a th:href="@{/vehicle}" class="ev-vehicle-detail-actions__back">목록으로</a>
+                    </div>
+                </div>
 
-					<button class="carousel-control-prev" type="button"
-						data-bs-target="#carCarousel" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon"></span>
-					</button>
+                <div class="ev-vehicle-detail-main__right">
+                    <div class="ev-vehicle-detail-card">
+                        <div class="ev-vehicle-detail-card__title-row">
+                            <div>
+                                <h2 class="ev-vehicle-detail-card__title" th:text="${vehicle.modelNameDisplay}">IONIQ 9</h2>
+                                <p class="ev-vehicle-detail-card__sub"
+                                   th:text="${vehicle.brandKor + ' | ' + vehicle.vehicleClassKor}">
+                                    현대 | 대형 SUV
+                                </p>
+                            </div>
 
-					<button class="carousel-control-next" type="button"
-						data-bs-target="#carCarousel" data-bs-slide="next">
-						<span class="carousel-control-next-icon"></span>
-					</button>
-				</div>
+                            <button type="button"
+                                    class="ev-vehicle-detail-card__wishlist"
+                                    id="wishlistBtn"
+                                    th:data-id="${vehicle.vehicleId}"
+                                    aria-label="관심차량">
+                                <span th:if="${vehicle.wished}">❤️</span>
+                                <span th:unless="${vehicle.wished}">🤍</span>
+                            </button>
+                        </div>
 
-				<!-- 🔥 썸네일 -->
-				<div class="thumbnail-wrap" th:if="${!#lists.isEmpty(images)}">
-					<img th:each="img, stat : ${images}" th:src="${img.imageUrl}"
-						class="thumbnail-img"
-						th:classappend="${stat.index == 0} ? ' active'"
-						th:attr="data-index=${stat.index}">
-				</div>
+                        <div class="ev-vehicle-detail-card__price">
+                            <span th:if="${vehicle.pricePremium != null and vehicle.pricePremium > 0}">
+                                ₩ <span th:text="${#numbers.formatInteger(vehicle.priceBasic, 0, 'COMMA')}"></span>만원 ~
+                                <span th:text="${#numbers.formatInteger(vehicle.pricePremium, 0, 'COMMA')}"></span>만원
+                            </span>
+                            <span th:unless="${vehicle.pricePremium != null and vehicle.pricePremium > 0}">
+                                ₩ <span th:text="${#numbers.formatInteger(vehicle.priceBasic, 0, 'COMMA')}"></span>만원
+                            </span>
+                        </div>
 
-			</div>
+                        <div class="ev-vehicle-detail-card__spec-box">
+                            <div class="ev-vehicle-detail-card__spec-row">
+                                <span>1회충전 주행거리</span>
+                                <strong th:text="${vehicle.drivingRange != null ? vehicle.drivingRange + 'km' : '-'}">620km</strong>
+                            </div>
 
-			<div class="col-md-4 detail-info">
-				<div style="display: flex; justify-content: space-between;">
+                            <div class="ev-vehicle-detail-card__spec-row">
+                                <span>충전시간</span>
+                                <strong th:text="${vehicle.fastChargingTimeDisplay != null and !#strings.isEmpty(vehicle.fastChargingTimeDisplay) ? vehicle.fastChargingTimeDisplay : '-'}">약 24분</strong>
+                            </div>
 
-					<div class="title" th:text="${vehicle.modelNameDisplay}"></div>
+                            <div class="ev-vehicle-detail-card__spec-row">
+                                <span>충전방식</span>
+                                <strong th:text="${vehicle.chargingMethodKor != null and !#strings.isEmpty(vehicle.chargingMethodKor) ? vehicle.chargingMethodKor : '-'}">급속 / 완속</strong>
+                            </div>
 
-					<div class="wishlist" id="wishlistBtn"
-						th:data-id="${vehicle.vehicleId}">
-						<span th:if="${vehicle.wished}">❤️</span> <span
-							th:unless="${vehicle.wished}">🤍</span>
-					</div>
-				</div>
+                            <div class="ev-vehicle-detail-card__spec-row">
+                                <span>배터리</span>
+                                <strong th:text="${vehicle.batteryCapacity != null ? vehicle.batteryCapacity + ' kWh' : '-'}">110.3 kWh</strong>
+                            </div>
+                        </div>
 
-				<div style="color: #777; margin-top: 6px;">
-					<span th:text="${vehicle.brandKor}"></span> | <span
-						th:text="${vehicle.vehicleClassKor}"></span>
-				</div>
+                        <a th:if="${vehicle.catalogUrl != null and !#strings.isEmpty(vehicle.catalogUrl)}"
+                           th:href="${vehicle.catalogUrl}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="ev-vehicle-detail-card__catalog-btn">
+                            카탈로그 보기 ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
 
-				<div class="spec-box">
-					<div class="price-main">
-						₩ <span th:text="${vehicle.priceBasic}"></span>만원 ~
-					</div>
+<div th:replace="~{layout/footer :: footer}"></div>
 
-					<div class="spec-row">
-						<span>1회충전 주행거리</span> <strong
-							th:text="${vehicle.drivingRange} + 'km'"></strong>
-					</div>
-
-					<!-- 🔥 수정: 충전시간 -->
-					<div class="spec-row">
-						<span>충전시간</span> <strong
-							th:text="${vehicle.fastChargingTimeDisplay}"></strong>
-					</div>
-
-					<!-- 🔥 수정: 충전방식 -->
-					<div class="spec-row">
-						<span>충전방식</span> <strong th:text="${vehicle.chargingMethodKor}"></strong>
-					</div>
-
-					<div class="spec-row">
-						<span>배터리</span> <strong
-							th:text="${vehicle.batteryCapacity} + ' kWh'"></strong>
-					</div>
-				</div>
-
-				<a th:href="@{${vehicle.catalogUrl}}" target="_blank"
-					class="catalog-btn"> 카탈로그 보기 ↗ </a>
-			</div>
-		</div>
-
-		<div class="mt-4">
-			<a href="/vehicle/list" class="btn btn-secondary">목록으로</a>
-		</div>
-	</div>
-
-	<div th:replace="~{layout/footer :: footer}"></div>
-
-	<script>
-'use strict';
-
-const thumbnails = document.querySelectorAll('.thumbnail-img');
-
-thumbnails.forEach((thumb, index) => {
-	thumb.addEventListener('click', () => {
-		document.querySelectorAll('.carousel-item').forEach(el => el.classList.remove('active'));
-		document.querySelectorAll('.thumbnail-img').forEach(el => el.classList.remove('active'));
-
-		document.querySelectorAll('.carousel-item')[index].classList.add('active');
-		thumb.classList.add('active');
-	});
-});
-
-document.getElementById("wishlistBtn").addEventListener("click", function () {
-	const vehicleId = this.dataset.id;
-	const isWished = this.textContent.trim() === "❤️";
-
-	const url = isWished ? "/wishlist/delete" : "/wishlist/add";
-
-	fetch(url, {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: `vehicleId=${vehicleId}`
-	}).then(() => {
-		this.textContent = isWished ? "🤍" : "❤️";
-	});
-});
-</script>
-
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-	
-
-	
-
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/vehicle/vehicle-detail.js}"></script>
 </body>
 </html>

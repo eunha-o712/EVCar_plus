@@ -9,22 +9,28 @@
 <main class="ev-consultation-page">
     <section class="ev-consultation-hero ev-consultation-hero--form">
         <div class="ev-consultation-hero__inner">
-            <p class="ev-consultation-hero__eyebrow">Customer Center</p>
+            <p class="ev-consultation-hero__eyebrow">CUSTOMER CENTER</p>
             <h2 class="ev-consultation-hero__title">상담 신청</h2>
             <p class="ev-consultation-hero__desc">원하시는 차량과 희망 상담 일정을 입력해 주세요.</p>
         </div>
     </section>
 
-    <section class="ev-consultation-section">
+    <section class="ev-consultation-section ev-consultation-section--form">
         <form class="ev-consultation-form"
               th:action="@{/consultation/form}"
               th:object="${consultationCreateRequestDto}"
               method="post">
 
+            <input type="hidden" th:field="*{userId}">
+
             <div class="ev-consultation-form__grid">
                 <div class="ev-consultation-form__field">
-                    <label for="userId" class="ev-consultation-form__label">회원 ID</label>
-                    <input type="text" id="userId" th:field="*{userId}" class="ev-consultation-form__input" placeholder="예: user0001">
+                    <label for="displayUserId" class="ev-consultation-form__label">회원 ID</label>
+                    <input type="text"
+                           id="displayUserId"
+                           class="ev-consultation-form__input"
+                           th:value="${loginId}"
+                           readonly>
                 </div>
 
                 <div class="ev-consultation-form__field">
@@ -41,12 +47,20 @@
 
                 <div class="ev-consultation-form__field">
                     <label for="preferredDatetime" class="ev-consultation-form__label">희망 상담 일정</label>
-                    <input type="text" id="preferredDatetime" th:field="*{preferredDatetime}" class="ev-consultation-form__input" placeholder="예: 2026-04-11 14:00">
+                    <input type="text"
+                           id="preferredDatetime"
+                           th:field="*{preferredDatetime}"
+                           class="ev-consultation-form__input"
+                           placeholder="예: 2026-04-11 14:00">
                 </div>
 
                 <div class="ev-consultation-form__field">
                     <label for="budget" class="ev-consultation-form__label">예산(만원)</label>
-                    <input type="number" id="budget" th:field="*{budget}" class="ev-consultation-form__input" placeholder="예: 4500">
+                    <input type="number"
+                           id="budget"
+                           th:field="*{budget}"
+                           class="ev-consultation-form__input"
+                           placeholder="예: 4500">
                 </div>
 
                 <div class="ev-consultation-form__field ev-consultation-form__field--full">
@@ -80,5 +94,6 @@
 <div th:replace="~{layout/footer :: footer}"></div>
 
 <script th:src="@{/js/consultation/consultation.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
 </body>
 </html>

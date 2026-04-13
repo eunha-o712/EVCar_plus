@@ -9,21 +9,23 @@
 <main class="ev-faq-page">
     <section class="ev-faq-hero">
         <div class="ev-faq-hero__inner">
-            <p class="ev-faq-hero__eyebrow">Customer Center</p>
+            <p class="ev-faq-hero__eyebrow">CUSTOMER CENTER</p>
             <h2 class="ev-faq-hero__title">FAQ</h2>
             <p class="ev-faq-hero__desc">자주 묻는 질문을 먼저 확인하고 빠르게 답을 찾아보세요.</p>
         </div>
     </section>
 
-    <section class="ev-faq-section">
-        <form class="ev-faq-search" th:action="@{/faq/search}" method="get">
-            <input type="text"
-                   name="keyword"
-                   class="ev-faq-search__input"
-                   placeholder="질문 또는 답변을 검색하세요."
-                   th:value="${keyword}">
-            <button type="submit" class="ev-faq-search__button">검색</button>
-        </form>
+    <section class="ev-faq-section ev-faq-section--list">
+        <div class="ev-faq-toolbar">
+            <form class="ev-faq-search" th:action="@{/faq/search}" method="get">
+                <input type="text"
+                       name="keyword"
+                       class="ev-faq-search__input"
+                       placeholder="질문 또는 답변을 검색하세요."
+                       th:value="${keyword}">
+                <button type="submit" class="ev-faq-search__button">검색</button>
+            </form>
+        </div>
 
         <div class="ev-faq-accordion" th:if="${!#lists.isEmpty(faqList)}">
             <article class="ev-faq-item" th:each="faq : ${faqList}">
@@ -45,11 +47,53 @@
         <div class="ev-faq-empty" th:if="${#lists.isEmpty(faqList)}">
             검색 결과가 없습니다.
         </div>
+
+        <nav class="ev-pagination"
+             th:if="${totalPages > 1}"
+             aria-label="FAQ 페이지 이동">
+            <a class="ev-pagination__link"
+               th:classappend="${!hasPrevious} ? ' is-disabled'"
+               th:href="${hasPrevious} ? @{/faq/search(page=1, keyword=${keyword})} : '#'"
+               aria-label="첫 페이지">
+                &laquo;
+            </a>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasPrevious} ? ' is-disabled'"
+               th:href="${hasPrevious} ? @{/faq/search(page=${currentPage - 1}, keyword=${keyword})} : '#'"
+               aria-label="이전 페이지">
+                &lsaquo;
+            </a>
+
+            <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+                <a class="ev-pagination__link"
+                   th:classappend="${pageNumber == currentPage} ? ' is-active'"
+                   th:href="@{/faq/search(page=${pageNumber}, keyword=${keyword})}"
+                   th:text="${pageNumber}">
+                    1
+                </a>
+            </th:block>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasNext} ? ' is-disabled'"
+               th:href="${hasNext} ? @{/faq/search(page=${currentPage + 1}, keyword=${keyword})} : '#'"
+               aria-label="다음 페이지">
+                &rsaquo;
+            </a>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasNext} ? ' is-disabled'"
+               th:href="${hasNext} ? @{/faq/search(page=${totalPages}, keyword=${keyword})} : '#'"
+               aria-label="마지막 페이지">
+                &raquo;
+            </a>
+        </nav>
     </section>
 </main>
 
 <div th:replace="~{layout/footer :: footer}"></div>
 
 <script th:src="@{/js/faq/faq.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
 </body>
 </html>

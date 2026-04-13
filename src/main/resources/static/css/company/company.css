@@ -31,7 +31,6 @@
 .ev-company-hero__inner {
     position: relative;
     z-index: 1;
-   
 }
 
 .ev-company-hero__eyebrow {
@@ -108,10 +107,20 @@
     background: #ffffff;
 }
 
+.ev-company-section--dark {
+    background:
+        radial-gradient(circle at top right, rgba(0, 180, 216, 0.10), transparent 28%),
+        linear-gradient(135deg, #07111f 0%, #0d1b2d 48%, #163354 100%);
+}
+
 .ev-company-section__heading {
     max-width: 720px;
     margin: 0 auto 3.5rem;
     text-align: center;
+}
+
+.ev-company-section__heading--light {
+    margin-bottom: 4rem;
 }
 
 .ev-company-section__label {
@@ -132,11 +141,19 @@
     letter-spacing: -0.03em;
 }
 
+.ev-company-section__title--light {
+    color: #ffffff;
+}
+
 .ev-company-section__desc {
     color: #667085;
     font-size: 1rem;
     line-height: 1.8;
     word-break: keep-all;
+}
+
+.ev-company-section__desc--light {
+    color: rgba(255, 255, 255, 0.78);
 }
 
 .ev-company-card {
@@ -152,7 +169,7 @@
 .ev-company-card:hover {
     transform: translateY(-6px);
     border-color: rgba(0, 180, 216, 0.28);
-    box-shadow: 0 24px 44px rgba(15, 23, 42, 0.1);
+    box-shadow: 0 24px 44px rgba(15, 23, 42, 0.10);
 }
 
 .ev-company-card__number {
@@ -178,7 +195,55 @@
 }
 
 .ev-company-card__text {
+    margin: 0;
     color: #667085;
+    font-size: 0.98rem;
+    line-height: 1.8;
+    word-break: keep-all;
+}
+
+.ev-company-feature-card {
+    height: 100%;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(10px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.ev-company-feature-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(83, 216, 255, 0.34);
+    box-shadow: 0 24px 44px rgba(0, 0, 0, 0.20);
+}
+
+.ev-company-feature-card__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    background: rgba(83, 216, 255, 0.14);
+    color: #53d8ff;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.ev-company-feature-card__title {
+    margin-bottom: 0.9rem;
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.ev-company-feature-card__text {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
     font-size: 0.98rem;
     line-height: 1.8;
     word-break: keep-all;
@@ -192,6 +257,10 @@
 
     .ev-company-section {
         padding: 88px 0;
+    }
+
+    .ev-company-section__heading--light {
+        margin-bottom: 3rem;
     }
 }
 
@@ -222,7 +291,8 @@
         padding: 72px 0;
     }
 
-    .ev-company-card {
+    .ev-company-card,
+    .ev-company-feature-card {
         padding: 1.5rem;
         border-radius: 20px;
     }
