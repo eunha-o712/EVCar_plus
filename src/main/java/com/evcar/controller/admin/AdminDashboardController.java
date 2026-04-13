@@ -19,7 +19,7 @@ public class AdminDashboardController {
     public String dashboard(Model model) {
         AdminDashboardResponseDto dashboard = adminDashboardService.getDashboardData();
         model.addAttribute("dashboard", dashboard);
-        return "admin/dashboard";
+        return "admin/dashboard/main-dashboard";
     }
 
 }

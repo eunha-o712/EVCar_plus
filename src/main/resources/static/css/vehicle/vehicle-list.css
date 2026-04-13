@@ -9,72 +9,109 @@ body {
 .ev-vehicle-hero {
     position: relative;
     background:
-        radial-gradient(circle at 85% 20%, rgba(0, 180, 216, 0.14), transparent 20%),
-        linear-gradient(90deg, #050b1c 0%, #07152f 45%, #0a2748 100%);
+        radial-gradient(circle at 82% 24%, rgba(0, 180, 216, 0.16), transparent 20%),
+        linear-gradient(90deg, #020816 0%, #040b2d 40%, #0d3e67 100%);
     color: #ffffff;
-    padding: 112px 20px 150px;
+    padding: 112px 20px 180px;
+    overflow: hidden;
 }
 
-.ev-vehicle-hero__inner,
-.ev-vehicle-section {
+.ev-vehicle-hero__inner {
     max-width: 1400px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 520px);
+    gap: 48px;
+    align-items: center;
+}
+
+.ev-vehicle-hero__copy {
+    max-width: 700px;
 }
 
 .ev-vehicle-hero__eyebrow {
-    margin: 0 0 12px;
+    margin: 0 0 18px;
     color: #9fb5d9;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 
 .ev-vehicle-hero__title {
     margin: 0;
-    font-size: 2.6rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    color: #ffffff;
+    font-size: 4.25rem;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.05em;
+}
+
+.ev-vehicle-hero__title-accent {
+    display: block;
+    color: #73e5ff;
 }
 
 .ev-vehicle-hero__desc {
-    margin: 16px 0 0;
+    margin: 28px 0 0;
     max-width: 640px;
-    color: #d7e3f8;
-    font-size: 1rem;
-    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 1.15rem;
+    line-height: 1.8;
+}
+
+.ev-vehicle-hero__visual {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ev-vehicle-hero__visual-card {
+    width: min(100%, 520px);
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 34px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+    box-shadow: 0 28px 80px rgba(2, 6, 24, 0.42);
+    backdrop-filter: blur(18px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+.ev-vehicle-hero__visual-logo {
+    width: 72%;
+    max-width: 340px;
+    display: block;
 }
 
 .ev-vehicle-section {
+    max-width: 1400px;
+    margin: 0 auto;
     padding: 0 20px 72px;
 }
 
 .ev-vehicle-section--list {
     position: relative;
-    margin-top: 0;
-    z-index: 1;
-}
-
-/* 핵심: 필터만 살짝 걸치게 */
-.ev-vehicle-filter-panel {
-    display: grid;
-    gap: 14px;
-    margin-top: -58px;
-    position: relative;
+    margin-top: -94px;
     z-index: 3;
 }
 
-/* 유리카드 느낌 유지 + 과한 덩어리감 줄임 */
+.ev-vehicle-filter-panel {
+    display: grid;
+    gap: 14px;
+}
+
 .ev-vehicle-filter-group {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
     padding: 18px 22px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.24);
     border-radius: 24px;
-    background: rgba(255, 255, 255, 0.88);
-    box-shadow: 0 14px 30px rgba(10, 25, 47, 0.10);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 18px 36px rgba(10, 25, 47, 0.12);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
@@ -82,17 +119,17 @@ body {
 .ev-vehicle-filter-group__label {
     min-width: 52px;
     color: #16253d;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     font-weight: 700;
 }
 
 .ev-vehicle-filter-chip {
     border: 1px solid #cfd6e3;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
     color: #4b5a70;
     border-radius: 10px;
     padding: 8px 18px;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.18s ease;
@@ -110,15 +147,16 @@ body {
     color: #ffffff;
 }
 
-/* 핵심: 필터 아래 결과 시작 간격 */
 .ev-vehicle-result {
-    margin: 34px 0 22px;
+    margin: 34px 0 24px;
     color: #596579;
-    font-size: 0.96rem;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 .ev-vehicle-result strong {
     color: #16253d;
+    font-weight: 800;
 }
 
 .ev-vehicle-list-grid {
@@ -132,24 +170,28 @@ body {
     flex-direction: column;
     overflow: hidden;
     border: 1px solid #e4e9f1;
-    border-radius: 24px;
+    border-radius: 28px;
     background: #ffffff;
     box-shadow: 0 18px 34px rgba(10, 25, 47, 0.06);
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
 .ev-vehicle-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(63, 81, 181, 0.25);
-    box-shadow: 0 22px 38px rgba(10, 25, 47, 0.10);
+    transform: translateY(-6px);
+    border-color: rgba(63, 81, 181, 0.22);
+    box-shadow: 0 24px 42px rgba(10, 25, 47, 0.10);
 }
 
 .ev-vehicle-card__image-box {
     width: 100%;
-    aspect-ratio: 16 / 10;
-    background: #f0f3f8;
+    aspect-ratio: 16 / 10.5;
+    background: linear-gradient(180deg, #f8fbff 0%, #edf3f8 100%);
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
 }
 
 .ev-vehicle-card__image-box img {
@@ -160,47 +202,86 @@ body {
 }
 
 .ev-vehicle-card__body {
-    padding: 18px 18px 20px;
+    padding: 22px 22px 24px;
+}
+
+.ev-vehicle-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .ev-vehicle-card__brand {
-    margin: 0 0 6px;
-    color: #7a8799;
-    font-size: 0.78rem;
-    font-weight: 600;
+    margin: 0;
+    color: #667085;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 
+.ev-vehicle-card__class {
+    color: #6d7890;
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
 .ev-vehicle-card__model {
-    margin: 0;
+    margin: 10px 0 0;
     color: #16253d;
-    font-size: 1.25rem;
+    font-size: 1.45rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.ev-vehicle-card__bottom {
+    margin-top: 16px;
 }
 
 .ev-vehicle-card__price {
-    margin: 10px 0 0;
-    color: #3f51b5;
-    font-size: 0.98rem;
-    font-weight: 700;
+    margin: 0;
+    color: #3047a9;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.ev-vehicle-card__range {
+    margin: 8px 0 0;
+    color: #7a8799;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .ev-vehicle-empty {
     border: 1px solid #e4e9f1;
-    border-radius: 20px;
+    border-radius: 28px;
     background: #ffffff;
-    padding: 56px 24px;
+    padding: 64px 24px;
     text-align: center;
-    color: #6a7588;
     box-shadow: 0 16px 28px rgba(10, 25, 47, 0.05);
+}
+
+.ev-vehicle-empty__title {
+    margin: 0;
+    color: #16253d;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.ev-vehicle-empty__desc {
+    margin: 12px 0 0;
+    color: #6a7588;
+    font-size: 1rem;
+    line-height: 1.7;
 }
 
 .ev-vehicle-pagination {
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 32px;
+    margin-top: 34px;
     flex-wrap: wrap;
 }
 
@@ -214,8 +295,8 @@ body {
     border-radius: 50%;
     background: #3f51b5;
     color: #ffffff;
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 0.95rem;
+    font-weight: 800;
     box-shadow: 0 8px 20px rgba(63, 81, 181, 0.35);
     cursor: pointer;
     z-index: 1000;
@@ -226,6 +307,18 @@ body {
 }
 
 @media (max-width: 1199px) {
+    .ev-vehicle-hero__inner {
+        grid-template-columns: 1fr;
+    }
+
+    .ev-vehicle-hero__visual {
+        justify-content: flex-start;
+    }
+
+    .ev-vehicle-hero__title {
+        font-size: 3.6rem;
+    }
+
     .ev-vehicle-list-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -233,30 +326,41 @@ body {
 
 @media (max-width: 767px) {
     .ev-vehicle-hero {
-        padding: 96px 16px 120px;
-    }
-
-    .ev-vehicle-hero__title {
-        font-size: 2rem;
+        padding: 96px 16px 138px;
     }
 
     .ev-vehicle-section {
         padding: 0 16px 56px;
     }
 
-    .ev-vehicle-filter-panel {
-        margin-top: -44px;
-        gap: 12px;
+    .ev-vehicle-section--list {
+        margin-top: -74px;
+    }
+
+    .ev-vehicle-hero__title {
+        font-size: 2.5rem;
+    }
+
+    .ev-vehicle-hero__desc {
+        font-size: 1rem;
+    }
+
+    .ev-vehicle-hero__visual-card {
+        border-radius: 24px;
     }
 
     .ev-vehicle-filter-group {
-        padding: 14px;
-        border-radius: 18px;
+        padding: 16px;
+        border-radius: 20px;
     }
 
     .ev-vehicle-list-grid {
         grid-template-columns: 1fr;
         gap: 18px;
+    }
+
+    .ev-vehicle-card__body {
+        padding: 18px 18px 20px;
     }
 
     .ev-vehicle-ai-fab {

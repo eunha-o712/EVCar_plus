@@ -3,6 +3,13 @@
 const DEFAULT_ZCODE = '11';
 const DEFAULT_ZSCODE = '11680';
 
+const DEFAULT_CENTER = {
+    lat: 37.4979,
+    lng: 127.0276
+};
+
+const DEFAULT_RADIUS_KM = 1;
+
 const REGION_VIEW = {
     '11': { lat: 37.5665, lng: 126.9780, level: 7 },
     '26': { lat: 35.1796, lng: 129.0756, level: 7 },
@@ -43,7 +50,7 @@ window.onload = function () {
     }
 
     map = new kakao.maps.Map(mapElement, {
-        center: new kakao.maps.LatLng(37.4979, 127.0276),
+        center: new kakao.maps.LatLng(DEFAULT_CENTER.lat, DEFAULT_CENTER.lng),
         level: 5
     });
 
@@ -302,7 +309,7 @@ async function searchByRegion(isInitialLoad) {
             console.log('[디버그] 첫 번째 충전소 데이터:', stations[0]);
         }
 
-        renderStations(stations, zcode, zscode);
+        renderStations(stations, zcode, zscode, isInitialLoad);
     } catch (error) {
         console.error('searchByRegion error =', error);
         alert('충전소 정보를 불러오지 못했습니다.');
@@ -311,7 +318,7 @@ async function searchByRegion(isInitialLoad) {
     }
 }
 
-function renderStations(stations, zcode, zscode) {
+function renderStations(stations, zcode, zscode, isInitialLoad) {
     clearMarkers();
     closeOverlay();
     closeDetailPanel();
@@ -322,9 +329,35 @@ function renderStations(stations, zcode, zscode) {
         return;
     }
 
+    let targetStations = stations;
+
+    if (isInitialLoad) {
+        const filteredStations = stations.filter(function (station) {
+            const lat = toNumber(station.lat);
+            const lng = toNumber(station.lng);
+
+            if (!isValidCoordinate(lat, lng)) {
+                return false;
+            }
+
+            const distanceKm = getDistanceKm(
+                DEFAULT_CENTER.lat,
+                DEFAULT_CENTER.lng,
+                lat,
+                lng
+            );
+
+            return distanceKm <= DEFAULT_RADIUS_KM;
+        });
+
+        if (filteredStations.length > 0) {
+            targetStations = filteredStations;
+        }
+    }
+
     const newMarkers = [];
 
-    stations.forEach(function (station) {
+    targetStations.forEach(function (station) {
         const lat = toNumber(station.lat);
         const lng = toNumber(station.lng);
 
@@ -751,4 +784,25 @@ function escapeHtml(value) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+}
+
+function getDistanceKm(lat1, lng1, lat2, lng2) {
+    const earthRadiusKm = 6371;
+    const dLat = toRadians(lat2 - lat1);
+    const dLng = toRadians(lng2 - lng1);
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return earthRadiusKm * c;
+}
+
+function toRadians(degree) {
+    return degree * Math.PI / 180;
 }

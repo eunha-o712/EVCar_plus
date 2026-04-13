@@ -1,7 +1,6 @@
 package com.evcar.controller.mypage;
 
 import com.evcar.domain.user.User;
-import com.evcar.domain.user.UserStatus;
 import com.evcar.dto.mypage.MyConsultationResponseDto;
 import com.evcar.dto.mypage.MyInquiryResponseDto;
 import com.evcar.dto.mypage.MyPageInfoResponseDto;
@@ -209,17 +208,12 @@ public class MyPageController {
         try {
             myPageService.withdraw(userId, dto);
             session.invalidate();
-            return "redirect:/mypage/withdraw/success";
+            return "redirect:/main";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("withdrawErrorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("withdrawRequestDto", dto);
             return "redirect:/mypage/withdraw";
         }
-    }
-
-    @GetMapping("/withdraw/success")
-    public String withdrawSuccess() {
-        return "mypage/withdrawSuccess";
     }
 
     private String handlePage(HttpSession session, Model model, PageHandler handler) {
@@ -231,18 +225,11 @@ public class MyPageController {
 
         try {
             MyPageInfoResponseDto info = myPageService.getMyPageInfo(userId);
-
-            if (UserStatus.WITHDRAWN.name().equalsIgnoreCase(info.getUserStatus())) {
-                session.invalidate();
-                model.addAttribute("message", "탈퇴한 회원은 이용할 수 없습니다.");
-                return ACCESS_DENIED_VIEW;
-            }
-
             model.addAttribute("currentUserId", userId);
             model.addAttribute("myPageInfo", info);
-
             return handler.handle(userId);
         } catch (IllegalArgumentException e) {
+            session.invalidate();
             model.addAttribute("message", "존재하지 않는 회원입니다.");
             return ACCESS_DENIED_VIEW;
         }

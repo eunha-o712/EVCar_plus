@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>전기차 조회 - EV Consulting</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
     <link rel="stylesheet" th:href="@{/css/common/common.css}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/vehicle/vehicle-list.css}">
@@ -15,11 +15,14 @@
 <main class="ev-vehicle-page">
     <section class="ev-vehicle-hero">
         <div class="ev-vehicle-hero__inner">
-            <p class="ev-vehicle-hero__eyebrow">EV MODEL SEARCH</p>
-            <h1 class="ev-vehicle-hero__title">전기차 조회</h1>
-            <p class="ev-vehicle-hero__desc">
-                브랜드와 차급 기준으로 원하는 전기차를 빠르게 탐색해 보세요.
-            </p>
+            <div class="ev-vehicle-hero__copy">
+                <p class="ev-vehicle-hero__eyebrow">EV MODEL SEARCH</p>
+                <h1 class="ev-vehicle-hero__title">전기차 조회</h1>
+                <p class="ev-vehicle-hero__desc">
+                    브랜드와 차급 기준으로 원하는 전기차를 빠르게 탐색하고
+                    주요 가격과 주행거리 정보를 한눈에 확인해보세요.
+                </p>
+            </div>
         </div>
     </section>
 
@@ -135,20 +138,36 @@
                      onclick="goDetail(this)">
                 <div class="ev-vehicle-card__image-box">
                     <img th:src="${vehicle.imageUrl}"
-                         th:alt="${vehicle.modelName}"
+                         th:alt="${vehicle.modelNameDisplay}"
                          onerror="this.src='/images/evcar_logo.png'">
                 </div>
 
                 <div class="ev-vehicle-card__body">
-                    <p class="ev-vehicle-card__brand" th:text="${vehicle.brand}">HYUNDAI</p>
-                    <h3 class="ev-vehicle-card__model" th:text="${vehicle.modelName}">CASPER EV</h3>
-                    <p class="ev-vehicle-card__price" th:text="${vehicle.priceBasicFormatted}">3,100만원 ~ 3,700만원</p>
+                    <div class="ev-vehicle-card__meta">
+                        <p class="ev-vehicle-card__brand" th:text="${vehicle.brandKor}">현대</p>
+                        <span class="ev-vehicle-card__class" th:text="${vehicle.vehicleClassKor}">대형SUV</span>
+                    </div>
+
+                    <h3 class="ev-vehicle-card__model" th:text="${vehicle.modelNameDisplay}">IONIQ 9</h3>
+
+                    <div class="ev-vehicle-card__bottom">
+                        <p class="ev-vehicle-card__price" th:text="${vehicle.priceBasicFormatted}">6,700만원 ~ 7,800만원</p>
+                        <p class="ev-vehicle-card__range"
+                           th:text="${vehicle.drivingRange != null ? '주행거리 ' + vehicle.drivingRange + 'km' : ''}">
+                            주행거리 620km
+                        </p>
+                    </div>
                 </div>
             </article>
         </div>
 
         <div class="ev-vehicle-empty" th:if="${#lists.isEmpty(vehicleList)}">
-            조회된 차량이 없습니다.
+            <div class="ev-vehicle-empty__inner">
+                <h2 class="ev-vehicle-empty__title">조회된 차량이 없습니다.</h2>
+                <p class="ev-vehicle-empty__desc">
+                    브랜드 또는 차급 조건을 다시 선택해 주세요.
+                </p>
+            </div>
         </div>
 
         <div class="ev-vehicle-pagination" th:if="${totalPages > 1}">
@@ -169,40 +188,13 @@
 
 <div th:replace="~{layout/footer :: footer}"></div>
 
-<button class="ev-vehicle-ai-fab" type="button" onclick="alert('AI 챗봇 준비 중입니다.')">AI</button>
+<button class="ev-vehicle-ai-fab"
+        type="button"
+        onclick="alert('AI 챗봇 준비 중입니다.')">
+    AI
+</button>
 
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/common/footer.js}"></script>
-<script>
-    'use strict';
-
-    function filterByData(button) {
-        const brand = button.getAttribute('data-brand') || '전체';
-        const vehicleClass = button.getAttribute('data-class') || '전체';
-
-        location.href = '/vehicle/list?brand=' + encodeURIComponent(brand)
-            + '&vehicleClass=' + encodeURIComponent(vehicleClass);
-    }
-
-    function goDetail(card) {
-        const vehicleId = card.getAttribute('data-id');
-
-        if (!vehicleId) {
-            return;
-        }
-
-        location.href = '/vehicle/' + vehicleId;
-    }
-
-    function goPage(button) {
-        const brand = button.getAttribute('data-brand') || '전체';
-        const vehicleClass = button.getAttribute('data-class') || '전체';
-        const page = button.getAttribute('data-page') || '0';
-
-        location.href = '/vehicle/list?brand=' + encodeURIComponent(brand)
-            + '&vehicleClass=' + encodeURIComponent(vehicleClass)
-            + '&page=' + encodeURIComponent(page);
-    }
-</script>
+<script th:src="@{/js/vehicle/vehicle-list.js}"></script>
 </body>
 </html>
