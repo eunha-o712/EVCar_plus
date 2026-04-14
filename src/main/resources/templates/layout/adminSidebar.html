@@ -53,6 +53,13 @@
            th:classappend="${activeMenu == 'stats'} ? ' is-active' : ''">
             통계분석
         </a>
+		
+		<div class="ev-admin-sidebar__bottom">
+		    <a th:href="@{/login/logout}"
+		       class="ev-admin-sidebar__link">
+		        로그아웃
+		    </a>
+		</div>
     </nav>
 </aside>
 </body>

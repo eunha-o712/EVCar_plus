@@ -10,7 +10,7 @@ public class AdminStatsController {
 
     @GetMapping("")
     public String statsDashboard() {
-        return "admin/stats/dashboard";
+        return "admin/dashboard/stats-dashboard";
     }
 
 }

@@ -23,7 +23,7 @@ public class AdminAnalyticsController {
 
     @GetMapping("")
     public String analyticsDashboard() {
-        return "admin/analytics/dashboard";
+        return "admin/dashboard/analytics-dashboard";
     }
 
     @GetMapping("/api/summary")

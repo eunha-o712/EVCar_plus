@@ -14,35 +14,124 @@
         <nav class="ev-header__nav" aria-label="주요 메뉴">
             <ul class="ev-header__menu">
                 <li class="ev-header__item ev-header__item--has-dropdown">
-                    <a th:href="@{/company}" class="ev-header__link">회사소개</a>
+                    <th:block th:if="${session.loginUser != null}">
+                        <a th:href="@{/company}" class="ev-header__link">회사소개</a>
+                    </th:block>
+                    <th:block th:if="${session.loginUser == null}">
+                        <a href="#"
+                           class="ev-header__link"
+                           data-auth-required="true">
+                            회사소개
+                        </a>
+                    </th:block>
+
                     <div class="ev-header__dropdown">
-                        <a th:href="@{/company}" class="ev-header__dropdown-link">EV Consulting 이야기</a>
+                        <th:block th:if="${session.loginUser != null}">
+                            <a th:href="@{/company}" class="ev-header__dropdown-link">EV Consulting 이야기</a>
+                        </th:block>
+                        <th:block th:if="${session.loginUser == null}">
+                            <a href="#"
+                               class="ev-header__dropdown-link"
+                               data-auth-required="true">
+                                EV Consulting 이야기
+                            </a>
+                        </th:block>
                     </div>
                 </li>
 
                 <li class="ev-header__item ev-header__item--has-dropdown">
-                    <a th:href="@{/vehicle}" class="ev-header__link">전기차조회</a>
+                    <th:block th:if="${session.loginUser != null}">
+                        <a th:href="@{/vehicle}" class="ev-header__link">전기차조회</a>
+                    </th:block>
+                    <th:block th:if="${session.loginUser == null}">
+                        <a href="#"
+                           class="ev-header__link"
+                           data-auth-required="true">
+                            전기차조회
+                        </a>
+                    </th:block>
+
                     <div class="ev-header__dropdown">
-                        <a th:href="@{/vehicle}" class="ev-header__dropdown-link">모델조회</a>
-						<a href="#" class="ev-header__dropdown-link ev-header__dropdown-link--disabled">
-						    AI 차량 추천
-						</a>
+                        <th:block th:if="${session.loginUser != null}">
+                            <a th:href="@{/vehicle}" class="ev-header__dropdown-link">모델조회</a>
+                        </th:block>
+                        <th:block th:if="${session.loginUser == null}">
+                            <a href="#"
+                               class="ev-header__dropdown-link"
+                               data-auth-required="true">
+                                모델조회
+                            </a>
+                        </th:block>
+
+                        <a href="#"
+                           class="ev-header__dropdown-link ev-header__dropdown-link--disabled">
+                            AI 차량 추천
+                        </a>
                     </div>
                 </li>
 
                 <li class="ev-header__item ev-header__item--has-dropdown">
-                    <a th:href="@{/charging/map}" class="ev-header__link">충전소지도</a>
+                    <th:block th:if="${session.loginUser != null}">
+                        <a th:href="@{/charging/map}" class="ev-header__link">충전소지도</a>
+                    </th:block>
+                    <th:block th:if="${session.loginUser == null}">
+                        <a href="#"
+                           class="ev-header__link"
+                           data-auth-required="true">
+                            충전소지도
+                        </a>
+                    </th:block>
+
                     <div class="ev-header__dropdown">
-                        <a th:href="@{/charging/map}" class="ev-header__dropdown-link">전국 충전소 지도</a>
+                        <th:block th:if="${session.loginUser != null}">
+                            <a th:href="@{/charging/map}" class="ev-header__dropdown-link">전국 충전소 지도</a>
+                        </th:block>
+                        <th:block th:if="${session.loginUser == null}">
+                            <a href="#"
+                               class="ev-header__dropdown-link"
+                               data-auth-required="true">
+                                전국 충전소 지도
+                            </a>
+                        </th:block>
                     </div>
                 </li>
 
                 <li class="ev-header__item ev-header__item--has-dropdown">
-                    <a th:href="@{/faq}" class="ev-header__link">고객센터</a>
+                    <th:block th:if="${session.loginUser != null}">
+                        <a th:href="@{/faq}" class="ev-header__link">고객센터</a>
+                    </th:block>
+                    <th:block th:if="${session.loginUser == null}">
+                        <a href="#"
+                           class="ev-header__link"
+                           data-auth-required="true">
+                            고객센터
+                        </a>
+                    </th:block>
+
                     <div class="ev-header__dropdown">
-                        <a th:href="@{/consultation}" class="ev-header__dropdown-link">상담게시판</a>
-                        <a th:href="@{/inquiry}" class="ev-header__dropdown-link">문의게시판</a>
-                        <a th:href="@{/faq}" class="ev-header__dropdown-link">FAQ</a>
+                        <th:block th:if="${session.loginUser != null}">
+                            <a th:href="@{/consultation}" class="ev-header__dropdown-link">상담게시판</a>
+                            <a th:href="@{/inquiry}" class="ev-header__dropdown-link">문의게시판</a>
+                            <a th:href="@{/faq}" class="ev-header__dropdown-link">FAQ</a>
+                        </th:block>
+
+                        <th:block th:if="${session.loginUser == null}">
+                            <a href="#"
+                               class="ev-header__dropdown-link"
+                               data-auth-required="true">
+                                상담게시판
+                            </a>
+                            <a href="#"
+                               class="ev-header__dropdown-link"
+                               data-auth-required="true">
+                                문의게시판
+                            </a>
+                            <a href="#"
+                               class="ev-header__dropdown-link"
+                               data-auth-required="true">
+                                FAQ
+                            </a>
+                        </th:block>
                     </div>
                 </li>
             </ul>
@@ -56,7 +145,7 @@
             <div class="ev-header__auth" th:if="${session.loginUser != null}">
                 <a th:href="@{/mypage/main}" class="ev-header__auth-link">마이페이지</a>
                 <span class="ev-header__auth-divider">·</span>
-                <a th:href="@{/logout}" class="ev-header__auth-link">로그아웃</a>
+                <a th:href="@{/login/logout}" class="ev-header__auth-link">로그아웃</a>
             </div>
         </nav>
     </div>
