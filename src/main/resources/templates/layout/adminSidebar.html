@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<aside class="ev-admin-sidebar" th:fragment="adminSidebar(activeMenu)">
-	<div class="ev-admin-sidebar__brand">
-	    <a th:href="@{/admin}" class="ev-admin-sidebar__brand-link" aria-label="관리자 메인으로 이동">
-	        <img th:src="@{/images/evcar_logo_admin.png}"
-	             alt="EV 로고"
-	             class="ev-admin-sidebar__logo-image">
-	        <span class="ev-admin-sidebar__logo-text">EV ADMIN</span>
-	    </a>
-	</div>
+<aside th:fragment="adminSidebar(activeMenu)" class="ev-admin-sidebar">
+    <div class="ev-admin-sidebar__brand">
+        <a th:href="@{/admin}" class="ev-admin-sidebar__brand-link" aria-label="관리자 메인으로 이동">
+            <img th:src="@{/images/evcar_logo_admin.png}"
+                 alt="EV 로고"
+                 class="ev-admin-sidebar__logo-image">
+            <span class="ev-admin-sidebar__logo-text">EV ADMIN</span>
+        </a>
+    </div>
 
     <nav class="ev-admin-sidebar__nav">
         <a th:href="@{/admin}"
@@ -53,13 +53,14 @@
            th:classappend="${activeMenu == 'stats'} ? ' is-active' : ''">
             통계분석
         </a>
-		
-		<div class="ev-admin-sidebar__bottom">
-		    <a th:href="@{/login/logout}"
-		       class="ev-admin-sidebar__link">
-		        로그아웃
-		    </a>
-		</div>
+
+        <div class="ev-admin-sidebar__bottom">
+            <form th:action="@{/login/logout}" method="post">
+                <button type="submit" class="ev-admin-sidebar__link">
+                    로그아웃
+                </button>
+            </form>
+        </div>
     </nav>
 </aside>
 </body>

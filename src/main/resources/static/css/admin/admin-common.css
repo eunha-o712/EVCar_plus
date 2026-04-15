@@ -500,6 +500,17 @@ textarea {
     gap: 10px;
 }
 
+.ev-admin-sidebar__bottom form {
+    margin: 0;
+}
+
+.ev-admin-sidebar__bottom .ev-admin-sidebar__link {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 @media (min-width: 1024px) {
     .ev-admin-layout {
         display: grid;
