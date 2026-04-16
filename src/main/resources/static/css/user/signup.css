@@ -1,0 +1,118 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "돋움", Dotum, sans-serif;
+    background: #f3f4f6;
+}
+
+.container {
+    max-width: 850px;
+    width: 90%;
+    margin: 80px auto;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.label {
+    width: 160px;
+}
+
+.input-box {
+    flex: 1;
+}
+
+input {
+    width: 100%;
+    height: 40px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.id-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.id-area input {
+    flex: 1;
+}
+
+.check-btn {
+    height: 40px;
+    padding: 0 18px;
+    background: #3f6fb5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.address-btn {
+    height: 40px;
+    padding: 0 18px;
+    background: #3f6fb5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.gender-box {
+    display: flex;
+    gap: 15px;
+}
+
+.gender-box input {
+    width: 16px;
+    height: 16px;
+}
+
+.email-box {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.button-area {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.submit-btn {
+    padding: 12px 40px;
+    background: #3f6fb5;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.back-btn {
+    padding: 12px 40px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.note {
+    margin-top: 20px;
+    color: red;
+    font-size: 13px;
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/mainLayout :: head('상담상세', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/consultation/consultation.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-consultation-page">
+    <section class="ev-consultation-hero ev-consultation-hero--detail">
+        <div class="ev-consultation-hero__inner">
+            <p class="ev-consultation-hero__eyebrow">CUSTOMER CENTER</p>
+            <h2 class="ev-consultation-hero__title">상담 상세</h2>
+            <p class="ev-consultation-hero__desc">신청하신 상담 내용과 관리자 답변을 확인할 수 있습니다.</p>
+        </div>
+    </section>
+
+    <section class="ev-consultation-section ev-consultation-section--detail">
+        <div class="ev-consultation-detail">
+            <div class="ev-consultation-detail__header">
+                <div>
+                    <p class="ev-consultation-detail__eyebrow">Consultation Detail</p>
+                    <h2 class="ev-consultation-detail__title"
+                        th:text="${consultation.vehicleModelName} + ' 상담'">
+                        EV3 상담
+                    </h2>
+                </div>
+
+                <th:block th:switch="${consultation.consultStatus}">
+                    <span th:case="'WAITING'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--waiting"
+                          th:text="${consultation.consultStatus}">
+                        WAITING
+                    </span>
+                    <span th:case="'PENDING'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--waiting"
+                          th:text="${consultation.consultStatus}">
+                        PENDING
+                    </span>
+                    <span th:case="'IN_PROGRESS'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--progress"
+                          th:text="${consultation.consultStatus}">
+                        IN_PROGRESS
+                    </span>
+                    <span th:case="'PROGRESS'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--progress"
+                          th:text="${consultation.consultStatus}">
+                        PROGRESS
+                    </span>
+                    <span th:case="'COMPLETED'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--success"
+                          th:text="${consultation.consultStatus}">
+                        COMPLETED
+                    </span>
+                    <span th:case="'DONE'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--success"
+                          th:text="${consultation.consultStatus}">
+                        DONE
+                    </span>
+                    <span th:case="'CANCELED'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--danger"
+                          th:text="${consultation.consultStatus}">
+                        CANCELED
+                    </span>
+                    <span th:case="'CANCEL'"
+                          class="ev-consultation-detail__status ev-consultation-detail__status--danger"
+                          th:text="${consultation.consultStatus}">
+                        CANCEL
+                    </span>
+                    <span th:case="*"
+                          class="ev-consultation-detail__status"
+                          th:text="${consultation.consultStatus}">
+                        STATUS
+                    </span>
+                </th:block>
+            </div>
+
+            <div class="ev-consultation-detail__info">
+                <div>
+                    <strong>상담번호</strong>
+                    <span th:text="${consultation.consultId}">CS0001</span>
+                </div>
+                <div>
+                    <strong>작성자</strong>
+                    <span th:text="${consultation.userName}">홍길동</span>
+                </div>
+                <div>
+                    <strong>희망일정</strong>
+                    <span th:text="${consultation.preferredDatetime}">2026-04-11 14:00</span>
+                </div>
+                <div>
+                    <strong>예산</strong>
+                    <span th:text="${consultation.budget} + '만원'">4500만원</span>
+                </div>
+                <div>
+                    <strong>구매계획</strong>
+                    <span th:text="${consultation.purchasePlan}">THREE_MONTH</span>
+                </div>
+                <div>
+                    <strong>작성일</strong>
+                    <span th:text="${#temporals.format(consultation.createdAt, 'yyyy.MM.dd HH:mm')}">2026.04.09 10:00</span>
+                </div>
+            </div>
+
+            <div class="ev-consultation-detail__content">
+                <h3>상담 내용</h3>
+                <p th:text="${consultation.consultContent}">상담 내용</p>
+            </div>
+
+            <div class="ev-consultation-detail__reply"
+                 th:if="${consultation.adminReply != null and !#strings.isEmpty(consultation.adminReply)}">
+                <h3>관리자 답변</h3>
+                <p th:text="${consultation.adminReply}">관리자 답변</p>
+            </div>
+
+            <div class="ev-consultation-detail__reply"
+                 th:if="${consultation.adminReply == null or #strings.isEmpty(consultation.adminReply)}">
+                <h3>관리자 답변</h3>
+                <p>아직 등록된 답변이 없습니다.</p>
+            </div>
+
+            <div class="ev-consultation-detail__actions">
+                <a th:href="@{/consultation}" class="ev-consultation-form__secondary">목록으로</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/consultation/consultation.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+</body>
+</html>

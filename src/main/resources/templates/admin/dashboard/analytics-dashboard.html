@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통계분석 - EVCar Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-analytics.css}">
+</head>
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('stats')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; 통계분석</div>
+                    <h1 class="ev-admin-page-header__title">통계 분석</h1>
+                    <p class="ev-admin-page-header__desc">상담 데이터 기반 정량 분석 화면입니다.</p>
+                </header>
+
+                <div class="ev-admin-dashboard-cards">
+                    <div class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <p class="ev-admin-card__label">전체 상담</p>
+                            <h2 class="ev-admin-card__value" id="totalConsultationCount">0건</h2>
+                        </div>
+                    </div>
+
+                    <div class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <p class="ev-admin-card__label">이번 달</p>
+                            <h2 class="ev-admin-card__value" id="monthlyConsultationCount">0건</h2>
+                        </div>
+                    </div>
+
+                    <div class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <p class="ev-admin-card__label">계약 전환율</p>
+                            <h2 class="ev-admin-card__value" id="contractConversionRate">0%</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ev-admin-grid" style="margin-top: 24px;">
+                    <section class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <h2 class="ev-admin-section-title">월간 상담 추이</h2>
+                            <div class="ev-admin-chart-box">
+                                <canvas id="monthlyConsultationChart"></canvas>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <h2 class="ev-admin-section-title">차량 모델별 수요 분석</h2>
+                            <div class="ev-admin-chart-box">
+                                <canvas id="vehicleDemandChart"></canvas>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <h2 class="ev-admin-section-title">지역별 상담 분포</h2>
+                            <div class="ev-admin-chart-box">
+                                <canvas id="regionConsultationChart"></canvas>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <h2 class="ev-admin-section-title">상담 결과 현황</h2>
+
+                            <div class="ev-admin-result-layout">
+                                <div class="ev-admin-chart-box ev-admin-chart-box--result">
+                                    <canvas id="consultationResultChart"></canvas>
+                                </div>
+
+                                <div class="ev-admin-result-compare">
+                                    <h3 class="ev-admin-result-compare__title">전년 동기 비교</h3>
+
+                                    <div class="ev-admin-result-compare__grid">
+                                        <div class="ev-admin-result-compare__item">
+                                            <span class="ev-admin-result-compare__label">상담량 증감</span>
+                                            <strong class="ev-admin-result-compare__value" id="comparisonConsultationChangeRate">0%</strong>
+                                            <small class="ev-admin-result-compare__sub" id="comparisonConsultationCountText">최근 1년 0건 / 전년 0건</small>
+                                        </div>
+
+                                        <div class="ev-admin-result-compare__item">
+                                            <span class="ev-admin-result-compare__label">계약 전환율 증감</span>
+                                            <strong class="ev-admin-result-compare__value" id="comparisonConversionRateGap">0%p</strong>
+                                            <small class="ev-admin-result-compare__sub" id="comparisonConversionRateText">최근 1년 0% / 전년 0%</small>
+                                        </div>
+
+                                        <div class="ev-admin-result-compare__item">
+                                            <span class="ev-admin-result-compare__label">최다 수요 모델</span>
+                                            <strong class="ev-admin-result-compare__value" id="comparisonTopModelName">-</strong>
+                                            <small class="ev-admin-result-compare__sub">최근 1년 상담 기준</small>
+                                        </div>
+
+                                        <div class="ev-admin-result-compare__item">
+                                            <span class="ev-admin-result-compare__label">최다 상담 지역</span>
+                                            <strong class="ev-admin-result-compare__value" id="comparisonTopRegionName">-</strong>
+                                            <small class="ev-admin-result-compare__sub">최근 1년 상담 기준</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/common/common.js}"></script>
+<script th:src="@{/js/admin/admin-analytics.js}"></script>
+</body>
+</html>

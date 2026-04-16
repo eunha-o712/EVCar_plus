@@ -1,0 +1,71 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    margin:0;
+    font-family:"돋움", Dotum, sans-serif;
+    background:#f3f4f6;
+}
+
+.container{
+    max-width:900px;
+    width:90%;
+    margin:60px auto;
+}
+
+.title{
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+.agree-box{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border:1px solid #ddd;
+}
+
+.agree-content{
+    height:150px;
+    overflow-y:auto;
+    border:1px solid #ccc;
+    padding:10px;
+    margin-top:10px;
+    font-size:13px;
+    background:#fafafa;
+}
+
+.check-area{
+    margin:20px 0;
+}
+
+.button-area{
+    text-align:center;
+    margin-top:30px;
+}
+
+.btn{
+    padding:12px 40px;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.next-btn{
+    background:#3f6fb5;
+    color:white;
+}
+
+.back-btn{
+    background:#6c757d;
+    color:white;
+}
+
+.alert{
+    margin-top:15px;
+    color:red;
+    text-align:center;
+}

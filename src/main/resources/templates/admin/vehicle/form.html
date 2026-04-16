@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEditMode} ? '차량 수정 - EVCar Admin' : '차량 등록 - EVCar Admin'">차량 등록 - EVCar Admin</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-vehicle.css}">
+</head>
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('vehicle')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb"
+                         th:text="${isEditMode} ? '관리자 > 차량관리 > 차량 수정' : '관리자 > 차량관리 > 차량 등록'">
+                        관리자 &gt; 차량관리 &gt; 차량 등록
+                    </div>
+                    <h1 class="ev-admin-page-header__title"
+                        th:text="${isEditMode} ? '차량 수정' : '차량 등록'">
+                        차량 등록
+                    </h1>
+                    <p class="ev-admin-page-header__desc">차량 기본 정보와 상세 정보를 입력해 차량 데이터를 관리합니다.</p>
+                </header>
+
+                <form th:action="@{/admin/vehicle/form}"
+                      method="post"
+                      enctype="multipart/form-data"
+                      class="ev-admin-grid"
+                      id="adminVehicleForm">
+                    <input type="hidden" name="vehicleId" th:value="${vehicleForm.vehicleId}">
+                    <input type="hidden" name="imageUrl" th:value="${vehicleForm.imageUrl}" id="currentImageUrl">
+
+                    <section class="ev-admin-card">
+                        <div class="ev-admin-card__body">
+                            <h2 class="ev-admin-section-title">기본 정보</h2>
+
+                            <div class="ev-admin-form-grid ev-admin-form-grid--2">
+								<div class="ev-admin-form-field">
+								    <label class="ev-admin-form-label" for="vehicleIdPreview">차량 ID</label>
+								    <input type="text"
+								           id="vehicleIdPreview"
+								           class="ev-admin-input"
+								           th:value="${isEditMode} ? ${vehicleForm.vehicleId} : ${previewVehicleId}"
+								           placeholder="브랜드 입력 시 자동 생성"
+								           readonly>
+								    <span class="ev-admin-form-help">신규 등록 시 브랜드 기준으로 차량 ID가 자동 생성됩니다.</span>
+								</div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="brand">브랜드명</label>
+                                    <input type="text"
+                                           id="brand"
+                                           name="brand"
+                                           class="ev-admin-input"
+                                           maxlength="20"
+                                           placeholder="예: 현대, 기아"
+                                           th:value="${vehicleForm.brand}"
+                                           required>
+                                </div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="modelName">차량모델명</label>
+                                    <input type="text"
+                                           id="modelName"
+                                           name="modelName"
+                                           class="ev-admin-input"
+                                           maxlength="50"
+                                           placeholder="예: 아이오닉 5"
+                                           th:value="${vehicleForm.modelName}"
+                                           required>
+                                </div>
+
+								<div class="ev-admin-form-field">
+								    <label class="ev-admin-form-label" for="vehicleClass">차급</label>
+								    <select id="vehicleClass"
+								            name="vehicleClass"
+								            class="ev-admin-select"
+								            required>
+								        <option value="">선택</option>
+								        <option value="MINI_SUV" th:selected="${vehicleForm.vehicleClass == 'MINI_SUV'}">경형</option>
+								        <option value="SMALL_SUV" th:selected="${vehicleForm.vehicleClass == 'SMALL_SUV'}">소형</option>
+								        <option value="MID_SUV" th:selected="${vehicleForm.vehicleClass == 'MID_SUV'}">준중형</option>
+								        <option value="LARGE_SUV" th:selected="${vehicleForm.vehicleClass == 'LARGE_SUV'}">대형</option>
+								        <option value="MID_SEDAN" th:selected="${vehicleForm.vehicleClass == 'MID_SEDAN'}">세단</option>
+								        <option value="PERFORMANCE" th:selected="${vehicleForm.vehicleClass == 'PERFORMANCE'}">고성능</option>
+								    </select>
+								</div>
+
+								<div class="ev-admin-form-field">
+								    <label class="ev-admin-form-label" for="vehicleStatus">차량 상태</label>
+								    <select id="vehicleStatus" name="vehicleStatus" class="ev-admin-select">
+								        <option value="ACTIVE" th:selected="${vehicleForm.vehicleStatus == 'ACTIVE'}">판매중</option>
+								        <option value="SOLD_OUT" th:selected="${vehicleForm.vehicleStatus == 'SOLD_OUT'}">품절</option>
+								    </select>
+								</div>
+                            </div>
+
+                            <div class="ev-admin-divider"></div>
+
+                            <h2 class="ev-admin-section-title">가격 및 성능 정보</h2>
+
+                            <div class="ev-admin-form-grid ev-admin-form-grid--3">
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="priceBasic">기본가(만원)</label>
+                                    <input type="number"
+                                           id="priceBasic"
+                                           name="priceBasic"
+                                           class="ev-admin-input"
+                                           min="0"
+                                           placeholder="기본가 입력"
+                                           th:value="${vehicleForm.priceBasic}"
+                                           required>
+                                </div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="pricePremium">프리미엄가(만원)</label>
+                                    <input type="number"
+                                           id="pricePremium"
+                                           name="pricePremium"
+                                           class="ev-admin-input"
+                                           min="0"
+                                           placeholder="프리미엄가 입력"
+                                           th:value="${vehicleForm.pricePremium}">
+                                </div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="drivingRange">1회충전 주행거리</label>
+                                    <input type="number"
+                                           id="drivingRange"
+                                           name="drivingRange"
+                                           class="ev-admin-input"
+                                           min="0"
+                                           placeholder="예: 429"
+                                           th:value="${vehicleForm.drivingRange}">
+                                </div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="fastChargingTime">급속충전 시간</label>
+                                    <input type="text"
+                                           id="fastChargingTime"
+                                           name="fastChargingTime"
+                                           class="ev-admin-input"
+                                           maxlength="30"
+                                           placeholder="예: 18분"
+                                           th:value="${vehicleForm.fastChargingTime}">
+                                </div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="slowChargingTime">완속충전 시간</label>
+                                    <input type="text"
+                                           id="slowChargingTime"
+                                           name="slowChargingTime"
+                                           class="ev-admin-input"
+                                           maxlength="30"
+                                           placeholder="예: 7시간"
+                                           th:value="${vehicleForm.slowChargingTime}">
+                                </div>
+
+								<div class="ev-admin-form-field">
+								    <label class="ev-admin-form-label" for="chargingMethod">충전방식</label>
+								    <select id="chargingMethod" name="chargingMethod" class="ev-admin-select">
+								        <option value="DC_COMBO" th:selected="${vehicleForm.chargingMethod == 'DC_COMBO'}">1. DC_COMBO</option>
+								        <option value="AC_SLOW" th:selected="${vehicleForm.chargingMethod == 'AC_SLOW'}">2. AC_SLOW</option>
+								        <option value="DC_COMBO/AC_SLOW" th:selected="${vehicleForm.chargingMethod == 'DC_COMBO/AC_SLOW'}">3. DC_COMBO/AC_SLOW</option>
+								    </select>
+								</div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="batteryCapacity">배터리 용량</label>
+                                    <input type="number"
+                                           id="batteryCapacity"
+                                           name="batteryCapacity"
+                                           class="ev-admin-input"
+                                           min="0"
+                                           step="0.1"
+                                           placeholder="예: 72.6"
+                                           th:value="${vehicleForm.batteryCapacity}">
+                                </div>
+                            </div>
+
+                            <div class="ev-admin-divider"></div>
+
+                            <h2 class="ev-admin-section-title">링크 및 이미지</h2>
+
+                            <div class="ev-admin-form-grid ev-admin-form-grid--2">
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="catalogUrl">카탈로그 URL</label>
+                                    <input type="text"
+                                           id="catalogUrl"
+                                           name="catalogUrl"
+                                           class="ev-admin-input"
+                                           maxlength="255"
+                                           placeholder="카탈로그 URL 입력"
+                                           th:value="${vehicleForm.catalogUrl}">
+                                </div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label" for="vehicleUrl">차량 상세 URL</label>
+                                    <input type="text"
+                                           id="vehicleUrl"
+                                           name="vehicleUrl"
+                                           class="ev-admin-input"
+                                           maxlength="255"
+                                           placeholder="차량 상세 URL 입력"
+                                           th:value="${vehicleForm.vehicleUrl}">
+                                </div>
+                            </div>
+
+                            <div class="ev-admin-form-field">
+                                <label class="ev-admin-form-label" for="imageFile">대표 이미지 업로드</label>
+                                <div class="ev-admin-upload-dropzone js-vehicle-dropzone" tabindex="0">
+                                    <input type="file"
+                                           id="imageFile"
+                                           name="imageFile"
+                                           accept="image/*"
+                                           class="ev-admin-upload-input js-vehicle-file-input">
+                                    <div class="ev-admin-upload-content">
+                                        <div class="ev-admin-upload-title">이미지를 드래그 앤 드롭하거나 클릭해서 선택하세요.</div>
+                                        <div class="ev-admin-upload-desc">PNG, JPG, JPEG, WEBP 파일 업로드 가능</div>
+                                        <div class="ev-admin-upload-file-name js-vehicle-file-name">선택된 파일 없음</div>
+                                    </div>
+                                </div>
+                                <span class="ev-admin-form-help">
+                                    수정 시 새 이미지를 업로드하지 않으면 기존 대표 이미지가 유지됩니다.
+                                </span>
+                            </div>
+
+                            <div class="ev-admin-vehicle-preview-wrap">
+                                <div class="ev-admin-preview ev-admin-preview--vehicle" id="vehicleImagePreview">
+                                    <img th:if="${vehicleForm.imageUrl != null and !#strings.isEmpty(vehicleForm.imageUrl)}"
+                                         th:src="${vehicleForm.imageUrl}"
+                                         alt="차량 이미지 미리보기"
+                                         class="ev-admin-vehicle-preview-image">
+                                    <span th:if="${vehicleForm.imageUrl == null or #strings.isEmpty(vehicleForm.imageUrl)}">
+                                        이미지 파일을 선택하면 미리보기가 표시됩니다.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="ev-admin-divider" th:if="${isEditMode}"></div>
+
+                            <div class="ev-admin-form-grid ev-admin-form-grid--2" th:if="${isEditMode}">
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label">등록일</label>
+                                    <input type="text"
+                                           class="ev-admin-input"
+                                           th:value="${vehicleForm.createdAtFormatted}"
+                                           readonly>
+                                </div>
+
+                                <div class="ev-admin-form-field">
+                                    <label class="ev-admin-form-label">수정일</label>
+                                    <input type="text"
+                                           class="ev-admin-input"
+                                           th:value="${vehicleForm.updatedAtFormatted}"
+                                           readonly>
+                                </div>
+                            </div>
+
+                            <div class="ev-admin-actions">
+                                <a th:href="@{/admin/vehicle}" class="ev-admin-btn ev-admin-btn--secondary">목록으로</a>
+                                <button type="submit" class="ev-admin-btn ev-admin-btn--primary">
+                                    <span th:text="${isEditMode} ? '수정하기' : '등록하기'">등록하기</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/admin/admin-vehicle.js}"></script>
+</body>
+</html>

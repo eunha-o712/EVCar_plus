@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit} ? 'FAQ 수정 - EVCar Admin' : 'FAQ 등록 - EVCar Admin'">FAQ 등록 - EVCar Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-faq.css}">
+</head>
+
+<body>
+<div class="ev-admin-app">
+    <div class="ev-admin-layout">
+        <div th:replace="~{layout/adminSidebar :: adminSidebar('faq')}"></div>
+
+        <main class="ev-admin-main">
+            <div class="ev-admin-shell">
+                <header class="ev-admin-page-header">
+                    <div class="ev-admin-page-header__breadcrumb">관리자 &gt; FAQ관리</div>
+                    <h1 class="ev-admin-page-header__title"
+                        th:text="${isEdit} ? 'FAQ 수정' : 'FAQ 등록'">
+                        FAQ 등록
+                    </h1>
+                    <p class="ev-admin-page-header__desc">
+                        자주 묻는 질문과 답변을 입력하고 관리할 수 있습니다.
+                    </p>
+                </header>
+
+                <section class="ev-admin-card ev-admin-faq-form-card">
+                    <div class="ev-admin-card__body">
+                        <form id="adminFaqForm"
+                              th:action="@{/admin/faq/form}"
+                              method="post"
+                              class="ev-admin-faq-form">
+
+                            <input type="hidden" name="faqId" th:value="${faqForm.faqId}">
+
+                            <div class="ev-admin-faq-form-grid">
+                                <div class="ev-admin-faq-form-group" th:if="${isEdit}">
+                                    <label class="ev-admin-faq-form-label" for="faqIdView">FAQ ID</label>
+                                    <input type="text"
+                                           id="faqIdView"
+                                           class="ev-admin-faq-form-input ev-admin-faq-form-input--readonly"
+                                           th:value="${faqForm.faqId}"
+                                           readonly>
+                                </div>
+
+                                <div class="ev-admin-faq-form-group ev-admin-faq-form-group--full">
+                                    <label class="ev-admin-faq-form-label" for="question">질문</label>
+                                    <input type="text"
+                                           id="question"
+                                           name="question"
+                                           class="ev-admin-faq-form-input"
+                                           maxlength="200"
+                                           placeholder="질문을 입력하세요."
+                                           th:value="${faqForm.question}"
+                                           required>
+                                    <p class="ev-admin-faq-form-help">최대 200자까지 입력할 수 있습니다.</p>
+                                </div>
+
+                                <div class="ev-admin-faq-form-group ev-admin-faq-form-group--full">
+                                    <label class="ev-admin-faq-form-label" for="answer">관리자 답변</label>
+                                    <textarea id="answer"
+                                              name="answer"
+                                              class="ev-admin-faq-form-textarea"
+                                              placeholder="관리자 답변을 입력하세요."
+                                              rows="12"
+                                              required
+                                              th:text="${faqForm.answer}"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="ev-admin-faq-form-meta" th:if="${isEdit}">
+                                <div class="ev-admin-faq-form-meta-item">
+                                    <span class="ev-admin-faq-form-meta-label">등록일</span>
+                                    <strong class="ev-admin-faq-form-meta-value"
+                                            th:text="${faqForm.createdAt != null ? faqForm.createdAt : '-'}">2026-03-31</strong>
+                                </div>
+                                <div class="ev-admin-faq-form-meta-item">
+                                    <span class="ev-admin-faq-form-meta-label">수정일</span>
+                                    <strong class="ev-admin-faq-form-meta-value"
+                                            th:text="${faqForm.updatedAt != null ? faqForm.updatedAt : '-'}">2026-03-31</strong>
+                                </div>
+                            </div>
+
+                            <div class="ev-admin-actions">
+                                <a class="ev-admin-btn ev-admin-btn--secondary"
+                                   th:href="@{/admin/faq(page=1)}">
+                                    목록으로
+                                </a>
+                                <button type="submit" class="ev-admin-btn ev-admin-btn--primary">
+                                    저장하기
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/admin/admin-faq.js}"></script>
+</body>
+</html>

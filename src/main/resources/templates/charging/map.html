@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충전소 지도 - EV Consulting</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/charging/map.css}">
+
+    <script th:src="@{'https://dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoJavascriptKey} + '&libraries=clusterer'}"></script>
+</head>
+<body>
+
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-map-page">
+    <section class="ev-map-stage">
+        <div class="ev-map-stage__wrapper">
+
+            <div class="ev-map-search-bar">
+                <select id="sidoSelect" class="ev-map-search-bar__select">
+                    <option value="">시/도 선택</option>
+                </select>
+
+                <select id="sigunguSelect" class="ev-map-search-bar__select" disabled>
+                    <option value="">시/군/구 선택</option>
+                </select>
+
+                <button type="button"
+                        id="searchBtn"
+                        class="ev-map-search-bar__btn ev-map-search-bar__btn--primary">
+                    검색
+                </button>
+
+                <button type="button"
+                        id="myLocationBtn"
+                        class="ev-map-search-bar__btn ev-map-search-bar__btn--secondary">
+                    현재 위치
+                </button>
+            </div>
+
+            <div id="mapLoading" class="ev-map-loading">
+                <div class="ev-map-loading__box">
+                    <div class="ev-map-loading__spinner"></div>
+                    <p class="ev-map-loading__text">충전소 정보를 불러오는 중입니다.</p>
+                </div>
+            </div>
+
+            <div id="map" class="ev-map-canvas"></div>
+
+            <section id="mapDetailPanel" class="ev-map-detail-panel">
+                <button type="button"
+                        id="detailPanelCloseBtn"
+                        class="ev-map-detail-panel__close"
+                        aria-label="상세정보 닫기">
+                    &times;
+                </button>
+
+                <div class="ev-map-detail-panel__header">
+                    <h3 id="detailStationName" class="ev-map-detail-panel__title">충전소명</h3>
+                    <p id="detailStationAddress" class="ev-map-detail-panel__address">주소</p>
+                </div>
+
+                <div class="ev-map-detail-panel__body">
+                    <section class="ev-map-detail-panel__section">
+                        <h4 class="ev-map-detail-panel__sub-title">충전기 목록</h4>
+                        <div class="ev-map-detail-table">
+                            <div class="ev-map-detail-table__head">
+                                <span>충전기</span>
+                                <span>상태</span>
+                                <span>타입</span>
+                            </div>
+                            <div id="detailChargerRows" class="ev-map-detail-table__body"></div>
+                        </div>
+                    </section>
+
+                    <section class="ev-map-detail-panel__section">
+                        <h4 class="ev-map-detail-panel__sub-title">충전소 정보</h4>
+                        <div id="detailInfoRows" class="ev-map-info-box"></div>
+                    </section>
+                </div>
+            </section>
+
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/charging/map.js}" defer></script>
+
+</body>
+</html>

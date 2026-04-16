@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/mainLayout :: head('상담신청', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/consultation/consultation.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-consultation-page">
+    <section class="ev-consultation-hero ev-consultation-hero--form">
+        <div class="ev-consultation-hero__inner">
+            <p class="ev-consultation-hero__eyebrow">CUSTOMER CENTER</p>
+            <h2 class="ev-consultation-hero__title">상담 신청</h2>
+            <p class="ev-consultation-hero__desc">원하시는 차량과 희망 상담 일정을 입력해 주세요.</p>
+        </div>
+    </section>
+
+    <section class="ev-consultation-section ev-consultation-section--form">
+        <form class="ev-consultation-form"
+              th:action="@{/consultation/form}"
+              th:object="${consultationCreateRequestDto}"
+              method="post">
+
+            <input type="hidden" th:field="*{userId}">
+
+            <div class="ev-consultation-form__grid">
+                <div class="ev-consultation-form__field">
+                    <label for="displayUserId" class="ev-consultation-form__label">회원 ID</label>
+                    <input type="text"
+                           id="displayUserId"
+                           class="ev-consultation-form__input"
+                           th:value="${loginId}"
+                           readonly>
+                </div>
+
+                <div class="ev-consultation-form__field">
+                    <label for="vehicleId" class="ev-consultation-form__label">상담 차량</label>
+                    <select id="vehicleId" th:field="*{vehicleId}" class="ev-consultation-form__select">
+                        <option value="">차량을 선택하세요</option>
+                        <option th:each="vehicle : ${vehicleList}"
+                                th:value="${vehicle.vehicleId}"
+                                th:text="${vehicle.brand + ' ' + vehicle.modelName}">
+                            현대 아이오닉 5
+                        </option>
+                    </select>
+                </div>
+
+                <div class="ev-consultation-form__field">
+                    <label for="preferredDatetime" class="ev-consultation-form__label">희망 상담 일정</label>
+                    <input type="text"
+                           id="preferredDatetime"
+                           th:field="*{preferredDatetime}"
+                           class="ev-consultation-form__input"
+                           placeholder="예: 2026-04-11 14:00">
+                </div>
+
+                <div class="ev-consultation-form__field">
+                    <label for="budget" class="ev-consultation-form__label">예산(만원)</label>
+                    <input type="number"
+                           id="budget"
+                           th:field="*{budget}"
+                           class="ev-consultation-form__input"
+                           placeholder="예: 4500">
+                </div>
+
+				<div class="ev-consultation-form__field ev-consultation-form__field--full">
+				    <label for="purchasePlan" class="ev-consultation-form__label">구매 계획</label>
+				    <select id="purchasePlan" th:field="*{purchasePlan}" class="ev-consultation-form__select">
+				        <option value="">선택해주세요</option>
+				        <option value="1_MONTH">1개월 이내</option>
+				        <option value="3_MONTH">3개월 이내</option>
+				        <option value="6_MONTH">6개월 이내</option>
+				        <option value="UNDECIDED">미정</option>
+				    </select>
+				</div>
+				
+                <div class="ev-consultation-form__field ev-consultation-form__field--full">
+                    <label for="consultContent" class="ev-consultation-form__label">상담 내용</label>
+                    <textarea id="consultContent"
+                              th:field="*{consultContent}"
+                              class="ev-consultation-form__textarea"
+                              placeholder="예산, 주행거리, 충전 환경, 비교 희망 모델 등을 자유롭게 작성해 주세요."></textarea>
+                </div>
+            </div>
+
+            <div class="ev-consultation-form__actions">
+                <a th:href="@{/consultation}" class="ev-consultation-form__secondary">목록으로</a>
+                <button type="submit" class="ev-consultation-form__primary">상담 신청하기</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/consultation/consultation.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+</body>
+</html>

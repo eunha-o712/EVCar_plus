@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+
+
+<!-- 카카오 주소 API -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<!-- 국가 번호 API -->
+<script th:src="@{/js/country-code.js}"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:"돋움", Dotum, sans-serif;
+background:#f3f4f6;
+}
+
+.container{
+max-width:850px;
+width:90%;
+margin:80px auto;
+}
+
+.title{
+font-size:32px;
+font-weight:bold;
+margin-bottom:40px;
+}
+
+/* 입력 row */
+
+.form-row{
+display:flex;
+align-items:center;
+margin-bottom:15px;
+}
+
+.label{
+width:160px;
+}
+
+.input-box{
+flex:1;
+}
+
+/* input */
+
+input{
+width:100%;
+height:40px;
+padding:6px 10px;
+border:1px solid #ccc;
+border-radius:3px;
+}
+
+/* 아이디 영역 */
+
+.id-area{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.id-area input{
+flex:1;
+}
+
+/* 버튼 */
+
+.check-btn{
+height:40px;
+padding:0 18px;
+background:#3f6fb5;
+color:white;
+border:none;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.address-btn{
+height:40px;
+padding:0 18px;
+background:#3f6fb5;
+color:white;
+border:none;
+cursor:pointer;
+white-space:nowrap;
+}
+
+/* 성별 */
+
+.gender-box{
+display:flex;
+gap:15px;
+}
+
+.gender-box input{
+width:16px;
+height:16px;
+}
+
+/* 이메일 */
+
+.email-box{
+display:flex;
+gap:5px;
+align-items:center;
+}
+
+/* 버튼 영역 */
+
+.button-area{
+margin-top:40px;
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+.submit-btn{
+padding:12px 40px;
+background:#3f6fb5;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.back-btn{
+padding:12px 40px;
+background:#6c757d;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.note{
+margin-top:20px;
+color:red;
+font-size:13px;
+}
+
+</style>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<div class="container">
+
+<div class="title">회원가입</div>
+
+<form action="/signup" method="post" novalidate>
+
+<input type="hidden" name="agreePrivacy" value="true" />
+<input type="hidden" name="agreeTerms" value="true" />
+<input type="hidden" name="email" id="emailFull" />
+<!-- 아이디 -->
+
+<div class="form-row">
+<div class="label">아이디(필수) *</div>
+
+<div class="input-box id-area">
+
+<input type="text" name="loginId" id="loginId" pattern="^[a-zA-Z0-9]{8,20}$" title="영문이나 숫자 8~20자" placeholder="영문/숫자 8~20자(필수)" required />
+
+<button type="button" class="check-btn" onclick="checkId()">중복확인</button>
+<small id="idMsg"></small>
+
+</div>
+</div>
+
+<!-- 비밀번호 -->
+
+<div class="form-row">
+<div class="label">비밀번호(필수) *</div>
+<div class="input-box">
+<input type="password"
+    name="password"
+    id="password"
+    pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$"
+    placeholder="영문/숫자 포함 8~20자(필수)"
+    required />
+
+</div>
+</div>
+
+<!-- 비밀번호 확인 -->
+
+<div class="form-row">
+<div class="label">비밀번호 확인(필수) *</div>
+<div class="input-box">
+<input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="비밀번호를 다시 입력해 주세요!" required/>
+<small id="pwMsg"></small>
+</div>
+</div>
+
+<!-- 이름 -->
+
+<div class="form-row">
+<div class="label">이름(필수) *</div>
+<div class="input-box">
+<input type="text"
+       name="name"
+       id="name"
+       pattern="^[가-힣a-zA-Z0-9]{1,50}$"
+       title="한글, 영문, 숫자 1~50자"
+       placeholder="한글/영문 50자 이내(필수)"
+       required />
+</div>
+</div>
+
+<!-- 생년월일 -->
+<div class="form-row">
+<div class="label">생년월일(필수) *</div>
+
+<div class="input-box" style="position:relative;">
+    <input type="date" id="birthDate" name="birthDate" min="1900-01-01" required/>
+</div>
+</div>
+
+<!-- 성별 -->
+
+<div class="form-row">
+<div class="label">성별(필수) *</div>
+<div class="gender-box">
+<label><input type="radio" name="gender" value="남" required> 남</label>
+<label><input type="radio" name="gender" value="여" required> 여</label>
+</div>
+
+</div>
+
+<!-- 전화번호 -->
+
+<div class="form-row">
+<div class="label">전화번호(필수) *</div>
+
+<div class="input-box" style="display:flex; gap:5px;">
+<select id="countryCode" style="width:120px;"></select>
+<input id="phone" placeholder="숫자만 입력 합니다." style="flex:1;" required/>
+<input type="hidden" name="phone" id="fullPhone" />
+</div>
+</div>
+
+<!-- 주소 -->
+
+<div class="form-row">
+<div class="label">주소(필수) *</div>
+<div class="input-box id-area">
+<input name="address" id="address" readonly required/>
+<button type="button" class="address-btn" onclick="searchAddress()">주소검색</button>
+</div>
+</div>
+
+<!-- 상세주소 -->
+<div class="form-row">
+<div class="label">상세주소</div>
+<div class="input-box">
+<input name="addressDetail" placeholder="나머지 주소를 입력해 주세요" />
+</div>
+</div>
+
+<!-- 이메일 -->
+
+<div class="form-row">
+<div class="label">이메일(필수) *</div>
+<div class="input-box email-box">
+<input type="text"
+       id="emailId"
+       name="emailId"
+       pattern="^[a-zA-Z0-9]+$"
+       title="영문 또는 숫자만 입력하세요"
+       required />
+<span>@</span>
+<input type="text"
+       id="emailDomain"
+       name="emailDomain"
+       pattern="^[a-zA-Z0-9]+\.[a-zA-Z]{2,}$"
+       title="예: gmail.com 형식으로 입력하세요"
+       required />
+<select id="domainSelect">
+<option value="">직접입력</option>
+<option value="naver.com">naver.com</option>
+<option value="daum.net">daum.net</option>
+<option value="gmail.com">gmail.com</option>
+<option value="nate.com">nate.com</option>
+</select>
+
+<button type="button" class="check-btn" onclick="checkEmail()">중복확인</button>
+<small id="emailMsg"></small>
+
+</div>
+
+</div>
+
+<!-- 차량 -->
+
+<div class="form-row">
+<div class="label">보유 차량명(선택)</div>
+<div class="input-box">
+<input name="vehicleModel" id="carName" placeholder="보유하신 차종을 입력하신 후 보유차종 연식, 주행거리(km)를 입력하세요" />
+</div>
+</div>
+
+<div class="form-row">
+<div class="label">보유차종 연식</div>
+<div class="input-box">
+<input type="month" name="vehicleYear" id="carYear" disabled />
+
+</div>
+</div>
+
+<div class="form-row">
+<div class="label">주행거리(Km)</div>
+<div class="input-box">
+<input name="drivingDistance" id="carMileage" disabled />
+</div>
+</div>
+
+<div class="button-area">
+
+<button type="button" class="submit-btn">
+가입하기
+</button>
+
+<button type="button" class="back-btn" onclick="history.back()">
+돌아가기
+</button>
+
+</div>
+
+</form>
+
+<div class="note">
+* 는 필수 입력 항목입니다.
+</div>
+
+</div>
+
+<script>
+
+let isIdChecked = false;
+let isEmailChecked = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+	const countrySelect = document.getElementById("countryCode");
+
+	countryCodes.forEach(c => {
+	    const option = document.createElement("option");
+	    option.value = c.code;
+	    option.textContent = `${c.name} (+${c.code})`;
+	    countrySelect.appendChild(option);
+	});
+
+	countrySelect.value = "82";
+	
+    const form = document.querySelector('form');
+    
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('birthDate').setAttribute('max', today);
+ // 차량 연식 미래 제한
+    const now = new Date().toISOString().slice(0, 7);
+    document.getElementById('carYear').setAttribute('max', now);
+    document.getElementById('emailId').addEventListener('input', () => isEmailChecked = false);
+    document.getElementById('emailDomain').addEventListener('input', () => isEmailChecked = false);
+
+    document.querySelector('.submit-btn').addEventListener('click', function() {
+
+        const form = document.querySelector('form');
+
+        const loginId = document.getElementById('loginId').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const passwordConfirm = document.getElementById('passwordConfirm').value.trim();
+        const name = document.querySelector('input[name="name"]').value.trim();
+        const birthDate = document.getElementById('birthDate').value.trim();
+        
+        const gender = document.querySelector('input[name="gender"]:checked');
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const emailId = document.getElementById('emailId').value.trim();
+        const emailDomain = document.getElementById('emailDomain').value.trim();
+
+        if (!loginId) return alert('아이디를 입력하세요.');
+        const idRegex = /^[a-zA-Z0-9]{8,20}$/;
+        if (!idRegex.test(loginId)) {
+            alert('아이디는 영문/숫자 8~20자로 입력하세요.');
+            document.getElementById('loginId').focus();
+            return;
+        }
+        if (!password) return alert('비밀번호를 입력하세요.');
+        const pwRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
+
+        if (!pwRegex.test(password)) {
+            alert('비밀번호는 영문, 숫자를 포함한 8~20자로 입력하세요.');
+            document.getElementById('password').focus();
+            return;
+        }
+        if (!passwordConfirm) return alert('비밀번호 확인을 입력하세요.');
+        if (password !== passwordConfirm) return alert('비밀번호가 일치하지 않습니다.');
+        if (!name) return alert('이름을 입력하세요.');
+        const nameRegex = /^[가-힣a-zA-Z0-9]{1,50}$/;
+
+        if (!nameRegex.test(name)) {
+            alert('이름은 한글, 영문, 숫자 1~50자로 입력하세요.');
+            document.getElementById('name').focus();
+            return;
+        }
+        if (!birthDate) return alert('생년월일을 입력하세요.');
+        const todayDate = new Date().toISOString().split('T')[0];
+        if (birthDate > todayDate) {
+        	return alert('생년월일은 미래 날짜를 선택할 수 없습니다.');
+        }
+        if (!gender) return alert('성별을 선택하세요.');
+        if (!phone) return alert('전화번호를 입력하세요.');
+        if (!address) return alert('주소를 입력하세요.');
+        if (!emailId || !emailDomain) return alert('이메일을 입력하세요.');
+        const emailIdRegex = /^[a-zA-Z0-9]+$/;
+        const emailDomainRegex = /^[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailIdRegex.test(emailId)) {
+            alert('이메일 아이디는 영문 또는 숫자만 입력하세요.');
+            document.getElementById('emailId').focus();
+            return;
+        }
+
+        if (!emailDomainRegex.test(emailDomain)) {
+            alert('이메일 도메인은 gmail.com 형식으로 입력하세요.');
+            document.getElementById('emailDomain').focus();
+            return;
+        }
+        const email = emailId + '@' + emailDomain;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]+(\.[a-zA-Z]+)*$/;
+
+        if (!emailRegex.test(email)) {
+            return alert('이메일 도메인을 올바르게 입력하세요.');
+        }
+        if (!isIdChecked) return alert('아이디 중복확인을 해주세요.');
+        if (!isEmailChecked) return alert('이메일 중복확인을 해주세요.');
+
+        document.getElementById('emailFull').value = emailId + '@' + emailDomain;
+        document.getElementById('fullPhone').value =
+            document.getElementById('countryCode').value + phone;
+        const carYear = document.getElementById('carYear').value;
+
+        if (carYear) {
+            const nowMonth = new Date().toISOString().slice(0, 7);
+
+            if (carYear > nowMonth) {
+                alert('보유차종 연식은 미래 날짜를 선택할 수 없습니다.');
+                document.getElementById('carYear').focus();
+                return;
+            }
+        }
+
+        form.submit();
+        
+    });
+
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+/* 비밀번호 확인 */
+const pw=document.getElementById("password");
+const pwConfirm=document.getElementById("passwordConfirm");
+const msg=document.getElementById("pwMsg");
+
+pwConfirm.addEventListener("keyup",function(){
+    if(pw.value===pwConfirm.value){
+        msg.textContent="비밀번호가 일치합니다.";
+        msg.style.color="green";
+    }else{
+        msg.textContent="비밀번호가 일치하지 않습니다.";
+        msg.style.color="red";
+    }
+});
+
+
+/* 전화번호 자동 하이픈 */
+const phoneInput = document.getElementById("phone");
+const countryCode = document.getElementById("countryCode");
+const fullPhone = document.getElementById("fullPhone");
+
+phoneInput.addEventListener("input", function () {
+
+    let numbers = this.value.replace(/[^0-9]/g, "");
+
+    if (numbers.length > 11) {
+        numbers = numbers.substring(0, 11);
+    }
+
+    let formatted = "";
+
+    if (numbers.length <= 3) {
+        formatted = numbers;
+    } else if (numbers.length <= 7) {
+        formatted = numbers.slice(0, 3) + "-" + numbers.slice(3);
+    } else {
+        formatted =
+            numbers.slice(0, 3) + "-" +
+            numbers.slice(3, 7) + "-" +
+            numbers.slice(7, 11);
+    }
+
+    this.value = formatted;
+
+    fullPhone.value = countryCode.value + "-" + formatted;
+});
+
+/* 국가코드 변경 시 */
+countryCode.addEventListener("change", function () {
+    fullPhone.value = this.value + "-" + phoneInput.value;
+});
+
+/* 주소 */
+window.searchAddress = function(){
+    new daum.Postcode({
+        oncomplete:function(data){
+            document.getElementById("address").value = data.address;
+        }
+    }).open();
+};
+
+/* 이메일 선택 */
+const domainSelect=document.getElementById("domainSelect");
+const domainInput=document.getElementById("emailDomain");
+
+domainSelect.addEventListener("change",function(){
+    if(this.value!==""){
+        domainInput.value=this.value;
+        domainInput.readOnly=true;
+    }else{
+        domainInput.value="";
+        domainInput.readOnly=false;
+    }
+});
+
+/* 차량 활성화 */
+const carName=document.getElementById("carName");
+const carYear=document.getElementById("carYear");
+const mileage=document.getElementById("carMileage");
+
+carYear.disabled = true;
+mileage.disabled = true;
+
+carName.addEventListener("input", function () {
+	const hasValue = this.value.trim() !== "";
+
+	// 활성화/비활성화
+	carYear.disabled = !hasValue;
+	mileage.disabled = !hasValue;
+
+	if (hasValue) {
+	    // 활성화될 때 값 초기화 (핵심)
+	    carYear.value = "";
+	} else {
+	    // 비활성화 시 초기화
+	    carYear.value = "";
+	    mileage.value = "";
+	}
+});
+
+}); 
+</script>
+<script>
+async function checkId() {
+    const loginId = document.getElementById("loginId").value;
+    const msg = document.getElementById("idMsg");
+
+    if (!loginId) {
+        msg.textContent = "아이디를 입력하세요.";
+        msg.style.color = "red";
+        return;
+    }
+
+    const res = await fetch(`/signup/check-id?loginId=${loginId}`);
+    const text = await res.text();
+    const isDuplicate = text.trim() === "true";
+
+    if (isDuplicate) {
+        msg.innerText = "이미 사용중인 아이디입니다.";
+        msg.style.color = "red";
+        isIdChecked = false;
+    } else {
+        msg.innerText = "사용 가능한 아이디입니다.";
+        msg.style.color = "green";
+        isIdChecked = true;
+    }
+}
+
+async function checkEmail() {
+    const id = document.getElementById("emailId").value;
+    const domain = document.getElementById("emailDomain").value;
+    const msg = document.getElementById("emailMsg");
+
+    if (!id || !domain) {
+        msg.innerText = "이메일을 입력하세요.";
+        msg.style.color = "red";
+        return;
+    }
+
+    const email = id + "@" + domain;
+
+    const res = await fetch(`/signup/check-email?email=${encodeURIComponent(email)}`);
+    const text = await res.text();
+    const isDuplicate = text.trim() === "true";
+
+    if (isDuplicate) {
+        msg.innerText = "이미 사용중인 이메일입니다.";
+        msg.style.color = "red";
+        isEmailChecked = false;
+    } else {
+        msg.innerText = "사용 가능한 이메일입니다.";
+        msg.style.color = "green";
+        isEmailChecked = true;
+    }
+}
+</script>
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
+</body>
+</html>

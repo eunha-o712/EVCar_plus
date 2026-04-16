@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Consulting</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-main">
+    <section class="ev-hero">
+        <div class="ev-container">
+            <div class="ev-hero__layout">
+                <div class="ev-hero__content">
+                    <p class="ev-hero__eyebrow">EV CONSULTING</p>
+
+                    <h2 class="ev-hero__title">
+                        전기차 정보를
+                        <span class="ev-hero__accent">가장 직관적으로</span>
+                        확인하세요
+                    </h2>
+
+                    <p class="ev-hero__desc">
+                        브랜드별 차량 조회부터 충전소 위치까지,
+                        EV Consulting 하나로 빠르고 정확하게 연결합니다.
+                    </p>
+
+                    <div class="ev-hero__actions">
+                        <a th:href="@{/vehicle}" class="ev-btn ev-btn-primary">전기차 조회</a>
+                        <a th:href="@{/charging/map}" class="ev-btn ev-btn-secondary">충전소 지도</a>
+                    </div>
+                </div>
+
+                <div class="ev-hero__visual">
+                    <div class="ev-hero__visual-card">
+                        <img th:src="@{/images/evcar_logo.png}"
+                             alt="EV Consulting 메인 비주얼"
+                             class="ev-hero__image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev-main-section ev-main-section--latest">
+        <div class="ev-container">
+            <div class="ev-main-section__head">
+                <h3 class="ev-main-section__title">최신 전기차 정보</h3>
+                <a th:href="@{/vehicle}" class="ev-main-section__more">더보기</a>
+            </div>
+
+            <div class="ev-car-grid">
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_HYUNDAI_IONIQ9.png}"
+                                 alt="현대 아이오닉 9"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">LATEST</p>
+                            <h4 class="ev-car-card__name">현대 아이오닉 9</h4>
+                            <p class="ev-car-card__summary">대형 3열 전기 SUV</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_KIA_EV3.png}"
+                                 alt="기아 EV3"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">LATEST</p>
+                            <h4 class="ev-car-card__name">기아 EV3</h4>
+                            <p class="ev-car-card__summary">가성비 소형 전기 SUV</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_HYUNDAI_CASPER_ELECTRIC.png}"
+                                 alt="현대 캐스퍼 일렉트릭"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">LATEST</p>
+                            <h4 class="ev-car-card__name">현대 캐스퍼 일렉트릭</h4>
+                            <p class="ev-car-card__summary">도심형 컴팩트 전기차</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev-main-section ev-main-section--popular">
+        <div class="ev-container">
+            <div class="ev-main-section__head">
+                <h3 class="ev-main-section__title">판매량 기반 인기 차량</h3>
+                <a th:href="@{/vehicle}" class="ev-main-section__more">더보기</a>
+            </div>
+
+            <div class="ev-car-grid">
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_HYUNDAI_IONIQ5.png}"
+                                 alt="현대 아이오닉 5"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">BEST</p>
+                            <h4 class="ev-car-card__name">현대 아이오닉 5</h4>
+                            <p class="ev-car-card__summary">국민 전기차 베스트셀러</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_KIA_EV6.png}"
+                                 alt="기아 EV6"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">BEST</p>
+                            <h4 class="ev-car-card__name">기아 EV6</h4>
+                            <p class="ev-car-card__summary">스포티한 감성의 인기 모델</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_KIA_RAY_EV.png}"
+                                 alt="기아 레이 EV"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">BEST</p>
+                            <h4 class="ev-car-card__name">기아 레이 EV</h4>
+                            <p class="ev-car-card__summary">도심형 가성비 전기차</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev-main-section ev-main-section--persona">
+        <div class="ev-container">
+            <div class="ev-main-section__head">
+                <h3 class="ev-main-section__title">페르소나별 추천 차량</h3>
+                <a th:href="@{/vehicle}" class="ev-main-section__more">더보기</a>
+            </div>
+
+            <div class="ev-car-grid">
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_HYUNDAI_IONIQ5.png}"
+                                 alt="현대 아이오닉 5"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">PERSONA</p>
+                            <h4 class="ev-car-card__name">현대 아이오닉 5</h4>
+                            <p class="ev-car-card__summary">크리에이터 · 개발자 추천</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_KIA_EV6.png}"
+                                 alt="기아 EV6"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">PERSONA</p>
+                            <h4 class="ev-car-card__name">기아 EV6</h4>
+                            <p class="ev-car-card__summary">조용한 출퇴근용 추천</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="ev-car-card">
+                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                        <div class="ev-car-card__image-wrap">
+                            <img th:src="@{/images/ev_HYUNDAI_CASPER_ELECTRIC.png}"
+                                 alt="현대 캐스퍼 일렉트릭"
+                                 class="ev-car-card__image">
+                        </div>
+                        <div class="ev-car-card__body">
+                            <p class="ev-car-card__category">PERSONA</p>
+                            <h4 class="ev-car-card__name">현대 캐스퍼 일렉트릭</h4>
+                            <p class="ev-car-card__summary">도심 이동과 주차에 최적</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
+<div th:replace="~{chatbot/chatbotWidget :: chatbot(${loginUser != null ? loginUser.userId : 'test-user'})}"></div>
+</body>
+</html>

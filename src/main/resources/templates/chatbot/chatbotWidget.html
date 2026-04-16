@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="chatbot(userId)">
+    <div class="ev-floating-chatbot">
+		<button type="button" class="ev-floating-chatbot__fab" id="evChatbotFab" aria-label="AI 챗봇 열기">
+		    <img
+		        src="/images/ev_chat_1.png"
+		        alt="AI 챗봇"
+		        class="ev-floating-chatbot__fab-icon"
+		    />
+		</button>
+
+        <section class="ev-floating-chatbot__panel" id="evChatbotPanel" style="display: none;">
+            <header class="ev-floating-chatbot__header">
+                <div>
+                    <strong>AI 상담 챗봇</strong>
+                    <p>무엇을 도와드릴까요?</p>
+                </div>
+                <button type="button" class="ev-floating-chatbot__close" id="evChatbotClose">×</button>
+            </header>
+
+            <div class="ev-floating-chatbot__quick">
+                <button type="button" class="ev-floating-chatbot__quick-btn" data-message="전기차 추천해줘">차량 추천</button>
+                <button type="button" class="ev-floating-chatbot__quick-btn" data-message="충전소 찾는 방법 알려줘">충전소 찾기</button>
+                <button type="button" class="ev-floating-chatbot__quick-btn" data-message="전기차 자주 묻는 질문 알려줘">FAQ 상담</button>
+                <button type="button" class="ev-floating-chatbot__quick-btn" data-message="상담 예약하고 싶어">상담 예약</button>
+            </div>
+
+            <div class="ev-floating-chatbot__messages" id="evChatbotMessages">
+                <div class="ev-floating-chatbot__message ev-floating-chatbot__message--bot">
+                    안녕하세요. EVCar AI 상담 챗봇입니다. 궁금한 내용을 입력해 주세요.
+                </div>
+            </div>
+
+            <form class="ev-floating-chatbot__form" id="evChatbotForm">
+                <input type="hidden" id="evChatbotUserId" th:value="${userId}">
+                <input
+                        type="text"
+                        id="evChatbotInput"
+                        class="ev-floating-chatbot__input"
+                        placeholder="메시지를 입력하세요..."
+                        autocomplete="off"
+                        maxlength="300"
+                />
+                <button type="submit" class="ev-floating-chatbot__send">전송</button>
+            </form>
+        </section>
+    </div>
+
+    <link rel="stylesheet" th:href="@{/css/chatbot/chatbot-widget.css}">
+    <script th:src="@{/js/chatbot/chatbot-widget.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+.ev-consultation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ev-consultation-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px 20px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
+
+.ev-consultation-card__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.ev-consultation-card__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ev-consultation-card__row--full {
+    grid-column: 1 / -1;
+}
+
+.ev-consultation-card__label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.ev-consultation-card__value {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    word-break: keep-all;
+}
+
+.ev-consultation-card__value--multiline {
+    white-space: pre-line;
+    line-height: 1.7;
+}
+
+.ev-consultation-card__value--reply {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+    white-space: pre-line;
+    line-height: 1.7;
+}
+
+.ev-consultation-card__footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ev-consultation-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.ev-consultation-status--progress {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.ev-consultation-status--done {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.ev-consultation-status--cancel {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.ev-consultation-cancel-btn {
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+}
+
+.ev-consultation-disabled-text {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.ev-consultation-empty {
+    text-align: center;
+}
+
+.ev-consultation-empty__icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.ev-consultation-empty__title {
+    margin: 0 0 10px;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.ev-consultation-empty__text {
+    margin: 0 0 24px;
+    color: var(--text-secondary);
+}
+
+.ev-consultation-cancel-form {
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .ev-consultation-card {
+        padding: 28px 24px;
+    }
+
+    .ev-consultation-card__body {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .ev-consultation-card__footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ev-consultation-card__footer .btn,
+    .ev-consultation-cancel-form,
+    .ev-consultation-cancel-form .btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/mainLayout :: head('상담게시판', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/consultation/consultation.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-consultation-page">
+    <section class="ev-consultation-hero">
+        <div class="ev-consultation-hero__inner">
+            <p class="ev-consultation-hero__eyebrow">CUSTOMER CENTER</p>
+            <h2 class="ev-consultation-hero__title">상담게시판</h2>
+            <p class="ev-consultation-hero__desc">구매 계획, 예산, 충전 환경까지 전기차 구매 전 상담을 신청해보세요.</p>
+        </div>
+    </section>
+
+    <section class="ev-consultation-section ev-consultation-section--list">
+        <div class="ev-consultation-toolbar">
+            <form class="ev-consultation-search" th:action="@{/consultation}" method="get">
+                <input type="text"
+                       name="keyword"
+                       class="ev-consultation-search__input"
+                       placeholder="상담 내용을 검색하세요."
+                       th:value="${keyword}">
+                <button type="submit" class="ev-consultation-search__button">검색</button>
+            </form>
+
+            <a th:href="@{/consultation/form}" class="ev-consultation-write">상담 신청</a>
+        </div>
+
+        <div class="ev-consultation-card-list" th:if="${!#lists.isEmpty(consultationList)}">
+            <a th:each="consultation : ${consultationList}"
+               th:href="@{|/consultation/${consultation.consultId}|}"
+               class="ev-consultation-card">
+                <div class="ev-consultation-card__meta">
+                    <th:block th:switch="${consultation.consultStatus}">
+                        <span th:case="'WAITING'"
+                              class="ev-consultation-card__status ev-consultation-card__status--waiting"
+                              th:text="${consultation.consultStatus}">
+                            WAITING
+                        </span>
+                        <span th:case="'PENDING'"
+                              class="ev-consultation-card__status ev-consultation-card__status--waiting"
+                              th:text="${consultation.consultStatus}">
+                            PENDING
+                        </span>
+                        <span th:case="'IN_PROGRESS'"
+                              class="ev-consultation-card__status ev-consultation-card__status--progress"
+                              th:text="${consultation.consultStatus}">
+                            IN_PROGRESS
+                        </span>
+                        <span th:case="'PROGRESS'"
+                              class="ev-consultation-card__status ev-consultation-card__status--progress"
+                              th:text="${consultation.consultStatus}">
+                            PROGRESS
+                        </span>
+                        <span th:case="'COMPLETED'"
+                              class="ev-consultation-card__status ev-consultation-card__status--success"
+                              th:text="${consultation.consultStatus}">
+                            COMPLETED
+                        </span>
+                        <span th:case="'DONE'"
+                              class="ev-consultation-card__status ev-consultation-card__status--success"
+                              th:text="${consultation.consultStatus}">
+                            DONE
+                        </span>
+                        <span th:case="'CANCELED'"
+                              class="ev-consultation-card__status ev-consultation-card__status--danger"
+                              th:text="${consultation.consultStatus}">
+                            CANCELED
+                        </span>
+                        <span th:case="'CANCEL'"
+                              class="ev-consultation-card__status ev-consultation-card__status--danger"
+                              th:text="${consultation.consultStatus}">
+                            CANCEL
+                        </span>
+                        <span th:case="*"
+                              class="ev-consultation-card__status"
+                              th:text="${consultation.consultStatus}">
+                            STATUS
+                        </span>
+                    </th:block>
+
+                    <span class="ev-consultation-card__date"
+                          th:text="${#temporals.format(consultation.createdAt, 'yyyy.MM.dd')}">
+                        2026.04.09
+                    </span>
+                </div>
+
+                <div class="ev-consultation-card__body">
+                    <div class="ev-consultation-card__main">
+                        <h3 class="ev-consultation-card__title"
+                            th:text="${consultation.vehicleModelName} + ' 상담'">
+                            IONIQ_5 상담
+                        </h3>
+                        <p class="ev-consultation-card__content"
+                           th:text="${consultation.consultContent}">
+                            상담 내용
+                        </p>
+                    </div>
+
+                    <div class="ev-consultation-card__side">
+                        <span class="ev-consultation-card__writer"
+                              th:text="${consultation.userName}">
+                            홍길동
+                        </span>
+                        <span class="ev-consultation-card__schedule"
+                              th:text="${consultation.preferredDatetime}">
+                            2026-04-11 14:00
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="ev-consultation-empty" th:if="${#lists.isEmpty(consultationList)}">
+            등록된 상담글이 없습니다.
+        </div>
+
+        <nav class="ev-pagination"
+             th:if="${totalPages > 1}"
+             aria-label="상담게시판 페이지 이동">
+            <a class="ev-pagination__link"
+               th:classappend="${!hasPrevious} ? ' is-disabled'"
+               th:href="${hasPrevious} ? @{/consultation(page=1, keyword=${keyword})} : '#'"
+               aria-label="첫 페이지">
+                &laquo;
+            </a>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasPrevious} ? ' is-disabled'"
+               th:href="${hasPrevious} ? @{/consultation(page=${currentPage - 1}, keyword=${keyword})} : '#'"
+               aria-label="이전 페이지">
+                &lsaquo;
+            </a>
+
+            <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+                <a class="ev-pagination__link"
+                   th:classappend="${pageNumber == currentPage} ? ' is-active'"
+                   th:href="@{/consultation(page=${pageNumber}, keyword=${keyword})}"
+                   th:text="${pageNumber}">
+                    1
+                </a>
+            </th:block>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasNext} ? ' is-disabled'"
+               th:href="${hasNext} ? @{/consultation(page=${currentPage + 1}, keyword=${keyword})} : '#'"
+               aria-label="다음 페이지">
+                &rsaquo;
+            </a>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasNext} ? ' is-disabled'"
+               th:href="${hasNext} ? @{/consultation(page=${totalPages}, keyword=${keyword})} : '#'"
+               aria-label="마지막 페이지">
+                &raquo;
+            </a>
+        </nav>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/consultation/consultation.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+</body>
+</html>

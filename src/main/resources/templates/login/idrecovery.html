@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>아이디 찾기 / 비밀번호 변경</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:"돋움", Dotum, sans-serif;
+    background:#f3f4f6;
+    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    max-width:900px;
+    width:90%;
+    margin:60px auto;
+    flex: 1;
+}
+
+/* 타이틀 */
+.title{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+/* 2컬럼 */
+.flex-box{
+    display:flex;
+    gap:30px;
+}
+
+/* 박스 */
+.box{
+    flex:1;
+    background:white;
+    padding:20px;
+    border:1px solid #ddd;
+}
+
+/* 입력 */
+.form-row{
+    margin-bottom:15px;
+}
+
+.form-row label{
+    display:block;
+    margin-bottom:5px;
+}
+
+input{
+    width:100%;
+    height:40px;
+    padding:6px 10px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
+}
+
+/* 버튼 */
+.btn{
+    width:100%;
+    height:45px;
+    background:#3f6fb5;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+/* 하단 버튼 */
+.bottom{
+    text-align:center;
+    margin-top:30px;
+}
+
+.back-btn{
+    padding:10px 30px;
+    background:#6c757d;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+.email-box{
+    display:flex;
+    gap:5px;
+    align-items:center;
+}
+</style>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<div class="container">
+
+<div class="title">아이디 찾기·비밀번호 변경</div>
+
+<div class="flex-box">
+
+<!-- ✅ 아이디 찾기 -->
+<div class="box">
+
+<h3>아이디 찾기</h3>
+
+<form th:action="@{/login/find-id}" method="post">
+
+<div class="form-row">
+<label></label>
+<input type="text" name="name" required placeholder="이름" />
+</div>
+
+<div class="form-row email-box">
+
+    <input type="text" id="findEmailId" name="emailId" placeholder="이메일 아이디" required />
+
+    <span>@</span>
+
+    <input type="text" id="findEmailDomain" name="emailDomain" required />
+
+    <select id="findDomainSelect">
+        <option value="">직접입력</option>
+        <option value="naver.com">naver.com</option>
+        <option value="daum.net">daum.net</option>
+        <option value="gmail.com">gmail.com</option>
+    </select>
+
+</div>
+
+
+    <button type="submit" class="btn">아이디 찾기</button>
+
+</form>
+</div>
+
+<!-- ✅ 비밀번호 변경 (확인용) -->
+<div class="box">
+
+<h3>비밀번호 변경</h3>
+
+<form th:action="@{/login/reset-pw}" method="post">
+
+<div class="form-row">
+<input type="text" name="loginId" required placeholder="아이디" />
+</div>
+
+<div class="form-row">
+<input type="text" name="name" required placeholder="이름" />
+</div>
+
+<div class="form-row email-box">
+
+<input type="text" id="pwEmailId" placeholder="이메일 아이디" />
+
+<span>@</span>
+
+<input type="text" id="pwEmailDomain" />
+
+<select id="pwDomainSelect">
+<option value="">직접입력</option>
+<option value="naver.com">naver.com</option>
+<option value="daum.net">daum.net</option>
+<option value="gmail.com">gmail.com</option>
+</select>
+
+<input type="hidden" name="email" id="pwEmailFull" />
+
+</div>
+
+<button type="submit" class="btn">비밀번호 변경</button>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- 하단 -->
+<div class="bottom">
+<button class="back-btn" onclick="location.href='/login'">돌아가기</button>
+</div>
+
+</div>
+
+<script>
+
+/* 아이디 찾기 결과 처리 */
+window.onload = function(){
+
+    const foundId = "[[${foundId}]]";
+    const error = "[[${errorMessage}]]";
+
+    if(error && error !== "null"){
+        alert(error);
+    }
+
+    if(foundId && foundId !== "null"){
+        alert("아이디는 '" + foundId + "' 입니다.");
+    }
+
+};
+
+
+
+/* 비밀번호 변경 submit */
+document.querySelectorAll("form")[1].onsubmit = function(){
+
+    const id = document.getElementById("pwEmailId").value;
+    const domain = document.getElementById("pwEmailDomain").value;
+
+    if(!id || !domain){
+        alert("이메일을 입력해주세요.");
+        return false;
+    }
+
+    document.getElementById("pwEmailFull").value = id + "@" + domain;
+    return true;
+};
+
+/* 아이디 찾기 이메일 도메인 */
+window.addEventListener("DOMContentLoaded", function(){
+
+    const findSelect = document.getElementById("findDomainSelect");
+    const findDomain = document.getElementById("findEmailDomain");
+
+    findSelect.addEventListener("change", function(){
+        if(this.value !== ""){
+            findDomain.value = this.value;
+            findDomain.readOnly = true;
+        }else{
+            findDomain.value = "";
+            findDomain.readOnly = false;
+        }
+    });
+
+});
+
+/* 비밀번호 변경 이메일 도메인 */
+const pwSelect = document.getElementById("pwDomainSelect");
+const pwDomain = document.getElementById("pwEmailDomain");
+
+pwSelect.addEventListener("change", function(){
+    if(this.value !== ""){
+        pwDomain.value = this.value;
+        pwDomain.readOnly = true;
+    }else{
+        pwDomain.value = "";
+        pwDomain.readOnly = false;
+    }
+});
+</script>
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
+</body>
+</html>

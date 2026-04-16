@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/mainLayout :: head('문의작성', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/inquiry/inquiry.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-inquiry-page">
+    <section class="ev-inquiry-hero ev-inquiry-hero--form">
+        <div class="ev-inquiry-hero__inner">
+            <p class="ev-inquiry-hero__eyebrow">CUSTOMER CENTER</p>
+            <h2 class="ev-inquiry-hero__title">문의 작성</h2>
+            <p class="ev-inquiry-hero__desc">서비스 이용 중 궁금한 내용을 남겨주시면 빠르게 안내해드리겠습니다.</p>
+        </div>
+    </section>
+
+    <section class="ev-inquiry-section ev-inquiry-section--form">
+        <form th:action="@{/inquiry/form}"
+              th:object="${inquiryCreateRequestDto}"
+              class="ev-inquiry-form"
+              method="post">
+
+            <input type="hidden" th:field="*{userId}">
+
+            <div class="ev-inquiry-form__grid">
+                <div class="ev-inquiry-form__field ev-inquiry-form__field--full">
+                    <label for="displayUserId" class="ev-inquiry-form__label">회원 ID</label>
+                    <input type="text"
+                           id="displayUserId"
+                           class="ev-inquiry-form__input"
+                           th:value="${loginId}"
+                           readonly>
+                </div>
+
+                <div class="ev-inquiry-form__field ev-inquiry-form__field--full">
+                    <label for="title" class="ev-inquiry-form__label">제목</label>
+                    <input type="text"
+                           id="title"
+                           th:field="*{title}"
+                           class="ev-inquiry-form__input"
+                           placeholder="문의 제목을 입력하세요.">
+                </div>
+
+                <div class="ev-inquiry-form__field ev-inquiry-form__field--full">
+                    <label for="content" class="ev-inquiry-form__label">문의 내용</label>
+                    <textarea id="content"
+                              th:field="*{content}"
+                              class="ev-inquiry-form__textarea"
+                              placeholder="서비스 이용 중 궁금한 내용을 자세히 남겨주세요."></textarea>
+                </div>
+            </div>
+
+            <div class="ev-inquiry-form__actions">
+                <a th:href="@{/inquiry}" class="ev-inquiry-form__secondary">목록으로</a>
+                <button type="submit" class="ev-inquiry-form__primary">문의 등록</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/inquiry/inquiry.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+</body>
+</html>

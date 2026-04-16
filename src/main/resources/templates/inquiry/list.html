@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/mainLayout :: head('문의게시판', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/inquiry/inquiry.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-inquiry-page">
+    <section class="ev-inquiry-hero">
+        <div class="ev-inquiry-hero__inner">
+            <p class="ev-inquiry-hero__eyebrow">CUSTOMER CENTER</p>
+            <h2 class="ev-inquiry-hero__title">문의게시판</h2>
+            <p class="ev-inquiry-hero__desc">서비스 이용 중 궁금한 내용을 남겨주시면 빠르게 안내해드리겠습니다.</p>
+        </div>
+    </section>
+
+    <section class="ev-inquiry-section ev-inquiry-section--list">
+        <div class="ev-inquiry-toolbar">
+            <form class="ev-inquiry-search" th:action="@{/inquiry}" method="get">
+                <input type="text"
+                       name="keyword"
+                       class="ev-inquiry-search__input"
+                       placeholder="제목으로 검색하세요."
+                       th:value="${keyword}">
+                <button type="submit" class="ev-inquiry-search__button">검색</button>
+            </form>
+
+            <a th:href="@{/inquiry/form}" class="ev-inquiry-write">문의 작성</a>
+        </div>
+
+        <div class="ev-inquiry-table-wrap" th:if="${!#lists.isEmpty(inquiryList)}">
+            <table class="ev-inquiry-table">
+                <thead>
+                <tr>
+                    <th>문의번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>답변상태</th>
+                    <th>작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="inquiry : ${inquiryList}">
+                    <td th:text="${inquiry.inquiryId}">IQ0001</td>
+                    <td>
+                        <a th:href="@{|/inquiry/${inquiry.inquiryId}|}"
+                           class="ev-inquiry-table__link"
+                           th:text="${inquiry.title}">
+                            문의 제목
+                        </a>
+                    </td>
+                    <td th:text="${inquiry.userName}">홍길동</td>
+                    <td>
+                        <th:block th:switch="${inquiry.replyStatus}">
+                            <span th:case="'WAITING'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--waiting"
+                                  th:text="${inquiry.replyStatus}">
+                                WAITING
+                            </span>
+                            <span th:case="'PENDING'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--waiting"
+                                  th:text="${inquiry.replyStatus}">
+                                PENDING
+                            </span>
+                            <span th:case="'IN_PROGRESS'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--progress"
+                                  th:text="${inquiry.replyStatus}">
+                                IN_PROGRESS
+                            </span>
+                            <span th:case="'PROGRESS'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--progress"
+                                  th:text="${inquiry.replyStatus}">
+                                PROGRESS
+                            </span>
+                            <span th:case="'REPLIED'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--success"
+                                  th:text="${inquiry.replyStatus}">
+                                REPLIED
+                            </span>
+                            <span th:case="'COMPLETED'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--success"
+                                  th:text="${inquiry.replyStatus}">
+                                COMPLETED
+                            </span>
+                            <span th:case="'DONE'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--success"
+                                  th:text="${inquiry.replyStatus}">
+                                DONE
+                            </span>
+                            <span th:case="'CLOSED'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--danger"
+                                  th:text="${inquiry.replyStatus}">
+                                CLOSED
+                            </span>
+                            <span th:case="'CANCELED'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--danger"
+                                  th:text="${inquiry.replyStatus}">
+                                CANCELED
+                            </span>
+                            <span th:case="'CANCEL'"
+                                  class="ev-inquiry-table__status ev-inquiry-table__status--danger"
+                                  th:text="${inquiry.replyStatus}">
+                                CANCEL
+                            </span>
+                            <span th:case="*"
+                                  class="ev-inquiry-table__status"
+                                  th:text="${inquiry.replyStatus}">
+                                STATUS
+                            </span>
+                        </th:block>
+                    </td>
+                    <td th:text="${#temporals.format(inquiry.createdAt, 'yyyy.MM.dd')}">2026.04.09</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ev-inquiry-empty" th:if="${#lists.isEmpty(inquiryList)}">
+            등록된 문의글이 없습니다.
+        </div>
+
+        <nav class="ev-pagination"
+             th:if="${totalPages > 1}"
+             aria-label="문의게시판 페이지 이동">
+            <a class="ev-pagination__link"
+               th:classappend="${!hasPrevious} ? ' is-disabled'"
+               th:href="${hasPrevious} ? @{/inquiry(page=1, keyword=${keyword})} : '#'"
+               aria-label="첫 페이지">
+                &laquo;
+            </a>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasPrevious} ? ' is-disabled'"
+               th:href="${hasPrevious} ? @{/inquiry(page=${currentPage - 1}, keyword=${keyword})} : '#'"
+               aria-label="이전 페이지">
+                &lsaquo;
+            </a>
+
+            <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+                <a class="ev-pagination__link"
+                   th:classappend="${pageNumber == currentPage} ? ' is-active'"
+                   th:href="@{/inquiry(page=${pageNumber}, keyword=${keyword})}"
+                   th:text="${pageNumber}">
+                    1
+                </a>
+            </th:block>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasNext} ? ' is-disabled'"
+               th:href="${hasNext} ? @{/inquiry(page=${currentPage + 1}, keyword=${keyword})} : '#'"
+               aria-label="다음 페이지">
+                &rsaquo;
+            </a>
+
+            <a class="ev-pagination__link"
+               th:classappend="${!hasNext} ? ' is-disabled'"
+               th:href="${hasNext} ? @{/inquiry(page=${totalPages}, keyword=${keyword})} : '#'"
+               aria-label="마지막 페이지">
+                &raquo;
+            </a>
+        </nav>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/inquiry/inquiry.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+</body>
+</html>

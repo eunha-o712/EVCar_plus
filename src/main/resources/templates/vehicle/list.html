@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기차 조회 - EV Consulting</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/vehicle/vehicle-list.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-vehicle-page">
+    <section class="ev-vehicle-hero">
+        <div class="ev-vehicle-hero__inner">
+            <div class="ev-vehicle-hero__copy">
+                <p class="ev-vehicle-hero__eyebrow">EV MODEL SEARCH</p>
+                <h1 class="ev-vehicle-hero__title">전기차 조회</h1>
+                <p class="ev-vehicle-hero__desc">
+                    브랜드와 차급 기준으로 원하는 전기차를 빠르게 탐색하고
+                    주요 가격과 주행거리 정보를 한눈에 확인해보세요.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="ev-vehicle-section ev-vehicle-section--list">
+        <div class="ev-vehicle-filter-panel">
+            <div class="ev-vehicle-filter-group">
+                <span class="ev-vehicle-filter-group__label">브랜드</span>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedBrand == '전체'} ? ' is-active'"
+                        data-brand="전체"
+                        th:data-class="${selectedClass}"
+                        onclick="filterByData(this)">
+                    전체
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedBrand == '현대'} ? ' is-active'"
+                        data-brand="현대"
+                        th:data-class="${selectedClass}"
+                        onclick="filterByData(this)">
+                    현대
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedBrand == '기아'} ? ' is-active'"
+                        data-brand="기아"
+                        th:data-class="${selectedClass}"
+                        onclick="filterByData(this)">
+                    기아
+                </button>
+            </div>
+
+            <div class="ev-vehicle-filter-group">
+                <span class="ev-vehicle-filter-group__label">차급</span>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == '전체'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="전체"
+                        onclick="filterByData(this)">
+                    전체
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'MINI_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="MINI_SUV"
+                        onclick="filterByData(this)">
+                    경형SUV
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'SMALL_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="SMALL_SUV"
+                        onclick="filterByData(this)">
+                    소형SUV
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'MID_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="MID_SUV"
+                        onclick="filterByData(this)">
+                    중형SUV
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'LARGE_SUV'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="LARGE_SUV"
+                        onclick="filterByData(this)">
+                    대형SUV
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'MID_SEDAN'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="MID_SEDAN"
+                        onclick="filterByData(this)">
+                    세단
+                </button>
+
+                <button type="button"
+                        class="ev-vehicle-filter-chip"
+                        th:classappend="${selectedClass == 'PERFORMANCE'} ? ' is-active'"
+                        th:data-brand="${selectedBrand}"
+                        data-class="PERFORMANCE"
+                        onclick="filterByData(this)">
+                    고성능
+                </button>
+            </div>
+        </div>
+
+        <div class="ev-vehicle-result">
+            조회 결과 <strong th:text="${totalCount}">0</strong>건
+        </div>
+
+        <div class="ev-vehicle-list-grid" th:if="${!#lists.isEmpty(vehicleList)}">
+            <article class="ev-vehicle-card"
+                     th:each="vehicle : ${vehicleList}"
+                     th:data-id="${vehicle.vehicleId}"
+                     onclick="goDetail(this)">
+                <div class="ev-vehicle-card__image-box">
+                    <img th:src="${vehicle.imageUrl}"
+                         th:alt="${vehicle.modelNameDisplay}"
+                         onerror="this.src='/images/evcar_logo.png'">
+                </div>
+
+                <div class="ev-vehicle-card__body">
+                    <div class="ev-vehicle-card__meta">
+                        <p class="ev-vehicle-card__brand" th:text="${vehicle.brandKor}">현대</p>
+                        <span class="ev-vehicle-card__class" th:text="${vehicle.vehicleClassKor}">대형SUV</span>
+                    </div>
+
+                    <h3 class="ev-vehicle-card__model" th:text="${vehicle.modelNameDisplay}">IONIQ 9</h3>
+
+                    <div class="ev-vehicle-card__bottom">
+                        <p class="ev-vehicle-card__price" th:text="${vehicle.priceBasicFormatted}">6,700만원 ~ 7,800만원</p>
+                        <p class="ev-vehicle-card__range"
+                           th:text="${vehicle.drivingRange != null ? '주행거리 ' + vehicle.drivingRange + 'km' : ''}">
+                            주행거리 620km
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="ev-vehicle-empty" th:if="${#lists.isEmpty(vehicleList)}">
+            <div class="ev-vehicle-empty__inner">
+                <h2 class="ev-vehicle-empty__title">조회된 차량이 없습니다.</h2>
+                <p class="ev-vehicle-empty__desc">
+                    브랜드 또는 차급 조건을 다시 선택해 주세요.
+                </p>
+            </div>
+        </div>
+
+        <div class="ev-vehicle-pagination" th:if="${totalPages > 1}">
+            <button type="button"
+                    class="ev-vehicle-filter-chip"
+                    th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:text="${i + 1}"
+                    th:classappend="${i == currentPage} ? ' is-active'"
+                    th:data-brand="${selectedBrand}"
+                    th:data-class="${selectedClass}"
+                    th:data-page="${i}"
+                    onclick="goPage(this)">
+                1
+            </button>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<button class="ev-vehicle-ai-fab"
+        type="button"
+        onclick="alert('AI 챗봇 준비 중입니다.')">
+    AI
+</button>
+
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/vehicle/vehicle-list.js}"></script>
+</body>
+</html>

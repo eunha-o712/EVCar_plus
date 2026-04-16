@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - EVCar</title>
+
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-dashboard.css}">
+</head>
+<body>
+<div class="ev-admin-layout">
+
+    <div th:replace="~{layout/adminSidebar :: adminSidebar('dashboard')}"></div>
+
+    <main class="ev-admin-main">
+        <div class="ev-admin-container ev-dashboard-page">
+
+            <header class="ev-dashboard-header">
+                <div>
+                    <p class="ev-dashboard-header__eyebrow">ADMIN DASHBOARD</p>
+                    <h1 class="ev-admin-title">대시보드</h1>
+                    <p class="ev-dashboard-header__desc">상담 현황과 차량/지역 통계를 한눈에 확인할 수 있습니다.</p>
+                </div>
+            </header>
+
+            <section class="ev-dashboard-summary">
+                <article class="ev-dashboard-summary-card ev-dashboard-summary-card--cyan">
+                    <div class="ev-dashboard-summary-card__label">금일 예약</div>
+                    <div class="ev-dashboard-summary-card__value"
+                         th:text="|${dashboard.todayReservationCount}건|">0건</div>
+                </article>
+
+                <article class="ev-dashboard-summary-card ev-dashboard-summary-card--orange">
+                    <div class="ev-dashboard-summary-card__label">진행중 상담</div>
+                    <div class="ev-dashboard-summary-card__value"
+                         th:text="|${dashboard.inProgressCount}건|">0건</div>
+                </article>
+
+                <article class="ev-dashboard-summary-card ev-dashboard-summary-card--green">
+                    <div class="ev-dashboard-summary-card__label">완료 상담</div>
+                    <div class="ev-dashboard-summary-card__value"
+                         th:text="|${dashboard.completedCount}건|">0건</div>
+                </article>
+            </section>
+
+            <section class="ev-dashboard-main-chart ev-dashboard-main-chart--grid">
+                <div class="ev-dashboard-panel">
+                    <div class="ev-dashboard-panel__header">
+                        <div>
+                            <h2 class="ev-dashboard-panel__title">월간 상담 추이</h2>
+                            <p class="ev-dashboard-panel__desc">최근 3개월 기준 상담 등록 건수</p>
+                        </div>
+                    </div>
+
+                    <div class="ev-dashboard-chart-box ev-dashboard-chart-box--compact">
+                        <canvas id="monthlyConsultationChart"></canvas>
+                    </div>
+
+                    <div class="ev-dashboard-empty"
+                         th:if="${dashboard.monthlyConsultationStats == null or #lists.isEmpty(dashboard.monthlyConsultationStats)}">
+                        표시할 월간 상담 데이터가 없습니다.
+                    </div>
+                </div>
+
+                <div class="ev-dashboard-panel ev-dashboard-ai-panel">
+                    <div class="ev-dashboard-panel__header">
+                        <div>
+                            <h2 class="ev-dashboard-panel__title">AI 분석 시스템</h2>
+                            <p class="ev-dashboard-panel__desc">상담 데이터를 기반으로 핵심 흐름을 자동 요약합니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="ev-dashboard-ai-box">
+                        <div class="ev-dashboard-ai-badge">AI INSIGHT</div>
+
+                        <div class="ev-dashboard-ai-summary"
+                             th:text="${dashboard.aiSummary}">
+                            AI 분석 결과가 표시됩니다.
+                        </div>
+
+                        <ul class="ev-dashboard-ai-list">
+                            <li>
+                                <span class="ev-dashboard-ai-list__label">상담 추이</span>
+                                <span class="ev-dashboard-ai-list__value"
+                                      th:text="${dashboard.aiTrend}">
+                                    최근 3개월 상담 증감 흐름 분석 결과가 표시됩니다.
+                                </span>
+                            </li>
+                            <li>
+                                <span class="ev-dashboard-ai-list__label">차량 관심도</span>
+                                <span class="ev-dashboard-ai-list__value"
+                                      th:text="${dashboard.aiVehicle}">
+                                    인기 차량 TOP 분석 결과가 표시됩니다.
+                                </span>
+                            </li>
+                            <li>
+                                <span class="ev-dashboard-ai-list__label">지역 분포</span>
+                                <span class="ev-dashboard-ai-list__value"
+                                      th:text="${dashboard.aiRegion}">
+                                    지역별 상담 분포 분석 결과가 표시됩니다.
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ev-dashboard-bottom">
+                <div class="ev-dashboard-panel">
+                    <div class="ev-dashboard-panel__header">
+                        <div>
+                            <h2 class="ev-dashboard-panel__title">인기 차량 TOP 3</h2>
+                            <p class="ev-dashboard-panel__desc">상담 건수 기준 상위 차량</p>
+                        </div>
+                    </div>
+
+                    <div class="ev-dashboard-ranking"
+                         th:if="${dashboard.topVehicleStats != null and !#lists.isEmpty(dashboard.topVehicleStats)}">
+                        <div class="ev-dashboard-ranking-item"
+                             th:each="vehicle, stat : ${dashboard.topVehicleStats}">
+                            <div class="ev-dashboard-ranking-item__order"
+                                 th:text="${stat.count + 1}">1</div>
+                            <div class="ev-dashboard-ranking-item__content">
+                                <div class="ev-dashboard-ranking-item__name"
+                                     th:text="${vehicle.modelNameLabel}">아이오닉 5</div>
+                                <div class="ev-dashboard-ranking-item__meta">
+                                    <span th:text="|상담 ${vehicle.consultationCount}건|">상담 0건</span>
+                                    <span th:text="|점유율 ${vehicle.percentage}%|">점유율 0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ev-dashboard-empty"
+                         th:if="${dashboard.topVehicleStats == null or #lists.isEmpty(dashboard.topVehicleStats)}">
+                        표시할 인기 차량 데이터가 없습니다.
+                    </div>
+                </div>
+
+                <div class="ev-dashboard-panel">
+                    <div class="ev-dashboard-panel__header">
+                        <div>
+                            <h2 class="ev-dashboard-panel__title">지역별 상담 분포</h2>
+                            <p class="ev-dashboard-panel__desc">회원 주소 기준 상담 지역 분포</p>
+                        </div>
+                    </div>
+
+                    <div class="ev-dashboard-region-chart-wrap"
+                         th:if="${dashboard.regionConsultationStats != null and !#lists.isEmpty(dashboard.regionConsultationStats)}">
+                        <div class="ev-dashboard-donut-box">
+                            <canvas id="regionConsultationChart"></canvas>
+                        </div>
+
+                        <div class="ev-dashboard-region-legend">
+                            <div class="ev-dashboard-region-legend__item"
+                                 th:each="region : ${dashboard.regionConsultationStats}">
+                                <span class="ev-dashboard-region-legend__name"
+                                      th:text="${region.regionName}">서울특별시</span>
+                                <span class="ev-dashboard-region-legend__value"
+                                      th:text="|${region.percentage}% (${region.consultationCount}건)|">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ev-dashboard-empty"
+                         th:if="${dashboard.regionConsultationStats == null or #lists.isEmpty(dashboard.regionConsultationStats)}">
+                        표시할 지역별 상담 데이터가 없습니다.
+                    </div>
+                </div>
+            </section>
+
+            <section class="ev-admin-dashboard-actions">
+                <a th:href="@{/admin/user}" class="ev-admin-btn">고객관리</a>
+                <a th:href="@{/admin/consultation}" class="ev-admin-btn">상담관리</a>
+                <a th:href="@{/admin/vehicle}" class="ev-admin-btn">차량관리</a>
+            </section>
+        </div>
+    </main>
+</div>
+
+<div id="evDashboardData"
+     th:data-monthly-labels="${dashboard.monthlyConsultationStats != null ? #strings.arrayJoin(dashboard.monthlyConsultationStats.![monthLabel], ',') : ''}"
+     th:data-monthly-counts="${dashboard.monthlyConsultationStats != null ? #strings.arrayJoin(dashboard.monthlyConsultationStats.![consultationCount], ',') : ''}"
+     th:data-region-labels="${dashboard.regionConsultationStats != null ? #strings.arrayJoin(dashboard.regionConsultationStats.![regionName], ',') : ''}"
+     th:data-region-counts="${dashboard.regionConsultationStats != null ? #strings.arrayJoin(dashboard.regionConsultationStats.![consultationCount], ',') : ''}"
+     hidden>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/admin/admin-dashboard.js}"></script>
+</body>
+</html>

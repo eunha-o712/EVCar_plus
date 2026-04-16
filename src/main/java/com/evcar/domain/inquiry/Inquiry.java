@@ -1,0 +1,72 @@
+package com.evcar.domain.inquiry;
+
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "inquiry")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@Access(AccessType.FIELD)
+public class Inquiry {
+
+    @Id
+    @Column(name = "inquiry_id", nullable = false, length = 20)
+    private String inquiryId;
+
+    @Column(name = "user_id", nullable = false, length = 20)
+    private String userId;
+
+    @Column(name = "title", nullable = false, length = 200)
+    private String title;
+
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    private String content;
+
+    @Column(name = "reply_content", columnDefinition = "TEXT")
+    private String replyContent;
+
+    @Column(name = "reply_status", nullable = false, length = 20)
+    private String replyStatus;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+    	LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+        if (this.replyStatus == null || this.replyStatus.trim().isEmpty()) {
+            this.replyStatus = "WAITING";
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateReply(String replyContent, String replyStatus) {
+        this.replyContent = replyContent;
+        this.replyStatus = replyStatus;
+    }
+
+}
