@@ -185,6 +185,26 @@ public class MyPageController {
         });
     }
 
+    @PostMapping("/inquiry/cancel")
+    public String cancelInquiry(HttpSession session,
+                                @RequestParam("inquiryId") String inquiryId,
+                                RedirectAttributes redirectAttributes) {
+
+        String userId = getUserId(session);
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            myPageService.cancelMyInquiry(userId, inquiryId);
+            redirectAttributes.addFlashAttribute("message", "문의가 정상적으로 취소되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
+
+        return "redirect:/mypage/inquiry";
+    }
+
     @GetMapping("/withdraw")
     public String myWithdraw(HttpSession session, Model model) {
         return handlePage(session, model, userId -> {

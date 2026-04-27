@@ -24,6 +24,9 @@ import lombok.NoArgsConstructor;
 @Access(AccessType.FIELD)
 public class Inquiry {
 
+    private static final String STATUS_WAITING = "WAITING";
+    private static final String STATUS_CANCELED = "CANCELED";
+
     @Id
     @Column(name = "inquiry_id", nullable = false, length = 20)
     private String inquiryId;
@@ -51,11 +54,12 @@ public class Inquiry {
 
     @PrePersist
     protected void onCreate() {
-    	LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
+
         if (this.replyStatus == null || this.replyStatus.trim().isEmpty()) {
-            this.replyStatus = "WAITING";
+            this.replyStatus = STATUS_WAITING;
         }
     }
 
@@ -69,4 +73,8 @@ public class Inquiry {
         this.replyStatus = replyStatus;
     }
 
+    public void cancel() {
+        this.replyStatus = STATUS_CANCELED;
+        this.updatedAt = LocalDateTime.now();
+    }
 }

@@ -85,5 +85,6 @@
             </section>
         </div>
     </div>
+	<div th:replace="~{chatbot/chatbotWidget :: chatbot(${session.loginUser != null ? session.loginUser.userId : null})}"></div>
 </footer>
 </body>

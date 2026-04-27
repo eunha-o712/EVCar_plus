@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 차량 추천 - EV Consulting</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/vehicle/vehicle-recommend.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-recommend-page">
+    <section class="ev-recommend-hero">
+        <div class="ev-recommend-hero__inner">
+            <p class="ev-recommend-hero__eyebrow">AI EV RECOMMEND</p>
+            <h1 class="ev-recommend-hero__title">AI 차량 추천</h1>
+            <p class="ev-recommend-hero__desc">
+                몇 가지 조건을 선택하면 AI가 현재 등록된 전기차 데이터 기준으로 어울리는 차량을 추천합니다.
+            </p>
+        </div>
+    </section>
+
+    <section class="ev-recommend-section">
+        <form id="vehicleRecommendForm"
+              class="ev-recommend-card"
+              method="post"
+              th:action="@{/vehicle/recommend}">
+            <input type="hidden" id="userMessage" name="userMessage">
+
+            <div class="ev-recommend-step">
+                <span class="ev-recommend-step__badge">STEP 1</span>
+                <h2 class="ev-recommend-step__title">예산을 선택해 주세요</h2>
+                <div class="ev-recommend-options">
+                    <button type="button" class="ev-recommend-option" data-group="budget" data-value="예산은 4천만원 이하입니다.">4천만원 이하</button>
+                    <button type="button" class="ev-recommend-option" data-group="budget" data-value="예산은 4천만원에서 6천만원 사이입니다.">4천~6천만원</button>
+                    <button type="button" class="ev-recommend-option" data-group="budget" data-value="예산은 6천만원 이상도 가능합니다.">6천만원 이상</button>
+                </div>
+            </div>
+
+            <div class="ev-recommend-step">
+                <span class="ev-recommend-step__badge">STEP 2</span>
+                <h2 class="ev-recommend-step__title">주 사용 목적을 선택해 주세요</h2>
+                <div class="ev-recommend-options">
+                    <button type="button" class="ev-recommend-option" data-group="purpose" data-value="주 사용 목적은 출퇴근과 도심 주행입니다.">출퇴근</button>
+                    <button type="button" class="ev-recommend-option" data-group="purpose" data-value="주 사용 목적은 가족 이동과 장거리 주행입니다.">가족/장거리</button>
+                    <button type="button" class="ev-recommend-option" data-group="purpose" data-value="주 사용 목적은 캠핑과 레저입니다.">캠핑/레저</button>
+                </div>
+            </div>
+
+            <div class="ev-recommend-step">
+                <span class="ev-recommend-step__badge">STEP 3</span>
+                <h2 class="ev-recommend-step__title">선호 차급을 선택해 주세요</h2>
+                <div class="ev-recommend-options">
+                    <button type="button" class="ev-recommend-option" data-group="vehicleClass" data-value="소형 SUV 또는 경형 SUV를 선호합니다.">소형/경형 SUV</button>
+                    <button type="button" class="ev-recommend-option" data-group="vehicleClass" data-value="중형 SUV를 선호합니다.">중형 SUV</button>
+                    <button type="button" class="ev-recommend-option" data-group="vehicleClass" data-value="대형 SUV 또는 넓은 실내공간을 선호합니다.">대형 SUV</button>
+                </div>
+            </div>
+
+            <div class="ev-recommend-step">
+                <span class="ev-recommend-step__badge">STEP 4</span>
+                <h2 class="ev-recommend-step__title">중요하게 보는 기준을 선택해 주세요</h2>
+                <div class="ev-recommend-options">
+                    <button type="button" class="ev-recommend-option" data-group="priority" data-value="가장 중요한 기준은 긴 주행거리입니다.">긴 주행거리</button>
+                    <button type="button" class="ev-recommend-option" data-group="priority" data-value="가장 중요한 기준은 빠른 충전입니다.">빠른 충전</button>
+                    <button type="button" class="ev-recommend-option" data-group="priority" data-value="가장 중요한 기준은 가격 대비 성능입니다.">가성비</button>
+                </div>
+            </div>
+
+            <div class="ev-recommend-actions">
+                <button type="submit" class="ev-recommend-submit">AI 추천 받기</button>
+                <button type="button" class="ev-recommend-reset" id="recommendResetBtn">다시 선택</button>
+            </div>
+        </form>
+
+        <section class="ev-recommend-result" th:if="${recommendReply != null}">
+            <div class="ev-recommend-result__head">
+                <p class="ev-recommend-result__eyebrow">AI RESULT</p>
+                <h2 class="ev-recommend-result__title">추천 결과</h2>
+            </div>
+
+            <div class="ev-recommend-result__question" th:if="${selectedMessage != null}">
+                <strong>선택 조건</strong>
+                <p th:text="${selectedMessage}">선택 조건</p>
+            </div>
+
+            <pre class="ev-recommend-result__content" th:text="${recommendReply}">추천 결과</pre>
+        </section>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/vehicle/vehicle-recommend.js}"></script>
+</body>
+</html>

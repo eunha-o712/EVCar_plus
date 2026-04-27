@@ -1,6 +1,12 @@
 package com.evcar.service.mypage;
 
-import com.evcar.dto.mypage.*;
+import com.evcar.dto.mypage.MyConsultationResponseDto;
+import com.evcar.dto.mypage.MyInquiryResponseDto;
+import com.evcar.dto.mypage.MyPageInfoResponseDto;
+import com.evcar.dto.mypage.MyPageInfoUpdateRequestDto;
+import com.evcar.dto.mypage.MyPageSummaryResponseDto;
+import com.evcar.dto.mypage.MyWishlistResponseDto;
+import com.evcar.dto.mypage.WithdrawRequestDto;
 import java.util.List;
 
 public interface MyPageService {
@@ -18,6 +24,8 @@ public interface MyPageService {
     List<MyInquiryResponseDto> getMyInquiries(String userId);
 
     MyInquiryResponseDto getMyInquiryDetail(String userId, String inquiryId);
+
+    void cancelMyInquiry(String userId, String inquiryId);
 
     List<MyWishlistResponseDto> getMyWishlist(String userId);
 

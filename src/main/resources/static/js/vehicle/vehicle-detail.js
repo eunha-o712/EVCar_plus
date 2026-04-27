@@ -6,13 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initVehicleGallery() {
-    const track = document.getElementById('vehicleGalleryTrack');
     const prevButton = document.getElementById('vehicleGalleryPrev');
     const nextButton = document.getElementById('vehicleGalleryNext');
     const thumbButtons = document.querySelectorAll('.ev-vehicle-gallery__thumb');
     const slides = document.querySelectorAll('.ev-vehicle-gallery__slide');
 
-    if (!track || !slides.length) {
+    if (!slides.length) {
         return;
     }
 
@@ -29,8 +28,6 @@ function initVehicleGallery() {
         thumbButtons.forEach((thumb, thumbIndex) => {
             thumb.classList.toggle('is-active', thumbIndex === currentIndex);
         });
-
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
 
         if (prevButton) {
             prevButton.disabled = currentIndex === 0;

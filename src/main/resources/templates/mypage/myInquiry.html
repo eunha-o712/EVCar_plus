@@ -103,12 +103,15 @@
                             </span>
 
                             <div class="ev-inquiry-card__actions">
-                                <form th:if="${inquiry.replyStatus == 'WAITING'}"
-                                      th:action="@{/inquiry/{id}/delete(id=${inquiry.inquiryId})}"
-                                      method="post"
-                                      onsubmit="return confirm('답변 대기 상태의 문의를 취소하시겠습니까?');">
-                                    <button type="submit" class="btn btn-ev-secondary">취소</button>
-                                </form>
+								<form method="post" th:action="@{/mypage/inquiry/cancel}">
+								    <input type="hidden" name="inquiryId" th:value="${inquiry.inquiryId}">
+								    
+									<button type="submit"
+									        class="btn btn-outline-danger btn-sm"
+									        onclick="return confirm('문의 내용을 취소하시겠습니까?');">
+									    취소
+									</button>
+								</form>
 
                                 <a class="btn btn-ev-secondary"
                                    th:href="@{/mypage/inquiry/{id}(id=${inquiry.inquiryId})}">

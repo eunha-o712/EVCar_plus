@@ -1,0 +1,230 @@
+body {
+    background: #f5f7fb;
+}
+
+.ev-recommend-page {
+    min-height: 100vh;
+}
+
+.ev-recommend-hero {
+    padding: 112px 20px 150px;
+    background:
+            radial-gradient(circle at 82% 24%, rgba(0, 180, 216, 0.16), transparent 20%),
+            linear-gradient(90deg, #020816 0%, #040b2d 40%, #0d3e67 100%);
+    color: #ffffff;
+}
+
+.ev-recommend-hero__inner {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.ev-recommend-hero__eyebrow {
+    margin: 0 0 18px;
+    color: #9fb5d9;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.ev-recommend-hero__title {
+    margin: 0;
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+}
+
+.ev-recommend-hero__desc {
+    max-width: 680px;
+    margin: 24px 0 0;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 1.08rem;
+    line-height: 1.8;
+}
+
+.ev-recommend-section {
+    max-width: 1180px;
+    margin: -82px auto 0;
+    padding: 0 20px 80px;
+}
+
+.ev-recommend-card {
+    padding: 34px;
+    border: 1px solid #e4e9f1;
+    border-radius: 28px;
+    background: #ffffff;
+    box-shadow: 0 22px 46px rgba(10, 25, 47, 0.12);
+}
+
+.ev-recommend-step {
+    padding: 24px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.ev-recommend-step:first-of-type {
+    padding-top: 0;
+}
+
+.ev-recommend-step__badge {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: #e8f4ff;
+    color: #0e3a5f;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.ev-recommend-step__title {
+    margin: 12px 0 16px;
+    color: #16253d;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.ev-recommend-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.ev-recommend-option {
+    min-height: 46px;
+    padding: 0 20px;
+    border: 1px solid #cfd6e3;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #41516a;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.ev-recommend-option:hover {
+    border-color: #0e3a5f;
+    background: #eef7ff;
+    color: #0e3a5f;
+}
+
+.ev-recommend-option.is-selected {
+    border-color: #0e3a5f;
+    background: #0e3a5f;
+    color: #ffffff;
+}
+
+.ev-recommend-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.ev-recommend-submit,
+.ev-recommend-reset {
+    min-width: 150px;
+    height: 50px;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.ev-recommend-submit {
+    border: none;
+    background: #111827;
+    color: #ffffff;
+}
+
+.ev-recommend-reset {
+    border: 1px solid #d0d5dd;
+    background: #ffffff;
+    color: #111827;
+}
+
+.ev-recommend-result {
+    margin-top: 28px;
+    padding: 34px;
+    border: 1px solid #e4e9f1;
+    border-radius: 28px;
+    background: #ffffff;
+    box-shadow: 0 18px 34px rgba(10, 25, 47, 0.06);
+}
+
+.ev-recommend-result__eyebrow {
+    margin: 0 0 8px;
+    color: #0e3a5f;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.ev-recommend-result__title {
+    margin: 0;
+    color: #16253d;
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+.ev-recommend-result__question {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 16px;
+    background: #f5f7fb;
+    color: #41516a;
+}
+
+.ev-recommend-result__question strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #16253d;
+}
+
+.ev-recommend-result__question p {
+    margin: 0;
+}
+
+.ev-recommend-result__content {
+    margin: 22px 0 0;
+    padding: 22px;
+    border-radius: 18px;
+    background: #0b1220;
+    color: #f8fafc;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.96rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 767px) {
+    .ev-recommend-hero {
+        padding: 92px 16px 124px;
+    }
+
+    .ev-recommend-hero__title {
+        font-size: 2.5rem;
+    }
+
+    .ev-recommend-section {
+        margin-top: -64px;
+        padding: 0 16px 56px;
+    }
+
+    .ev-recommend-card,
+    .ev-recommend-result {
+        padding: 24px 18px;
+        border-radius: 22px;
+    }
+
+    .ev-recommend-actions {
+        flex-direction: column;
+    }
+
+    .ev-recommend-submit,
+    .ev-recommend-reset {
+        width: 100%;
+    }
+}

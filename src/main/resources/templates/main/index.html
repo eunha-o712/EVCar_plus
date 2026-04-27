@@ -56,7 +56,7 @@
 
             <div class="ev-car-grid">
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='HD0006')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_HYUNDAI_IONIQ9.png}"
                                  alt="현대 아이오닉 9"
@@ -71,7 +71,7 @@
                 </article>
 
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='KA0003')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_KIA_EV3.png}"
                                  alt="기아 EV3"
@@ -86,7 +86,7 @@
                 </article>
 
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='HD0005')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_HYUNDAI_CASPER_ELECTRIC.png}"
                                  alt="현대 캐스퍼 일렉트릭"
@@ -112,7 +112,7 @@
 
             <div class="ev-car-grid">
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='HD0002')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_HYUNDAI_IONIQ5.png}"
                                  alt="현대 아이오닉 5"
@@ -127,7 +127,7 @@
                 </article>
 
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='KA0004')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_KIA_EV6.png}"
                                  alt="기아 EV6"
@@ -142,7 +142,7 @@
                 </article>
 
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='KA0001')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_KIA_RAY_EV.png}"
                                  alt="기아 레이 EV"
@@ -168,7 +168,7 @@
 
             <div class="ev-car-grid">
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='HD0002')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_HYUNDAI_IONIQ5.png}"
                                  alt="현대 아이오닉 5"
@@ -183,7 +183,7 @@
                 </article>
 
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='KA0004')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_KIA_EV6.png}"
                                  alt="기아 EV6"
@@ -198,7 +198,7 @@
                 </article>
 
                 <article class="ev-car-card">
-                    <a th:href="@{/vehicle}" class="ev-car-card__link">
+                    <a th:href="@{/vehicle/{id}(id='HD0005')}" class="ev-car-card__link">
                         <div class="ev-car-card__image-wrap">
                             <img th:src="@{/images/ev_HYUNDAI_CASPER_ELECTRIC.png}"
                                  alt="현대 캐스퍼 일렉트릭"
@@ -222,6 +222,5 @@
 <script th:src="@{/js/common/header.js}"></script>
 <script th:src="@{/js/common/footer.js}"></script>
 <script th:src="@{/js/common/main.js}"></script>
-<div th:replace="~{chatbot/chatbotWidget :: chatbot(${loginUser != null ? loginUser.userId : 'test-user'})}"></div>
 </body>
 </html>
