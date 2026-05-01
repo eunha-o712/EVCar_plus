@@ -95,17 +95,24 @@
 }
 
 .ev-wishlist-image-wrap {
-    aspect-ratio: 16 / 10;
-    background: #f8fafc;
+    width: 100%;
+    aspect-ratio: 16 / 10.5;
+    background: linear-gradient(180deg, #f8fbff 0%, #edf3f8 100%);
     overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px; 
 }
 
 .ev-wishlist-image {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; 
 }
-
 .ev-wishlist-body {
     display: flex;
     flex-direction: column;

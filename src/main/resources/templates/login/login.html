@@ -1,58 +1,71 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>로그인</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - EVCar</title>
 
-<!-- CSS -->
-<link rel="stylesheet" th:href="@{/css/user/login.css}" />
-
-</head>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/common/common.css}">
-    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/user/login.css}">
+</head>
 <body>
 <div th:replace="~{layout/header :: header}"></div>
 
-<div class="container">
+<main class="ev-login-page">
+    <section class="ev-login-section">
+        <div class="ev-login-card">
+            <div class="ev-login-header">
+                <p class="ev-login-eyebrow">EV CONSULTING</p>
+                <h1 class="ev-login-title">로그인</h1>
+                <p class="ev-login-description">
+                    로그인 후 전기차 추천, 관심 차량, 상담 내역을 확인해보세요.
+                </p>
+            </div>
 
-    <div class="title">로그인</div>
+            <form th:action="@{/login}" method="post" class="ev-login-form">
+                <div class="ev-login-form-group">
+                    <label for="loginId" class="ev-login-label">아이디</label>
+                    <input type="text"
+                           id="loginId"
+                           name="loginId"
+                           class="ev-login-input"
+                           placeholder="아이디를 입력해주세요"
+                           required>
+                </div>
 
-    <form th:action="@{/login}" method="post">
+                <div class="ev-login-form-group">
+                    <label for="password" class="ev-login-label">비밀번호</label>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           class="ev-login-input"
+                           placeholder="비밀번호를 입력해주세요"
+                           required>
+                </div>
 
-        <!-- 아이디 -->
-        <div class="form-group">
-            <input type="text" name="loginId" placeholder="아이디" required />
+                <button type="submit" class="ev-login-btn">로그인</button>
+            </form>
+
+            <div class="ev-login-link-area">
+                <a th:href="@{/login/find-id}">아이디 찾기</a>
+                <span>/</span>
+                <a th:href="@{/login/reset-pw}">비밀번호 변경</a>
+                <span>/</span>
+                <a th:href="@{/signup/term}">회원가입</a>
+            </div>
+
+            <div class="ev-login-error-box" th:if="${errorMessage}">
+                <span th:text="${errorMessage}"></span>
+            </div>
         </div>
+    </section>
+</main>
 
-        <!-- 비밀번호 -->
-        <div class="form-group">
-           <input type="password" name="password" placeholder="비밀번호" required />
-        </div>
-
-        <!-- 버튼 -->
-        <button type="submit" class="login-btn">로그인</button>
-
-    </form>
-
-    <!-- 링크 -->
-    <div class="link-area">
-        <a href="/login/find-id">아이디 찾기</a> /
-        <a href="/login/find-id">비밀번호 변경</a> /
-        <a href="/signup/term">회원가입</a>
-    </div>
-
-    <!-- 로그인 실패 메시지 -->
-    <div class="error-box" th:if="${errorMessage}">
-        <span th:text="${errorMessage}"></span>
-    </div>
-
-</div>
 <div th:replace="~{layout/footer :: footer}"></div>
 
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/common/header.js}"></script>
 <script th:src="@{/js/common/footer.js}"></script>
-<script th:src="@{/js/common/main.js}"></script>
 </body>
 </html>

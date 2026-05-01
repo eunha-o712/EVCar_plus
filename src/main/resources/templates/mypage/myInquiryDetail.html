@@ -31,17 +31,48 @@
 
                     <div class="ev-mypage-header__actions">
                         <a class="btn btn-ev-secondary" th:href="@{/mypage/inquiry}">목록으로</a>
-                        <a class="btn btn-ev-primary" th:href="@{/inquiry/form}">문의 작성하기</a>
                     </div>
                 </div>
 
                 <article class="ev-inquiry-detail-card" th:if="${inquiry != null}">
-                    <div class="ev-inquiry-detail-card__top">
-                        <div class="ev-inquiry-detail-card__title-box">
-                            <span class="ev-inquiry-detail-card__id" th:text="${inquiry.inquiryId}"></span>
-                            <h2 class="ev-inquiry-detail-card__title" th:text="${inquiry.title}"></h2>
+                    <div class="ev-inquiry-detail-card__body">
+                        <div class="ev-inquiry-detail-card__row">
+                            <span class="ev-inquiry-detail-card__label">문의번호</span>
+                            <span class="ev-inquiry-detail-card__value" th:text="${inquiry.inquiryId}"></span>
                         </div>
 
+                        <div class="ev-inquiry-detail-card__row">
+                            <span class="ev-inquiry-detail-card__label">제목</span>
+                            <span class="ev-inquiry-detail-card__value" th:text="${inquiry.title}"></span>
+                        </div>
+
+                        <div class="ev-inquiry-detail-card__row">
+                            <span class="ev-inquiry-detail-card__label">작성일</span>
+                            <span class="ev-inquiry-detail-card__value"
+                                  th:text="${#temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                        </div>
+
+                        <div class="ev-inquiry-detail-card__row">
+                            <span class="ev-inquiry-detail-card__label">문의 상태</span>
+                            <span class="ev-inquiry-detail-card__value"
+                                  th:text="${inquiry.replyStatusLabel != null ? inquiry.replyStatusLabel : (inquiry.answered ? '답변 완료' : '답변 대기')}"></span>
+                        </div>
+
+                        <div class="ev-inquiry-detail-card__row ev-inquiry-detail-card__row--full">
+                            <span class="ev-inquiry-detail-card__label">문의 내용</span>
+                            <span class="ev-inquiry-detail-card__value ev-inquiry-detail-card__value--multiline"
+                                  th:text="${inquiry.content}"></span>
+                        </div>
+
+                        <div class="ev-inquiry-detail-card__row ev-inquiry-detail-card__row--full"
+                             th:if="${inquiry.replyContent != null and !#strings.isEmpty(inquiry.replyContent)}">
+                            <span class="ev-inquiry-detail-card__label">관리자 답변</span>
+                            <span class="ev-inquiry-detail-card__value ev-inquiry-detail-card__value--reply"
+                                  th:text="${inquiry.replyContent}"></span>
+                        </div>
+                    </div>
+
+                    <div class="ev-inquiry-detail-card__footer">
                         <span class="ev-inquiry-detail-status"
                               th:classappend="${
                                   inquiry.replyStatus == 'REPLIED' ? ' ev-inquiry-detail-status--done' :
@@ -50,50 +81,15 @@
                               }"
                               th:text="${inquiry.replyStatusLabel != null ? inquiry.replyStatusLabel : (inquiry.answered ? '답변 완료' : '답변 대기')}">
                         </span>
-                    </div>
 
-                    <div class="ev-inquiry-detail-meta">
-                        <div class="ev-inquiry-detail-meta__item">
-                            <span class="ev-inquiry-detail-meta__label">작성일</span>
-                            <span class="ev-inquiry-detail-meta__value"
-                                  th:text="${#temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                        <div class="ev-inquiry-detail-card__actions">
+                            <form th:if="${inquiry.replyStatus == 'WAITING'}"
+                                  th:action="@{/inquiry/{id}/delete(id=${inquiry.inquiryId})}"
+                                  method="post"
+                                  onsubmit="return confirm('답변 대기 상태의 문의를 취소하시겠습니까?');">
+                                <button type="submit" class="btn ev-inquiry-detail-cancel-btn">문의 취소</button>
+                            </form>
                         </div>
-
-                        <div class="ev-inquiry-detail-meta__item"
-                             th:if="${inquiry.updatedAt != null and inquiry.replyContent != null and !#strings.isEmpty(inquiry.replyContent)}">
-                            <span class="ev-inquiry-detail-meta__label">답변일</span>
-                            <span class="ev-inquiry-detail-meta__value"
-                                  th:text="${#temporals.format(inquiry.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
-                        </div>
-                    </div>
-
-                    <div class="ev-inquiry-detail-body">
-                        <h3 class="ev-inquiry-detail-body__title">문의 내용</h3>
-                        <div class="ev-inquiry-detail-body__content" th:text="${inquiry.content}"></div>
-                    </div>
-
-                    <div class="ev-inquiry-detail-reply"
-                         th:if="${inquiry.replyContent != null and !#strings.isEmpty(inquiry.replyContent)}">
-                        <h3 class="ev-inquiry-detail-reply__title">관리자 답변</h3>
-                        <div class="ev-inquiry-detail-reply__content" th:text="${inquiry.replyContent}"></div>
-                    </div>
-
-                    <div class="ev-inquiry-detail-empty-reply"
-                         th:if="${inquiry.replyContent == null or #strings.isEmpty(inquiry.replyContent)}">
-                        <div class="ev-inquiry-detail-empty-reply__icon">⏳</div>
-                        <h3 class="ev-inquiry-detail-empty-reply__title">답변 대기 중입니다</h3>
-                        <p class="ev-inquiry-detail-empty-reply__text">
-                            문의하신 내용은 담당자가 확인 후 빠르게 답변드릴 예정입니다.
-                        </p>
-                    </div>
-
-                    <div class="ev-inquiry-detail-bottom-actions"
-                         th:if="${inquiry.replyStatus == 'WAITING'}">
-                        <form th:action="@{/inquiry/{id}/delete(id=${inquiry.inquiryId})}"
-                              method="post"
-                              onsubmit="return confirm('답변 대기 상태의 문의를 취소하시겠습니까?');">
-                            <button type="submit" class="btn btn-ev-secondary">문의 취소</button>
-                        </form>
                     </div>
                 </article>
             </div>

@@ -15,6 +15,7 @@
     color: #07152f;
     font-size: 30px;
     font-weight: 800;
+    line-height: 1.25;
     letter-spacing: -0.04em;
 }
 
@@ -118,9 +119,38 @@
 }
 
 .ev-inquiry-card__actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 92px;
+    height: 38px;
+    padding: 0 16px;
     border-radius: 999px;
     font-size: 14px;
     font-weight: 800;
+    line-height: 1;
+}
+
+.ev-inquiry-card__actions .btn-outline-danger {
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    background: rgba(239, 68, 68, 0.06);
+    color: #ef4444;
+}
+
+.ev-inquiry-card__actions .btn-outline-danger:hover {
+    border-color: rgba(239, 68, 68, 0.38);
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+}
+
+.ev-inquiry-card__actions .btn-ev-secondary {
+    border: none;
+    background: transparent;
+    color: #111827;
+}
+
+.ev-inquiry-card__actions .btn-ev-secondary:hover {
+    color: #0e7490;
 }
 
 .ev-inquiry-status {
@@ -186,6 +216,12 @@
     line-height: 1.7;
 }
 
+.ev-inquiry-disabled-text {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 800;
+}
+
 @media (max-width: 767px) {
     .ev-mypage-header {
         flex-direction: column;
@@ -205,6 +241,7 @@
         align-items: stretch;
     }
 
+    .ev-inquiry-card__actions,
     .ev-inquiry-card__actions .btn,
     .ev-inquiry-card__actions form,
     .ev-inquiry-card__actions form button {
