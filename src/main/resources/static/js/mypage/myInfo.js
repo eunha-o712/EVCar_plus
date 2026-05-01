@@ -1,15 +1,54 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
+    initMyInfoEditMode();
     initMyInfoValidation();
+    initPhoneFormatter();
 });
 
+/**
+ * 수정 모드
+ */
+function initMyInfoEditMode() {
+    const editButton = document.getElementById('editModeButton');
+    const saveButton = document.getElementById('saveButton');
+    const cancelButton = document.getElementById('cancelButton');
+    const editableInputs = document.querySelectorAll('[data-editable="true"]');
+    const radioGroups = document.querySelectorAll('.ev-myinfo-radio-group');
+
+    if (!editButton || !saveButton || !cancelButton) return;
+
+    editButton.addEventListener('click', () => {
+        editableInputs.forEach((input) => {
+            input.removeAttribute('readonly');
+            input.removeAttribute('disabled');
+        });
+
+        document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+            radio.removeAttribute('disabled');
+        });
+
+        radioGroups.forEach((group) => {
+            group.classList.remove('is-disabled');
+        });
+
+        editButton.classList.add('ev-myinfo-hidden');
+        saveButton.classList.remove('ev-myinfo-hidden');
+        cancelButton.classList.remove('ev-myinfo-hidden');
+    });
+
+    cancelButton.addEventListener('click', () => {
+        window.location.reload();
+    });
+}
+
+/**
+ * 유효성 검사
+ */
 function initMyInfoValidation() {
     const form = document.getElementById('myInfoForm');
 
-    if (!form) {
-        return;
-    }
+    if (!form) return;
 
     form.addEventListener('submit', (event) => {
         clearValidation();
@@ -34,17 +73,14 @@ function validateMyInfoForm(form) {
     const newPasswordConfirm = form.querySelector('[name="newPasswordConfirm"]');
     const phone = form.querySelector('[name="phone"]');
     const email = form.querySelector('[name="email"]');
-    const vehicleModel = form.querySelector('[name="vehicleModel"]');
-    const vehicleYear = form.querySelector('[name="vehicleYear"]');
-    const drivingDistance = form.querySelector('[name="drivingDistance"]');
 
     if (!currentPassword || currentPassword.value.trim() === '') {
-        showFieldError(currentPassword, '회원정보 수정을 위해 현재 비밀번호를 입력해주세요.');
+        showFieldError(currentPassword, '현재 비밀번호를 입력해주세요.');
         isValid = false;
     }
 
-    if (phone && !/^(\+?\d{10,15}|01[016789]-?\d{3,4}-?\d{4})$/.test(phone.value.trim())) {
-        showFieldError(phone, '전화번호 형식이 올바르지 않습니다.');
+    if (phone && !/^010-\d{4}-\d{4}$/.test(phone.value.trim())) {
+        showFieldError(phone, '전화번호는 010-0000-0000 형식으로 입력해주세요.');
         isValid = false;
     }
 
@@ -53,12 +89,9 @@ function validateMyInfoForm(form) {
         isValid = false;
     }
 
-    const hasNewPassword = newPassword && newPassword.value.trim() !== '';
-    const hasNewPasswordConfirm = newPasswordConfirm && newPasswordConfirm.value.trim() !== '';
-
-    if (hasNewPassword || hasNewPasswordConfirm) {
-        if (!newPassword || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/.test(newPassword.value.trim())) {
-            showFieldError(newPassword, '비밀번호는 영문/숫자를 포함해 8~20자로 입력해주세요.');
+    if (newPassword && newPassword.value.trim() !== '') {
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/.test(newPassword.value.trim())) {
+            showFieldError(newPassword, '비밀번호는 영문/숫자 포함 8~20자');
             isValid = false;
         }
 
@@ -68,37 +101,53 @@ function validateMyInfoForm(form) {
         }
     }
 
-    if (vehicleModel && vehicleModel.value.trim() !== '') {
-        if (vehicleYear && vehicleYear.value.trim() !== '' && !/^\d{4}-(0[1-9]|1[0-2])$/.test(vehicleYear.value.trim())) {
-            showFieldError(vehicleYear, '연식은 YYYY-MM 형식으로 입력해주세요.');
-            isValid = false;
-        }
-
-        if (drivingDistance && drivingDistance.value.trim() !== '' && !/^\d{1,10}$/.test(drivingDistance.value.trim())) {
-            showFieldError(drivingDistance, '주행거리는 숫자만 입력해주세요.');
-            isValid = false;
-        }
-    }
-
     return isValid;
 }
 
-function showFieldError(input, message) {
-    if (!input) {
+function initPhoneFormatter() {
+    const phoneInput = document.getElementById('phone');
+
+    if (!phoneInput) {
         return;
     }
+
+    const formatPhone = () => {
+        let value = phoneInput.value.replace(/\D/g, '');
+
+        if (!value.startsWith('010')) {
+            value = '010' + value.replace(/^0+/, '').replace(/^10/, '');
+        }
+
+        value = value.substring(0, 11);
+
+        if (value.length <= 3) {
+            phoneInput.value = value;
+        } else if (value.length <= 7) {
+            phoneInput.value = value.replace(/(\d{3})(\d+)/, '$1-$2');
+        } else {
+            phoneInput.value = value.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
+        }
+    };
+
+    formatPhone();
+
+    phoneInput.addEventListener('input', formatPhone);
+}
+
+
+function showFieldError(input, message) {
+    if (!input) return;
 
     input.classList.add('is-invalid');
 
-    const error = input.closest('.ev-form-group')?.querySelector('.ev-field-error');
+    const error = input.closest('.ev-myinfo-field')?.querySelector('.ev-field-error');
 
-    if (!error) {
-        return;
-    }
+    if (!error) return;
 
     error.textContent = message;
     error.classList.add('is-show');
 }
+
 
 function clearValidation() {
     document.querySelectorAll('.ev-input.is-invalid').forEach((input) => {
@@ -110,6 +159,7 @@ function clearValidation() {
         error.classList.remove('is-show');
     });
 }
+
 
 function showToast(message, type) {
     let toast = document.getElementById('evToast');
@@ -125,7 +175,7 @@ function showToast(message, type) {
     toast.className = `ev-toast ev-toast--${type}`;
     toast.classList.add('is-show');
 
-    window.setTimeout(() => {
+    setTimeout(() => {
         toast.classList.remove('is-show');
     }, 2200);
 }

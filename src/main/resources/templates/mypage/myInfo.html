@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>내 정보 - EVCar</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/common/common.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/myInfo.css}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>내 정보 - EVCar</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/common/common.css}">
+	<link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
+	<link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
+	<link rel="stylesheet" th:href="@{/css/mypage/myInfo.css}">
 </head>
+
 <body>
 	<div th:replace="~{layout/header :: header}"></div>
 
@@ -21,8 +21,8 @@
 				<div th:replace="~{mypage/sidebar :: sidebar('info')}"></div>
 
 				<div class="ev-mypage-content">
-					<form id="myInfoForm" th:action="@{/mypage/info}"
-						th:object="${myPageInfoUpdateRequestDto}" method="post">
+					<form id="myInfoForm" th:action="@{/mypage/info}" th:object="${myPageInfoUpdateRequestDto}"
+						method="post">
 
 						<div class="ev-mypage-header">
 							<div class="ev-mypage-header__text">
@@ -31,12 +31,11 @@
 							</div>
 
 							<div class="ev-mypage-header__actions">
-								<button type="button" class="btn btn-ev-secondary"
-									id="editModeButton">수정하기</button>
-								<button type="submit"
-									class="btn btn-ev-primary ev-myinfo-hidden" id="saveButton">저장</button>
-								<button type="button"
-									class="btn btn-ev-secondary ev-myinfo-hidden" id="cancelButton">취소</button>
+								<button type="button" class="btn btn-ev-secondary" id="editModeButton">수정하기</button>
+								<button type="submit" class="btn btn-ev-primary ev-myinfo-hidden"
+									id="saveButton">저장</button>
+								<button type="button" class="btn btn-ev-secondary ev-myinfo-hidden"
+									id="cancelButton">취소</button>
 							</div>
 						</div>
 
@@ -49,8 +48,7 @@
 
 								<div class="ev-myinfo-field">
 									<label class="ev-myinfo-label">생년월일</label> <input type="date"
-										class="ev-input ev-myinfo-input" id="birthDate"
-										name="birthDate"
+										class="ev-input ev-myinfo-input" id="birthDate" name="birthDate"
 										th:value="${myPageInfo.birthDate != null ? #temporals.format(myPageInfo.birthDate, 'yyyy-MM-dd') : ''}"
 										readonly>
 								</div>
@@ -58,48 +56,58 @@
 								<div class="ev-myinfo-field">
 									<label class="ev-myinfo-label">성별</label>
 									<div class="ev-myinfo-radio-group is-disabled">
-										<label class="ev-myinfo-radio"> <input type="radio"
-											th:field="*{gender}" value="남" disabled> <span>남</span>
+										<label class="ev-myinfo-radio"> <input type="radio" th:field="*{gender}"
+												value="남" disabled> <span>남</span>
 										</label> <label class="ev-myinfo-radio"> <input type="radio"
-											th:field="*{gender}" value="여" disabled> <span>여</span>
+												th:field="*{gender}" value="여" disabled> <span>여</span>
 										</label>
 									</div>
 								</div>
 
 								<div class="ev-myinfo-field">
-									<label class="ev-myinfo-label">전화번호</label> <input type="text"
-										class="ev-input ev-myinfo-input" th:field="*{phone}"
-										id="phone" data-editable="true" inputmode="tel" maxlength="16"
-										placeholder="숫자만 입력 (예: 01012345678 또는 +821012345678)"
-										readonly>
-									<p class="ev-myinfo-help">전화번호는 숫자만 입력하며, 국제번호는 맨 앞에 +를 사용할
-										수 있습니다.</p>
+								    <label class="ev-myinfo-label">전화번호</label>
+
+								    <input type="text"
+								           class="ev-input ev-myinfo-input"
+								           th:field="*{phone}"
+								           id="phone"
+								           name="phone"
+								           data-editable="true"
+								           inputmode="numeric"
+								           maxlength="13"
+								           placeholder="010-1234-5678"
+								           autocomplete="tel"
+								           readonly>
+
+								    <p class="ev-myinfo-help">
+								        국내 휴대폰 번호(010)만 입력 가능하며, 하이픈(-)은 자동으로 입력됩니다.
+								    </p>
+
+								    <p class="ev-field-error"></p>
 								</div>
 
 								<div class="ev-myinfo-field ev-myinfo-field--full">
 									<label class="ev-myinfo-label">주소</label> <input type="text"
-										class="ev-input ev-myinfo-input" th:field="*{address}"
-										data-editable="true" readonly>
+										class="ev-input ev-myinfo-input" th:field="*{address}" data-editable="true"
+										readonly>
 								</div>
 
 								<div class="ev-myinfo-field ev-myinfo-field--full">
 									<label class="ev-myinfo-label">상세 주소</label> <input type="text"
 										class="ev-input ev-myinfo-input" th:field="*{addressDetail}"
-										data-editable="true" maxlength="255" readonly
-										placeholder="상세 주소를 입력해주세요.">
+										data-editable="true" maxlength="255" readonly placeholder="상세 주소를 입력해주세요.">
 								</div>
 
 								<div class="ev-myinfo-field">
 									<label class="ev-myinfo-label">이메일</label> <input type="email"
-										class="ev-input ev-myinfo-input" th:field="*{email}"
-										data-editable="true" readonly>
+										class="ev-input ev-myinfo-input" th:field="*{email}" data-editable="true"
+										readonly>
 								</div>
 
 								<div class="ev-myinfo-field ev-myinfo-field--full">
-									<label class="ev-myinfo-label">현재 비밀번호 <span
-										class="ev-required">*</span></label> <input type="password"
-										class="ev-input ev-myinfo-input" th:field="*{currentPassword}"
-										data-editable="true" maxlength="20" readonly>
+									<label class="ev-myinfo-label">현재 비밀번호 <span class="ev-required">*</span></label>
+									<input type="password" class="ev-input ev-myinfo-input"
+										th:field="*{currentPassword}" data-editable="true" maxlength="20" readonly>
 
 									<div class="ev-myinfo-required-box">회원정보 수정 또는 비밀번호 변경 시
 										현재 비밀번호 입력은 필수입니다.</div>
@@ -113,17 +121,17 @@
 
 										<div class="ev-myinfo-subgrid">
 											<div class="ev-myinfo-field">
-												<label class="ev-myinfo-label">새 비밀번호</label> <input
-													type="password" class="ev-input ev-myinfo-input"
-													th:field="*{newPassword}" data-editable="true"
-													maxlength="20" readonly placeholder="영문/숫자 8~20자">
+												<label class="ev-myinfo-label">새 비밀번호</label> <input type="password"
+													class="ev-input ev-myinfo-input" th:field="*{newPassword}"
+													data-editable="true" maxlength="20" readonly
+													placeholder="영문/숫자 8~20자">
 											</div>
 
 											<div class="ev-myinfo-field">
-												<label class="ev-myinfo-label">새 비밀번호 확인</label> <input
-													type="password" class="ev-input ev-myinfo-input"
-													th:field="*{newPasswordConfirm}" data-editable="true"
-													maxlength="20" readonly placeholder="비밀번호를 다시 입력해주세요.">
+												<label class="ev-myinfo-label">새 비밀번호 확인</label> <input type="password"
+													class="ev-input ev-myinfo-input" th:field="*{newPasswordConfirm}"
+													data-editable="true" maxlength="20" readonly
+													placeholder="비밀번호를 다시 입력해주세요.">
 											</div>
 										</div>
 
@@ -134,12 +142,11 @@
 
 								<div class="ev-myinfo-field ev-myinfo-field--full">
 									<label class="ev-myinfo-label">보유 차량 여부</label>
-									<div class="ev-myinfo-radio-group is-disabled"
-										id="hasVehicleGroup">
-										<label class="ev-myinfo-radio"> <input type="radio"
-											th:field="*{hasVehicle}" value="yes" disabled> <span>있음</span>
+									<div class="ev-myinfo-radio-group is-disabled" id="hasVehicleGroup">
+										<label class="ev-myinfo-radio"> <input type="radio" th:field="*{hasVehicle}"
+												value="yes" disabled> <span>있음</span>
 										</label> <label class="ev-myinfo-radio"> <input type="radio"
-											th:field="*{hasVehicle}" value="no" disabled> <span>없음</span>
+												th:field="*{hasVehicle}" value="no" disabled> <span>없음</span>
 										</label>
 									</div>
 									<p class="ev-myinfo-help">
@@ -157,24 +164,22 @@
 
 										<div class="ev-myinfo-subgrid">
 											<div class="ev-myinfo-field">
-												<label class="ev-myinfo-label">보유 차량명</label> <input
-													type="text"
+												<label class="ev-myinfo-label">보유 차량명</label> <input type="text"
 													class="ev-input ev-myinfo-input ev-vehicle-owned-field"
 													th:field="*{vehicleModel}" data-editable="true" readonly
 													placeholder="예: 아이오닉 5">
 											</div>
 
 											<div class="ev-myinfo-field">
-												<label class="ev-myinfo-label">보유차종 연식</label> <input
-													type="text"
+												<label class="ev-myinfo-label">보유차종 연식</label> <input type="text"
 													class="ev-input ev-myinfo-input ev-vehicle-owned-field"
 													th:field="*{vehicleYear}" data-editable="true" readonly
 													inputmode="numeric" maxlength="7"
 													placeholder="예: 202305 (입력 시 2023-05로 표시)">
 
 												<p class="ev-myinfo-help">
-													숫자만 입력하면 YYYY-MM 형식으로 표시됩니다.<br> 월은 01~12, 미래 연월은 입력할
-													수 없습니다.
+													보유 차량이 있는 경우에만 아래 정보를 입력해주세요.<br>
+													보유 차량이 없으면 해당 정보는 저장되지 않습니다.
 												</p>
 											</div>
 
@@ -183,8 +188,8 @@
 												<div class="ev-myinfo-input-with-unit">
 													<input type="number"
 														class="ev-input ev-myinfo-input ev-vehicle-owned-field"
-														th:field="*{drivingDistance}" data-editable="true"
-														readonly placeholder="예: 15000"> <span
+														th:field="*{drivingDistance}" data-editable="true" readonly
+														placeholder="예: 15000"> <span
 														class="ev-myinfo-input-unit">km</span>
 												</div>
 											</div>
@@ -203,8 +208,7 @@
 	<div th:replace="~{layout/footer :: footer}"></div>
 	<div th:replace="~{fragments/chatbotWidget :: chatbot}"></div>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script th:src="@{/js/common/footer.js}"></script>
 	<script th:src="@{/js/mypage/myInfo.js}"></script>
 	<script th:inline="javascript">
@@ -220,4 +224,5 @@
 		}
 	</script>
 </body>
+
 </html>

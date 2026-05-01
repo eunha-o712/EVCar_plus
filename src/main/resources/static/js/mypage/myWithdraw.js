@@ -1,4 +1,3 @@
-
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,25 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isOtherSelected) {
             reasonDetailBox.classList.remove('ev-withdraw-hidden');
             reasonDetailInput.disabled = false;
-        } else {
-            reasonDetailBox.classList.add('ev-withdraw-hidden');
-            reasonDetailInput.value = '';
-            reasonDetailInput.disabled = true;
+            return;
         }
+
+        reasonDetailBox.classList.add('ev-withdraw-hidden');
+        reasonDetailInput.value = '';
+        reasonDetailInput.disabled = true;
     };
 
-	const updateButtonState = () => {
-	    const selectedReason = document.querySelector('input[name="withdrawReason"]:checked');
-	    const isOtherSelected = selectedReason && selectedReason.value === '기타';
+    const updateButtonState = () => {
+        const selectedReason = document.querySelector('input[name="withdrawReason"]:checked');
+        const isOtherSelected = selectedReason && selectedReason.value === '기타';
 
-	    const hasPassword = passwordInput.value.trim().length > 0;
-	    const hasReason = !!selectedReason;
-	    const hasAgree = agreeCheckbox.checked;
-	    const hasOtherDetail = !isOtherSelected || reasonDetailInput.value.trim().length > 0;
+        const hasPassword = passwordInput.value.trim().length > 0;
+        const hasReason = !!selectedReason;
+        const hasAgree = agreeCheckbox.checked;
+        const hasOtherDetail = !isOtherSelected || reasonDetailInput.value.trim().length > 0;
 
-	    const isValid = hasPassword && hasReason && hasAgree && hasOtherDetail;
-	    withdrawSubmitButton.disabled = !isValid;
-	};
+        withdrawSubmitButton.disabled = !(hasPassword && hasReason && hasAgree && hasOtherDetail);
+    };
 
     const showError = (message) => {
         if (errorMessage) {
@@ -54,13 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-	reasonRadios.forEach((radio) => {
-	    radio.addEventListener('change', () => {
-	        toggleOtherReason();
-	        clearError();
-	        updateButtonState();
-	    });
-	});
+    reasonRadios.forEach((radio) => {
+        radio.addEventListener('change', () => {
+            toggleOtherReason();
+            clearError();
+            updateButtonState();
+        });
+    });
 
     passwordInput.addEventListener('input', () => {
         clearError();
@@ -72,12 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateButtonState();
     });
 
-	if (reasonDetailInput) {
-	    reasonDetailInput.addEventListener('input', () => {
-	        clearError();
-	        updateButtonState();
-	    });
-	}
+    if (reasonDetailInput) {
+        reasonDetailInput.addEventListener('input', () => {
+            clearError();
+            updateButtonState();
+        });
+    }
 
     toggleOtherReason();
     updateButtonState();
@@ -112,13 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const confirmed = window.confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.');
-        if (!confirmed) {
+        if (!window.confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
             event.preventDefault();
             return;
         }
 
         clearError();
     });
-
 });

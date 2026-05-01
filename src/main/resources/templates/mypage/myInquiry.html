@@ -1,16 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>문의 내역 - EVCar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의 내역 - EVCar</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/common/common.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/myInquiry.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/myInquiry.css}">
 </head>
 
 <body>
@@ -27,15 +26,17 @@
                 <div class="ev-mypage-header">
                     <div class="ev-mypage-header__text">
                         <h1 class="ev-mypage-title">문의 내역</h1>
-                        <p class="ev-mypage-description">작성한 문의글과 답변 상태를 확인할 수 있습니다.</p>
+                        <p class="ev-mypage-description">
+                            작성한 문의글과 답변 상태를 확인할 수 있습니다.
+                        </p>
                     </div>
 
-                    <div class="ev-mypage-header__actions"
-                         th:if="${inquiries != null and !#lists.isEmpty(inquiries)}">
+                    <div class="ev-mypage-header__actions">
                         <a class="btn btn-ev-primary ev-inquiry-write-btn"
-   th:href="@{/inquiry}">
-    문의게시판으로 이동
-</a>
+                           th:if="${inquiries != null and !#lists.isEmpty(inquiries)}"
+                           th:href="@{/inquiry}">
+                            문의게시판으로 이동
+                        </a>
                     </div>
                 </div>
 
@@ -103,15 +104,14 @@
                             </span>
 
                             <div class="ev-inquiry-card__actions">
-								<form method="post" th:action="@{/mypage/inquiry/cancel}">
-								    <input type="hidden" name="inquiryId" th:value="${inquiry.inquiryId}">
-								    
-									<button type="submit"
-									        class="btn btn-outline-danger btn-sm"
-									        onclick="return confirm('문의 내용을 취소하시겠습니까?');">
-									    취소
-									</button>
-								</form>
+                                <form method="post" th:action="@{/mypage/inquiry/cancel}">
+                                    <input type="hidden" name="inquiryId" th:value="${inquiry.inquiryId}">
+                                    <button type="submit"
+                                            class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('문의 내용을 취소하시겠습니까?');">
+                                        취소
+                                    </button>
+                                </form>
 
                                 <a class="btn btn-ev-secondary"
                                    th:href="@{/mypage/inquiry/{id}(id=${inquiry.inquiryId})}">
@@ -126,11 +126,12 @@
                      th:if="${inquiries == null or #lists.isEmpty(inquiries)}">
                     <div class="ev-inquiry-empty__icon">✉️</div>
                     <h2 class="ev-inquiry-empty__title">문의 내역이 없습니다</h2>
-                    <p class="ev-inquiry-empty__text">문의게시판에서 문의를 작성하면 이곳에서 답변을 확인할 수 있습니다.</p>
-               <a class="btn btn-ev-primary ev-inquiry-write-btn" th:href="@{/inquiry}">
-    문의게시판으로 이동
-</a>
-                  
+                    <p class="ev-inquiry-empty__text">
+                        문의게시판에서 문의를 작성하면 이곳에서 답변을 확인할 수 있습니다.
+                    </p>
+                    <a class="btn btn-ev-primary ev-inquiry-write-btn" th:href="@{/inquiry}">
+                        문의게시판으로 이동
+                    </a>
                 </div>
             </div>
         </div>

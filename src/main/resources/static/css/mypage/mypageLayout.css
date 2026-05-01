@@ -1,66 +1,56 @@
 .ev-mypage-page {
+    width: 100%;
     min-height: 100vh;
-    padding: 120px 0 80px;
-    background: var(--bg-primary);
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+    overflow: visible;
 }
 
 .ev-mypage-section {
     width: 100%;
-    padding: 32px 24px 80px;
+    padding: 72px 0 96px;
+    overflow: visible;
 }
 
 .ev-mypage-container {
-    max-width: 1400px;
-    margin: 0 auto;
     display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
-    gap: 24px;
-    align-items: start;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 48px;
+
+    width: min(1400px, calc(100% - 80px));
+    margin: 0 auto;
+
+    align-items: flex-start;
+    overflow: visible;
 }
 
 .ev-mypage-content {
+    width: 100%;
     min-width: 0;
+    overflow: visible;
 }
 
-.ev-mypage-header {
-    margin-bottom: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
+.ev-summary-grid,
+.ev-menu-grid,
+.ev-info-panel {
+    width: 100%;
+    max-width: none;
 }
 
-.ev-mypage-title {
-    margin: 0 0 10px;
-    color: var(--text-primary);
-    font-size: 2rem;
-    font-weight: 700;
+.ev-mypage-content * {
+    overflow: visible;
 }
 
-.ev-mypage-description {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.6;
+@media (max-width: 1200px) {
+    .ev-mypage-container {
+        width: min(100%, calc(100% - 48px));
+        gap: 32px;
+    }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
     .ev-mypage-container {
         grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 767px) {
-    .ev-mypage-page {
-        padding: 104px 0 64px;
-    }
-
-    .ev-mypage-section {
-        padding: 24px 16px 64px;
-    }
-
-    .ev-mypage-header {
-        flex-direction: column;
-        align-items: stretch;
+        width: min(100%, calc(100% - 32px));
+        gap: 28px;
     }
 }

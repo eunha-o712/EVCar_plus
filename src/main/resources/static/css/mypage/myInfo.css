@@ -1,154 +1,228 @@
-.ev-mypage {
+.ev-mypage-content {
+    width: 100%;
+}
+
+.ev-mypage-header {
     display: flex;
-    justify-content: center;
-    width: 100%;
-    min-height: calc(100vh - 96px);
-    padding: 72px 40px 96px;
-    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
 }
 
-.ev-mypage-card {
-    width: 100%;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 52px 56px;
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    border-radius: 28px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow:
-        0 24px 70px rgba(15, 23, 42, 0.08),
-        0 8px 24px rgba(15, 23, 42, 0.05);
-}
-
-.ev-form-section {
-    margin-bottom: 52px;
-}
-
-.ev-form-section:last-child {
-    margin-bottom: 0;
-}
-
-.ev-form-section-title {
-    margin-bottom: 22px;
-    color: #111827;
-    font-size: 22px;
+.ev-mypage-title {
+    margin: 0 0 10px;
+    color: #07152f;
+    font-size: 30px;
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
 }
 
-.ev-form-row {
+.ev-mypage-description {
+    margin: 0;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.ev-mypage-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.ev-myinfo-hidden {
+    display: none;
+}
+
+.ev-myinfo-card {
+    width: min(100%, 980px);
+    margin: 0 auto 80px;
+    padding: 56px 64px;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 28px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94));
+    box-shadow:
+        0 28px 80px rgba(15, 23, 42, 0.1),
+        0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.ev-myinfo-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px 24px;
-    margin-bottom: 22px;
+    gap: 30px 28px;
 }
 
-.ev-form-group {
-    display: flex;
-    flex-direction: column;
+.ev-myinfo-subgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.ev-myinfo-field {
     min-width: 0;
 }
 
-.ev-form-group label {
-    margin-bottom: 9px;
-    color: #1f2937;
-    font-size: 14px;
-    font-weight: 700;
+.ev-myinfo-field--full {
+    grid-column: 1 / -1;
 }
 
+.ev-myinfo-label {
+    display: block;
+    margin-bottom: 10px;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ev-required {
+    color: #ef4444;
+}
+
+.ev-myinfo-input,
 .ev-input {
     width: 100%;
-    height: 48px;
+    height: 50px;
     padding: 0 16px;
-    border: 1px solid #d7dce5;
-    border-radius: 12px;
-    background: #ffffff;
+    border: 1px solid #cfd6e3;
+    border-radius: 14px;
+    background: #f8fafc;
     color: #111827;
     font-size: 14px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
+.ev-myinfo-input:focus,
 .ev-input:focus {
     border-color: #0ea5e9;
+    background: #ffffff;
     box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
     outline: none;
 }
 
+.ev-myinfo-input[readonly],
 .ev-input[readonly],
+.ev-myinfo-input:disabled,
 .ev-input:disabled {
-    background: #f4f6f9;
-    color: #6b7280;
+    background: #f3f6fa;
+    color: #64748b;
 }
 
-.ev-info-box,
-.ev-help-text {
-    margin-top: 10px;
+.ev-myinfo-help {
+    margin: 10px 0 0;
     color: #64748b;
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-.ev-form-actions {
+.ev-myinfo-required-box {
+    margin-top: 12px;
+    padding: 14px 16px;
+    border: 1px solid #bae6fd;
+    border-radius: 16px;
+    background: #f0f9ff;
+    color: #0369a1;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.7;
+}
+
+.ev-myinfo-subsection {
+    margin-top: 10px;
+    padding: 34px 36px;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.ev-myinfo-subsection__title {
+    margin: 0 0 10px;
+    color: #07152f;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.ev-myinfo-subsection__description {
+    margin: 0 0 28px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.ev-myinfo-radio-group {
     display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 44px;
-    padding-top: 28px;
-    border-top: 1px solid #e5e7eb;
+    align-items: center;
+    gap: 22px;
+    min-height: 50px;
+    padding: 0 4px;
 }
 
-.ev-btn-primary,
-.ev-btn-secondary {
-    min-width: 120px;
-    height: 48px;
-    padding: 0 24px;
+.ev-myinfo-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.ev-myinfo-radio input {
+    width: 16px;
+    height: 16px;
+    accent-color: #0ea5e9;
+}
+
+.ev-myinfo-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 42px;
+}
+
+.ev-myinfo-actions .btn,
+.ev-mypage-header__actions .btn {
+    min-width: 110px;
+    height: 42px;
     border-radius: 999px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
 }
 
-.ev-btn-primary {
-    border: 0;
-    background: #111827;
-    color: #ffffff;
-}
-
-.ev-btn-primary:hover {
-    background: #020617;
-}
-
-.ev-btn-secondary {
-    border: 1px solid #d1d5db;
-    background: #ffffff;
-    color: #374151;
-}
-
-.ev-btn-secondary:hover {
-    border-color: #111827;
-    color: #111827;
-}
-
-@media (max-width: 768px) {
-    .ev-mypage {
-        padding: 48px 16px 72px;
-    }
-
-    .ev-mypage-card {
-        padding: 32px 22px;
-        border-radius: 22px;
-    }
-
-    .ev-form-row {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .ev-form-actions {
+@media (max-width: 767px) {
+    .ev-mypage-header {
         flex-direction: column;
     }
 
-    .ev-btn-primary,
-    .ev-btn-secondary {
+    .ev-mypage-header__actions {
+        width: 100%;
+    }
+
+    .ev-mypage-header__actions .btn {
+        width: 100%;
+    }
+
+    .ev-myinfo-card {
+        padding: 34px 24px;
+        border-radius: 24px;
+    }
+
+    .ev-myinfo-grid,
+    .ev-myinfo-subgrid {
+        grid-template-columns: 1fr;
+    }
+
+    .ev-myinfo-subsection {
+        padding: 26px 22px;
+    }
+
+    .ev-myinfo-actions {
+        flex-direction: column;
+    }
+
+    .ev-myinfo-actions .btn {
         width: 100%;
     }
 }

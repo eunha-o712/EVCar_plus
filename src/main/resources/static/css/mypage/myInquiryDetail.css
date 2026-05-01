@@ -1,3 +1,46 @@
+.ev-mypage-content {
+    width: 100%;
+}
+
+.ev-mypage-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.ev-mypage-title {
+    margin: 0 0 10px;
+    color: #07152f;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.04em;
+}
+
+.ev-mypage-description {
+    margin: 0;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.ev-mypage-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.ev-mypage-header__actions .btn {
+    min-width: 120px;
+    height: 42px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
 .ev-inquiry-detail-card {
     background: #fff;
     border: 1px solid var(--border);
@@ -47,8 +90,8 @@
 }
 
 .ev-inquiry-detail-status--waiting {
-    background: #fef3c7;
-    color: #92400e;
+    background: #e0f2fe;
+    color: #0369a1;
 }
 
 .ev-inquiry-detail-status--done {
@@ -57,8 +100,8 @@
 }
 
 .ev-inquiry-detail-status--closed {
-    background: #e5e7eb;
-    color: #374151;
+    background: #fee2e2;
+    color: #991b1b;
 }
 
 .ev-inquiry-detail-meta {
@@ -146,6 +189,18 @@
 }
 
 @media (max-width: 767px) {
+    .ev-mypage-header {
+        flex-direction: column;
+    }
+
+    .ev-mypage-header__actions {
+        width: 100%;
+    }
+
+    .ev-mypage-header__actions .btn {
+        width: 100%;
+    }
+
     .ev-inquiry-detail-card {
         padding: 24px 20px;
     }

@@ -1,132 +1,151 @@
-
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>마이페이지 - EVCar</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/common/common.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/myPageMain.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - EVCar</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageMain.css}">
 </head>
 <body>
-	<div th:replace="~{layout/header :: header}"></div>
+<div th:replace="~{layout/header :: header}"></div>
 
-	<main class="ev-mypage-page">
-		<section class="ev-mypage-section">
-			<div class="ev-mypage-container">
-				<div th:replace="~{mypage/sidebar :: sidebar('main')}"></div>
+<main class="ev-mypage-page">
+    <section class="ev-mypage-section">
+        <div class="ev-mypage-container">
+            <div th:replace="~{mypage/sidebar :: sidebar('main')}"></div>
 
-				<div class="ev-mypage-content">
-					<div class="ev-mypage-main-hero">
-						<h1 class="ev-mypage-main-title"
-							th:text="${myPageInfo.name + '님, 반갑습니다.'}">홍길동님, 반갑습니다.</h1>
-						<p class="ev-mypage-main-description">내 정보 조회 및 수정, 관심 차량 확인,
-							상담 이력과 문의 내역을 한 곳에서 관리할 수 있습니다.</p>
-					</div>
+            <div class="ev-mypage-content">
+                <div class="ev-main-hero">
+                    <p class="ev-main-eyebrow">MY PAGE</p>
+                    <h1 class="ev-main-title">
+                        <span th:text="${myPageInfo.name}">고은종</span>님, 반갑습니다.
+                    </h1>
+                    <p class="ev-main-desc">
+                        내 정보 조회 및 수정, 관심 차량 확인, 상담 이력과 문의 내역을 한 곳에서 관리할 수 있습니다.
+                    </p>
+                </div>
 
-					<section class="ev-mypage-summary">
-						<article class="ev-mypage-summary-card">
-							<p class="ev-mypage-summary-card__label">관심 차량</p>
-							<strong class="ev-mypage-summary-card__count"
-								th:text="${summary.wishlistCount}">0</strong> <span
-								class="ev-mypage-summary-card__unit">대</span> <a
-								class="ev-mypage-summary-card__link"
-								th:href="@{/mypage/wishlist}">바로가기</a>
-						</article>
+                <div class="ev-summary-grid">
+                    <a th:href="@{/mypage/wishlist}" class="ev-summary-card">
+                        <span class="ev-summary-label">관심 차량</span>
+                        <strong class="ev-summary-value">
+                            <span th:text="${summary.wishlistCount}">0</span>
+                            <span>대</span>
+                        </strong>
+                        <span class="ev-summary-action">확인하기</span>
+                    </a>
 
-						<article class="ev-mypage-summary-card">
-							<p class="ev-mypage-summary-card__label">상담 이력</p>
-							<strong class="ev-mypage-summary-card__count"
-								th:text="${summary.consultationCount}">0</strong> <span
-								class="ev-mypage-summary-card__unit">건</span> <a
-								class="ev-mypage-summary-card__link"
-								th:href="@{/mypage/consultation}">바로가기</a>
-						</article>
+                    <a th:href="@{/mypage/consultation}" class="ev-summary-card">
+                        <span class="ev-summary-label">상담 이력</span>
+                        <strong class="ev-summary-value">
+                            <span th:text="${summary.consultationCount}">0</span>
+                            <span>건</span>
+                        </strong>
+                        <span class="ev-summary-action">확인하기</span>
+                    </a>
 
-						<article class="ev-mypage-summary-card">
-							<p class="ev-mypage-summary-card__label">문의 내역</p>
-							<strong class="ev-mypage-summary-card__count"
-								th:text="${summary.inquiryCount}">0</strong> <span
-								class="ev-mypage-summary-card__unit">건</span> <a
-								class="ev-mypage-summary-card__link"
-								th:href="@{/mypage/inquiry}">바로가기</a>
-						</article>
+                    <a th:href="@{/mypage/inquiry}" class="ev-summary-card">
+                        <span class="ev-summary-label">문의 내역</span>
+                        <strong class="ev-summary-value">
+                            <span th:text="${summary.inquiryCount}">0</span>
+                            <span>건</span>
+                        </strong>
+                        <span class="ev-summary-action">확인하기</span>
+                    </a>
 
-						<article
-							class="ev-mypage-summary-card ev-mypage-summary-card--accent">
-							<p class="ev-mypage-summary-card__label">답변 대기</p>
-							<strong class="ev-mypage-summary-card__count"
-								th:text="${summary.waitingInquiryCount}">0</strong> <span
-								class="ev-mypage-summary-card__unit">건</span> <a
-								class="ev-mypage-summary-card__link"
-								th:href="@{/mypage/inquiry}">확인하기</a>
-						</article>
-					</section>
+                    <a th:href="@{/mypage/inquiry}" class="ev-summary-card ev-summary-card--dark">
+                        <span class="ev-summary-label">답변 대기</span>
+                        <strong class="ev-summary-value">
+                            <span th:text="${summary.waitingInquiryCount}">0</span>
+                            <span>건</span>
+                        </strong>
+                        <span class="ev-summary-action">확인하기</span>
+                    </a>
+                </div>
 
-					<section class="ev-mypage-main-grid">
-						<article class="ev-mypage-main-card">
-							<h2 class="ev-mypage-main-card__title">내 정보</h2>
-							<p class="ev-mypage-main-card__text">회원 기본 정보와 보유 차량 정보를 확인하고
-								수정합니다.</p>
-							<a class="ev-mypage-main-card__link" th:href="@{/mypage/info}">이동</a>
-						</article>
+                <div class="ev-menu-grid">
+                    <a th:href="@{/mypage/info}" class="ev-menu-card">
+                        <div>
+                            <span class="ev-menu-number">01</span>
+                            <h2 class="ev-menu-title">내 정보</h2>
+                            <p class="ev-menu-desc">회원 기본 정보와 보유 차량 정보를 확인하고 수정합니다.</p>
+                        </div>
+                        <span class="ev-menu-arrow" aria-hidden="true">→</span>
+                    </a>
 
-						<article class="ev-mypage-main-card">
-							<h2 class="ev-mypage-main-card__title">관심 차량</h2>
-							<p class="ev-mypage-main-card__text">관심 등록한 전기차 목록을 확인합니다.</p>
-							<a class="ev-mypage-main-card__link"
-								th:href="@{/mypage/wishlist}">이동</a>
-						</article>
+                    <a th:href="@{/mypage/wishlist}" class="ev-menu-card">
+                        <div>
+                            <span class="ev-menu-number">02</span>
+                            <h2 class="ev-menu-title">관심 차량</h2>
+                            <p class="ev-menu-desc">관심 등록한 전기차 목록을 확인합니다.</p>
+                        </div>
+                        <span class="ev-menu-arrow" aria-hidden="true">→</span>
+                    </a>
 
-						<article class="ev-mypage-main-card">
-							<h2 class="ev-mypage-main-card__title">상담 이력</h2>
-							<p class="ev-mypage-main-card__text">상담 신청 내역을 조회하고 상태를
-								확인합니다.</p>
-							<a class="ev-mypage-main-card__link"
-								th:href="@{/mypage/consultation}">이동</a>
-						</article>
+                    <a th:href="@{/mypage/consultation}" class="ev-menu-card">
+                        <div>
+                            <span class="ev-menu-number">03</span>
+                            <h2 class="ev-menu-title">상담 이력</h2>
+                            <p class="ev-menu-desc">상담 신청 내역과 진행 상태를 확인합니다.</p>
+                        </div>
+                        <span class="ev-menu-arrow" aria-hidden="true">→</span>
+                    </a>
 
-						<article class="ev-mypage-main-card">
-							<h2 class="ev-mypage-main-card__title">문의 내역</h2>
-							<p class="ev-mypage-main-card__text">내가 작성한 문의와 답변 상태를 확인합니다.</p>
-							<a class="ev-mypage-main-card__link" th:href="@{/mypage/inquiry}">이동</a>
-						</article>
+                    <a th:href="@{/mypage/inquiry}" class="ev-menu-card">
+                        <div>
+                            <span class="ev-menu-number">04</span>
+                            <h2 class="ev-menu-title">문의 내역</h2>
+                            <p class="ev-menu-desc">내가 작성한 문의와 답변 상태를 확인합니다.</p>
+                        </div>
+                        <span class="ev-menu-arrow" aria-hidden="true">→</span>
+                    </a>
 
-						<article class="ev-mypage-main-card ev-mypage-main-card--danger">
-							<h2 class="ev-mypage-main-card__title">회원 탈퇴</h2>
-							<p class="ev-mypage-main-card__text">계정을 탈퇴합니다.</p>
-							<a class="ev-mypage-main-card__link"
-								th:href="@{/mypage/withdraw}">이동</a>
-						</article>
-					</section>
+                    <a th:href="@{/mypage/withdraw}" class="ev-menu-card ev-menu-card--withdraw">
+                        <div>
+                            <span class="ev-menu-number">05</span>
+                            <h2 class="ev-menu-title">회원 탈퇴</h2>
+                            <p class="ev-menu-desc">계정을 탈퇴합니다. 탈퇴 전 안내사항을 확인해주세요.</p>
+                        </div>
+                        <span class="ev-menu-arrow" aria-hidden="true">→</span>
+                    </a>
+                </div>
 
-					<section class="ev-mypage-profile">
-						<h2 class="ev-mypage-profile__title">기본 회원 정보</h2>
-						<ul class="ev-mypage-profile__list">
-							<li><span>아이디</span><strong th:text="${myPageInfo.loginId}">hong123</strong></li>
-							<li><span>이름</span><strong th:text="${myPageInfo.name}">홍길동</strong></li>
-							<li><span>이메일</span><strong th:text="${myPageInfo.email}">hong123@example.com</strong></li>
-							<li><span>전화번호</span><strong th:text="${myPageInfo.formattedPhone}">010-1234-5678</strong></li>
-							<li><span>보유 차량</span><strong
-								th:text="${myPageInfo.vehicleModel != null ? myPageInfo.vehicleModel : '없음'}">아이오닉
-									5</strong></li>
-						</ul>
-					</section>
-				</div>
-			</div>
-		</section>
-	</main>
+                <section class="ev-info-panel">
+                    <h2 class="ev-info-title">기본 회원 정보</h2>
 
-	<div th:replace="~{layout/footer :: footer}"></div>
-	<div th:replace="~{fragments/chatbotWidget :: chatbot}"></div>
+                    <dl class="ev-info-list">
+                        <div>
+                            <dt>아이디</dt>
+                            <dd th:text="${myPageInfo.loginId}">eunha3335</dd>
+                        </div>
+                        <div>
+                            <dt>이름</dt>
+                            <dd th:text="${myPageInfo.name}">고은종</dd>
+                        </div>
+                        <div>
+                            <dt>이메일</dt>
+                            <dd th:text="${myPageInfo.email}">user@email.com</dd>
+                        </div>
+                        <div>
+                            <dt>전화번호</dt>
+                            <dd th:text="${myPageInfo.phone}">010-0000-0000</dd>
+                        </div>
+                    </dl>
+                </section>
+            </div>
+        </div>
+    </section>
+</main>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script th:src="@{/js/common/footer.js}"></script>
+<div th:replace="~{layout/footer :: footer}"></div>
+<div th:replace="~{fragments/chatbotWidget :: chatbot}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/common/footer.js}"></script>
 </body>
 </html>
