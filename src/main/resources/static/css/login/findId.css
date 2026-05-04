@@ -1,0 +1,121 @@
+.ev-find-id-page {
+    min-height: 100vh;
+    padding: 110px 20px 120px;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+}
+
+.ev-find-id-card {
+    width: min(520px, 100%);
+    margin: 0 auto;
+    padding: 48px;
+    border: 1px solid rgba(203, 213, 225, 0.75);
+    border-radius: 28px;
+    background: #ffffff;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+}
+
+.ev-find-id-eyebrow {
+    margin-bottom: 12px;
+    color: #00759a;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.28em;
+    text-align: center;
+}
+
+.ev-find-id-title {
+    margin-bottom: 12px;
+    color: #07152f;
+    font-size: 34px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -0.06em;
+}
+
+.ev-find-id-description {
+    margin-bottom: 34px;
+    color: #334155;
+    font-size: 15px;
+    text-align: center;
+}
+
+.ev-find-id-field {
+    margin-bottom: 20px;
+}
+
+.ev-find-id-field label {
+    display: block;
+    margin-bottom: 10px;
+    color: #020617;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.ev-find-id-field input,
+.ev-find-id-field select {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    background: #ffffff;
+    color: #020617;
+    font-size: 15px;
+    font-weight: 700;
+    outline: none;
+}
+
+.ev-find-id-field input:focus,
+.ev-find-id-field select:focus {
+    border-color: #67dff5;
+    box-shadow: 0 0 0 4px rgba(103, 223, 245, 0.22);
+}
+
+.ev-find-id-email {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.ev-find-id-email span {
+    color: #334155;
+    font-weight: 900;
+}
+
+.ev-find-id-email select {
+    grid-column: 1 / -1;
+}
+
+.ev-find-id-submit {
+    width: 100%;
+    height: 54px;
+    margin-top: 8px;
+    border: 0;
+    border-radius: 999px;
+    background: #67dff5;
+    color: #020617;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.ev-find-id-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+    color: #07152f;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+@media (min-width: 768px) {
+    .ev-find-id-email {
+        grid-template-columns: 1fr auto 1fr 120px;
+    }
+
+    .ev-find-id-email select {
+        grid-column: auto;
+    }
+}

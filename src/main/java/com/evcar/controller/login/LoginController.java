@@ -70,7 +70,7 @@ public class LoginController {
     @GetMapping("/find-id")
     public String idRecoveryPage(Model model) {
         model.addAttribute("idRecoveryDto", new IdRecoveryDto());
-        return "login/idrecovery";
+        return "login/findId";
     }
 
     @PostMapping("/find-id")
@@ -81,15 +81,15 @@ public class LoginController {
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-        return "login/idrecovery";
+        return "login/findId";
     }
 
     @GetMapping("/reset-pw")
-    public String pwResetPage(Model model) {
+    public String pwResetCheckPage(Model model) {
         model.addAttribute("passwordResetDto", new PasswordResetDto());
-        return "login/pwreset";
+        return "login/resetPwCheck";
     }
-
+    
     @PostMapping("/reset-pw")
     public String resetPassword(@RequestParam("loginId") String loginId,
                                 @RequestParam("name") String name,

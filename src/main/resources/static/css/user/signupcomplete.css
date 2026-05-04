@@ -1,62 +1,175 @@
-body {
-    margin: 0;
-    font-family: "돋움", Dotum, sans-serif;
-    background: #f3f4f6;
+.ev-signup-complete-page {
+    min-height: 100vh;
+    padding: 120px 20px;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
 }
 
-.container {
-    max-width: 800px;
-    width: 90%;
-    margin: 60px auto;
+.ev-signup-complete-card {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    padding: 48px;
+    border: 1px solid rgba(203, 213, 225, 0.75);
+    border-radius: 28px;
+    background: #ffffff;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+}
+
+.ev-signup-complete-eyebrow {
+    margin-bottom: 12px;
+    color: #00759a;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.28em;
     text-align: center;
 }
 
-.title {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 20px;
+.ev-signup-complete-title {
+    margin-bottom: 18px;
+    color: #07152f;
+    font-size: 34px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -0.06em;
 }
 
-.welcome {
-    font-size: 20px;
+.ev-signup-complete-welcome {
+    color: #0f172a;
+    font-size: 21px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.ev-signup-complete-description {
+    margin-top: 8px;
+    margin-bottom: 30px;
+    color: #64748b;
+    font-size: 15px;
+    text-align: center;
+}
+
+.ev-signup-complete-info {
+    padding: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 20px;
+    background: #f8fafc;
+}
+
+.ev-signup-complete-info dl {
+    margin: 0;
+}
+
+.ev-signup-complete-info dl div {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ev-signup-complete-info dl div:last-child {
+    border-bottom: 0;
+}
+
+.ev-signup-complete-info dt {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ev-signup-complete-info dd {
+    margin: 0;
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 700;
+    word-break: break-all;
+}
+
+.ev-signup-complete-vehicle {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #cbd5e1;
+}
+
+.ev-signup-complete-vehicle h2,
+.ev-signup-complete-privacy h2 {
     margin-bottom: 10px;
+    color: #07152f;
+    font-size: 17px;
+    font-weight: 900;
 }
 
-.sub-text {
-    color: #555;
-    margin-bottom: 20px;
+.ev-signup-complete-vehicle p {
+    margin: 0;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 700;
 }
 
-.info-box {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    text-align: left;
+.ev-signup-complete-privacy {
+    margin-top: 22px;
+    padding: 22px;
+    border-radius: 20px;
+    background: #eef6ff;
 }
 
-.info-box li {
-    margin-bottom: 10px;
+.ev-signup-complete-privacy p {
+    margin-bottom: 14px;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.7;
 }
 
-.button-area {
+.ev-signup-complete-privacy ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.8;
+    list-style: disc;
+}
+
+.ev-signup-complete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     margin-top: 30px;
 }
 
-.btn {
-    padding: 12px 30px;
-    margin: 0 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
+.ev-signup-complete-login-btn,
+.ev-signup-complete-home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    height: 52px;
+    padding: 0 34px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 900;
+    text-decoration: none;
 }
 
-.login-btn {
-    background: #3f6fb5;
-    color: white;
+.ev-signup-complete-login-btn {
+    background: #67dff5;
+    color: #020617;
 }
 
-.home-btn {
-    background: #6c757d;
-    color: white;
+.ev-signup-complete-home-btn {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+@media (max-width: 640px) {
+    .ev-signup-complete-card {
+        padding: 34px 24px;
+    }
+
+    .ev-signup-complete-info dl div {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .ev-signup-complete-actions {
+        flex-direction: column;
+    }
 }

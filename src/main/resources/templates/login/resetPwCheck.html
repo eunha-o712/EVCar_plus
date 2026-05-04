@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀번호 변경 확인</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/login/resetPwCheck.css}">
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-reset-check-page">
+    <section class="ev-reset-check-card">
+        <p class="ev-reset-check-eyebrow">EV CONSULTING</p>
+        <h1 class="ev-reset-check-title">비밀번호 변경</h1>
+        <p class="ev-reset-check-description">아이디, 이름, 이메일 확인 후 비밀번호를 변경할 수 있습니다.</p>
+
+        <form th:action="@{/login/reset-pw}" method="post" id="resetPwCheckForm">
+            <div class="ev-reset-check-field">
+                <label for="loginId">아이디</label>
+                <input type="text" id="loginId" name="loginId" placeholder="아이디" required>
+            </div>
+
+            <div class="ev-reset-check-field">
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name" placeholder="이름" required>
+            </div>
+
+            <div class="ev-reset-check-field">
+                <label>이메일</label>
+                <div class="ev-reset-check-email">
+                    <input type="text" id="resetEmailId" placeholder="이메일 아이디" required>
+                    <span>@</span>
+                    <input type="text" id="resetEmailDomain" required>
+                    <select id="resetDomainSelect">
+                        <option value="">직접입력</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="gmail.com">gmail.com</option>
+                    </select>
+                    <input type="hidden" name="email" id="resetEmailFull">
+                </div>
+            </div>
+
+            <button type="submit" class="ev-reset-check-submit">본인 확인</button>
+        </form>
+
+        <div class="ev-reset-check-links">
+            <a th:href="@{/login}">로그인</a>
+            <span>/</span>
+            <a th:href="@{/login/find-id}">아이디 찾기</a>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:inline="javascript">
+    window.evResetCheckMessage = {
+        errorMessage: /*[[${errorMessage}]]*/ null
+    };
+</script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common/header.js}"></script>
+<script th:src="@{/js/common/footer.js}"></script>
+<script th:src="@{/js/common/main.js}"></script>
+<script th:src="@{/js/login/resetPwCheck.js}"></script>
+</body>
+</html>
