@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>문의 상세 - EVCar</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/common/common.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
-<link rel="stylesheet" th:href="@{/css/mypage/myInquiryDetail.css}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의 상세 - EVCar</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageSidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageLayout.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/myInquiryDetail.css}">
 </head>
 
 <body>
-
 <div th:replace="~{layout/header :: header}"></div>
 
 <main class="ev-mypage-page">
@@ -26,11 +26,15 @@
                 <div class="ev-mypage-header">
                     <div class="ev-mypage-header__text">
                         <h1 class="ev-mypage-title">문의 상세</h1>
-                        <p class="ev-mypage-description">등록한 문의 내용과 답변 상태를 확인할 수 있습니다.</p>
+                        <p class="ev-mypage-description">
+                            등록한 문의 내용과 답변 상태를 확인할 수 있습니다.
+                        </p>
                     </div>
 
                     <div class="ev-mypage-header__actions">
-                        <a class="btn btn-ev-secondary" th:href="@{/mypage/inquiry}">목록으로</a>
+                        <a class="btn btn-ev-secondary" th:href="@{/mypage/inquiry}">
+                            목록으로
+                        </a>
                     </div>
                 </div>
 
@@ -38,57 +42,87 @@
                     <div class="ev-inquiry-detail-card__body">
                         <div class="ev-inquiry-detail-card__row">
                             <span class="ev-inquiry-detail-card__label">문의번호</span>
-                            <span class="ev-inquiry-detail-card__value" th:text="${inquiry.inquiryId}"></span>
+                            <span class="ev-inquiry-detail-card__value"
+                                  th:text="${inquiry.inquiryId != null ? inquiry.inquiryId : '-'}">
+                                IQ0001
+                            </span>
                         </div>
 
                         <div class="ev-inquiry-detail-card__row">
                             <span class="ev-inquiry-detail-card__label">제목</span>
-                            <span class="ev-inquiry-detail-card__value" th:text="${inquiry.title}"></span>
+                            <span class="ev-inquiry-detail-card__value"
+                                  th:text="${inquiry.title != null ? inquiry.title : '-'}">
+                                문의 제목
+                            </span>
                         </div>
 
                         <div class="ev-inquiry-detail-card__row">
                             <span class="ev-inquiry-detail-card__label">작성일</span>
                             <span class="ev-inquiry-detail-card__value"
-                                  th:text="${#temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                                  th:text="${inquiry.createdAt != null ? #temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm') : '-'}">
+                                2026-05-01 12:11
+                            </span>
                         </div>
 
                         <div class="ev-inquiry-detail-card__row">
                             <span class="ev-inquiry-detail-card__label">문의 상태</span>
                             <span class="ev-inquiry-detail-card__value"
-                                  th:text="${inquiry.replyStatusLabel != null ? inquiry.replyStatusLabel : (inquiry.answered ? '답변 완료' : '답변 대기')}"></span>
+                                  th:text="${inquiry.replyStatusLabel != null ? inquiry.replyStatusLabel : (inquiry.answered ? '답변 완료' : '답변 대기')}">
+                                답변 대기
+                            </span>
                         </div>
 
                         <div class="ev-inquiry-detail-card__row ev-inquiry-detail-card__row--full">
                             <span class="ev-inquiry-detail-card__label">문의 내용</span>
                             <span class="ev-inquiry-detail-card__value ev-inquiry-detail-card__value--multiline"
-                                  th:text="${inquiry.content}"></span>
+                                  th:text="${inquiry.content != null ? inquiry.content : '-'}">
+                                문의 내용
+                            </span>
                         </div>
 
                         <div class="ev-inquiry-detail-card__row ev-inquiry-detail-card__row--full"
                              th:if="${inquiry.replyContent != null and !#strings.isEmpty(inquiry.replyContent)}">
                             <span class="ev-inquiry-detail-card__label">관리자 답변</span>
                             <span class="ev-inquiry-detail-card__value ev-inquiry-detail-card__value--reply"
-                                  th:text="${inquiry.replyContent}"></span>
+                                  th:text="${inquiry.replyContent}">
+                                관리자 답변
+                            </span>
+                        </div>
+
+                        <div class="ev-inquiry-detail-card__row"
+                             th:if="${inquiry.updatedAt != null and inquiry.replyContent != null and !#strings.isEmpty(inquiry.replyContent)}">
+                            <span class="ev-inquiry-detail-card__label">답변일</span>
+                            <span class="ev-inquiry-detail-card__value"
+                                  th:text="${#temporals.format(inquiry.updatedAt, 'yyyy-MM-dd HH:mm')}">
+                                2026-05-02 00:09
+                            </span>
                         </div>
                     </div>
 
                     <div class="ev-inquiry-detail-card__footer">
                         <span class="ev-inquiry-detail-status"
-                              th:classappend="${
-                                  inquiry.replyStatus == 'REPLIED' ? ' ev-inquiry-detail-status--done' :
-                                  (inquiry.replyStatus == 'CLOSED' ? ' ev-inquiry-detail-status--closed' :
-                                  ' ev-inquiry-detail-status--waiting')
-                              }"
+                              th:classappend="${inquiry.replyStatus == 'COMPLETED' or inquiry.replyStatus == 'REPLIED' or inquiry.replyStatus == 'DONE' or inquiry.replyStatus == 'CLOSED'} ? ' ev-inquiry-detail-status--done'
+                                  : (${inquiry.replyStatus == 'CANCELED' or inquiry.replyStatus == 'CANCEL'} ? ' ev-inquiry-detail-status--cancel'
+                                  : ' ev-inquiry-detail-status--progress')"
                               th:text="${inquiry.replyStatusLabel != null ? inquiry.replyStatusLabel : (inquiry.answered ? '답변 완료' : '답변 대기')}">
+                            답변 대기
                         </span>
 
                         <div class="ev-inquiry-detail-card__actions">
-                            <form th:if="${inquiry.replyStatus == 'WAITING'}"
-                                  th:action="@{/inquiry/{id}/delete(id=${inquiry.inquiryId})}"
+                            <form th:if="${inquiry.replyStatus == 'WAITING' or inquiry.replyStatus == 'PENDING'}"
+                                  th:action="@{/mypage/inquiry/cancel}"
                                   method="post"
-                                  onsubmit="return confirm('답변 대기 상태의 문의를 취소하시겠습니까?');">
-                                <button type="submit" class="btn ev-inquiry-detail-cancel-btn">문의 취소</button>
+                                  class="ev-inquiry-detail-cancel-form">
+                                <input type="hidden" name="inquiryId" th:value="${inquiry.inquiryId}">
+                                <button type="submit" class="btn ev-inquiry-detail-cancel-btn">
+                                    취소
+                                </button>
                             </form>
+
+                            <span th:if="${inquiry.replyStatus != 'WAITING' and inquiry.replyStatus != 'PENDING'}"
+                                  class="ev-inquiry-detail-disabled-text">
+                                취소불가
+                            </span>
                         </div>
                     </div>
                 </article>
@@ -102,6 +136,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/common/footer.js}"></script>
-
+<script th:src="@{/js/mypage/myInquiry.js}"></script>
 </body>
+
 </html>

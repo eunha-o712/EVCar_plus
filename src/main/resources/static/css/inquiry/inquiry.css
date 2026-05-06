@@ -235,6 +235,13 @@
     color: var(--ev-admin-danger);
 }
 
+.ev-inquiry-table__status--cancel,
+.ev-inquiry-detail__status--cancel {
+    background: rgba(148, 163, 184, 0.14);
+    color: #64748b;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
 .ev-inquiry-empty {
     background: #ffffff;
     border: 1px solid #e7edf5;

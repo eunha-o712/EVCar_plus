@@ -15,7 +15,6 @@
     color: #07152f;
     font-size: 30px;
     font-weight: 800;
-    line-height: 1.25;
     letter-spacing: -0.04em;
 }
 
@@ -64,6 +63,9 @@
 }
 
 .ev-inquiry-card__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
     padding: 30px 28px 22px;
 }
 
@@ -71,7 +73,7 @@
     display: grid;
     grid-template-columns: 104px 1fr;
     gap: 14px;
-    padding: 10px 0;
+    padding: 8px 0;
 }
 
 .ev-inquiry-card__row--full {
@@ -88,12 +90,22 @@
     color: #111827;
     font-size: 15px;
     font-weight: 700;
-    word-break: break-word;
+    word-break: keep-all;
 }
 
-.ev-inquiry-card__value--multiline,
+.ev-inquiry-card__value--multiline {
+    white-space: pre-line;
+    line-height: 1.75;
+}
+
 .ev-inquiry-card__value--reply {
-    white-space: pre-wrap;
+    display: block;
+    padding: 16px 18px;
+    border: 1px solid rgba(14, 165, 233, 0.18);
+    border-radius: 18px;
+    background: #f8fbff;
+    color: #111827;
+    white-space: pre-line;
     line-height: 1.75;
 }
 
@@ -106,65 +118,18 @@
     border-top: 1px solid rgba(226, 232, 240, 0.95);
 }
 
-.ev-inquiry-card__actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-}
-
-.ev-inquiry-card__actions form {
-    margin: 0;
-}
-
-.ev-inquiry-card__actions .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 92px;
-    height: 38px;
-    padding: 0 16px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1;
-}
-
-.ev-inquiry-card__actions .btn-outline-danger {
-    border: 1px solid rgba(239, 68, 68, 0.28);
-    background: rgba(239, 68, 68, 0.06);
-    color: #ef4444;
-}
-
-.ev-inquiry-card__actions .btn-outline-danger:hover {
-    border-color: rgba(239, 68, 68, 0.38);
-    background: rgba(239, 68, 68, 0.12);
-    color: #ef4444;
-}
-
-.ev-inquiry-card__actions .btn-ev-secondary {
-    border: none;
-    background: transparent;
-    color: #111827;
-}
-
-.ev-inquiry-card__actions .btn-ev-secondary:hover {
-    color: #0e7490;
-}
-
 .ev-inquiry-status {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 92px;
+    min-width: 88px;
     padding: 8px 16px;
     border-radius: 999px;
     font-size: 13px;
     font-weight: 800;
 }
 
-.ev-inquiry-status--waiting {
+.ev-inquiry-status--progress {
     background: #e0f2fe;
     color: #0369a1;
 }
@@ -174,9 +139,51 @@
     color: #065f46;
 }
 
-.ev-inquiry-status--closed {
+.ev-inquiry-status--cancel {
     background: #fee2e2;
     color: #991b1b;
+}
+
+.ev-inquiry-card__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ev-inquiry-card__actions form {
+    margin: 0;
+}
+
+.ev-inquiry-card__actions .btn {
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ev-inquiry-cancel-btn {
+    min-width: 92px;
+    height: 38px;
+    padding: 0 16px;
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    border-radius: 999px;
+    background: rgba(239, 68, 68, 0.06);
+    color: #ef4444;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ev-inquiry-cancel-btn:hover {
+    border-color: rgba(239, 68, 68, 0.38);
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+}
+
+.ev-inquiry-disabled-text {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 800;
 }
 
 .ev-inquiry-empty {
@@ -216,8 +223,10 @@
     line-height: 1.7;
 }
 
-.ev-inquiry-disabled-text {
-    color: #94a3b8;
+.ev-inquiry-empty .btn {
+    min-width: 150px;
+    height: 42px;
+    border-radius: 999px;
     font-size: 14px;
     font-weight: 800;
 }
@@ -236,21 +245,25 @@
         width: 100%;
     }
 
+    .ev-inquiry-card__body {
+        padding: 26px 22px 20px;
+    }
+
+    .ev-inquiry-card__row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
     .ev-inquiry-card__footer {
-        flex-direction: column;
         align-items: stretch;
+        flex-direction: column;
+        padding: 22px;
     }
 
     .ev-inquiry-card__actions,
-    .ev-inquiry-card__actions .btn,
     .ev-inquiry-card__actions form,
-    .ev-inquiry-card__actions form button {
+    .ev-inquiry-card__actions .btn,
+    .ev-inquiry-cancel-btn {
         width: 100%;
-    }
-
-    .ev-inquiry-card__row,
-    .ev-inquiry-card__row--full {
-        grid-template-columns: 1fr;
-        gap: 6px;
     }
 }

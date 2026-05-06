@@ -10,4 +10,6 @@ public interface ChargingStationService {
     List<ChargingRegionResponseDto> getAllRegions();
 
     List<ChargingStationResponseDto> getStations(String zcode, String zscode);
+
+    List<ChargingStationResponseDto> getStationsByCurrentLocation(double lat, double lng, double radiusKm);
 }

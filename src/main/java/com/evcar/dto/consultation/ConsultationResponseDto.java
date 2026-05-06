@@ -22,5 +22,7 @@ public class ConsultationResponseDto {
     private String consultStatus;
     private String consultResult;
     private String adminReply;
+    private String statusLabel;
+    private String statusClass;
     private LocalDateTime createdAt;
 }

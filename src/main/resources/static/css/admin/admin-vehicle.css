@@ -18,6 +18,27 @@
     padding-bottom: 0;
 }
 
+.ev-admin-vehicle-control {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 36px;
+}
+
+.ev-admin-filter-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ev-admin-vehicle-search-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
 .ev-admin-vehicle-search-form {
     display: flex;
     flex-wrap: wrap;
@@ -67,7 +88,6 @@
 .ev-admin-vehicle-table td:nth-child(1) {
     padding-left: 20px;
 }
-
 
 .ev-admin-vehicle-table th:nth-child(1),
 .ev-admin-vehicle-table td:nth-child(1),

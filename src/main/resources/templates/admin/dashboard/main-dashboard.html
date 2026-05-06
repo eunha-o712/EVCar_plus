@@ -76,7 +76,7 @@
                         <div class="ev-dashboard-ai-badge">AI INSIGHT</div>
 
                         <div class="ev-dashboard-ai-summary"
-                             th:text="${dashboard.aiSummary}">
+                             th:utext="${dashboard.aiSummary}">
                             AI 분석 결과가 표시됩니다.
                         </div>
 
@@ -84,21 +84,21 @@
                             <li>
                                 <span class="ev-dashboard-ai-list__label">상담 추이</span>
                                 <span class="ev-dashboard-ai-list__value"
-                                      th:text="${dashboard.aiTrend}">
+                                      th:utext="${dashboard.aiTrend}">
                                     최근 3개월 상담 증감 흐름 분석 결과가 표시됩니다.
                                 </span>
                             </li>
                             <li>
                                 <span class="ev-dashboard-ai-list__label">차량 관심도</span>
                                 <span class="ev-dashboard-ai-list__value"
-                                      th:text="${dashboard.aiVehicle}">
+                                      th:utext="${dashboard.aiVehicle}">
                                     인기 차량 TOP 분석 결과가 표시됩니다.
                                 </span>
                             </li>
                             <li>
                                 <span class="ev-dashboard-ai-list__label">지역 분포</span>
                                 <span class="ev-dashboard-ai-list__value"
-                                      th:text="${dashboard.aiRegion}">
+                                      th:utext="${dashboard.aiRegion}">
                                     지역별 상담 분포 분석 결과가 표시됩니다.
                                 </span>
                             </li>

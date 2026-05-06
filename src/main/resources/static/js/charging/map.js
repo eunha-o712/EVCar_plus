@@ -9,6 +9,7 @@ const DEFAULT_CENTER = {
 };
 
 const DEFAULT_RADIUS_KM = 1;
+const CURRENT_LOCATION_RADIUS_KM = 5;
 
 const REGION_VIEW = {
     '11': { lat: 37.5665, lng: 126.9780, level: 7 },
@@ -45,6 +46,7 @@ let initialized = false;
 
 window.onload = function () {
     const mapElement = document.getElementById('map');
+
     if (!mapElement) {
         return;
     }
@@ -99,6 +101,7 @@ async function loadRegions() {
 
     try {
         const response = await fetch('/charging/regions');
+
         if (!response.ok) {
             throw new Error('지역 목록 조회 실패');
         }
@@ -185,6 +188,7 @@ function normalizeSigunguItem(sigungu) {
 
 function renderSidoOptions(regionList) {
     const sidoSelect = document.getElementById('sidoSelect');
+
     if (!sidoSelect) {
         return;
     }
@@ -251,8 +255,23 @@ function onSidoChange() {
     moveMapToRegion(selectedZcode, '');
 }
 
+function resetRegionSelects() {
+    const sidoSelect = document.getElementById('sidoSelect');
+    const sigunguSelect = document.getElementById('sigunguSelect');
+
+    if (sidoSelect) {
+        sidoSelect.value = '';
+    }
+
+    if (sigunguSelect) {
+        sigunguSelect.innerHTML = '<option value="">시/군/구 선택</option>';
+        sigunguSelect.disabled = true;
+    }
+}
+
 function resetSigunguOptions() {
     const sigunguSelect = document.getElementById('sigunguSelect');
+
     if (!sigunguSelect) {
         return;
     }
@@ -280,6 +299,7 @@ async function searchByRegion(isInitialLoad) {
         if (!isInitialLoad) {
             alert('시/도를 선택해주세요.');
         }
+
         hideLoading();
         return;
     }
@@ -297,6 +317,7 @@ async function searchByRegion(isInitialLoad) {
         console.log('stations request url =', url);
 
         const response = await fetch(url);
+
         if (!response.ok) {
             throw new Error('충전소 조회 실패');
         }
@@ -309,7 +330,7 @@ async function searchByRegion(isInitialLoad) {
             console.log('[디버그] 첫 번째 충전소 데이터:', stations[0]);
         }
 
-        renderStations(stations, zcode, zscode, isInitialLoad);
+        renderStations(stations, isInitialLoad);
     } catch (error) {
         console.error('searchByRegion error =', error);
         alert('충전소 정보를 불러오지 못했습니다.');
@@ -318,7 +339,41 @@ async function searchByRegion(isInitialLoad) {
     }
 }
 
-function renderStations(stations, zcode, zscode, isInitialLoad) {
+async function searchStationsByCurrentLocation(lat, lng) {
+    try {
+        const url = '/charging/current?lat='
+            + encodeURIComponent(lat)
+            + '&lng='
+            + encodeURIComponent(lng)
+            + '&radiusKm='
+            + encodeURIComponent(CURRENT_LOCATION_RADIUS_KM);
+
+        console.log('[현재 위치 주변 충전소 조회]', url);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('현재 위치 주변 충전소 조회 실패: ' + response.status);
+        }
+
+        const stations = await response.json();
+        console.log('[현재 위치 주변 충전소 결과]', stations);
+
+        if (!Array.isArray(stations) || stations.length === 0) {
+            alert('현재 위치 주변에 충전소가 없습니다.');
+            return;
+        }
+
+        renderStations(stations, false);
+    } catch (error) {
+        console.error('searchStationsByCurrentLocation error =', error);
+        alert('현재 위치 주변 충전소를 불러오지 못했습니다.');
+    } finally {
+        hideLoading();
+    }
+}
+
+function renderStations(stations, isInitialLoad) {
     clearMarkers();
     closeOverlay();
     closeDetailPanel();
@@ -399,7 +454,38 @@ function renderStations(stations, zcode, zscode, isInitialLoad) {
         clusterer.addMarkers(markers);
     }
 
-    moveMapToRegion(zcode, zscode);
+    moveMapToStations(targetStations);
+}
+
+function moveMapToStations(stations) {
+    const bounds = new kakao.maps.LatLngBounds();
+    const validPositions = [];
+
+    stations.forEach(function (station) {
+        const lat = toNumber(station.lat);
+        const lng = toNumber(station.lng);
+
+        if (!isValidCoordinate(lat, lng)) {
+            return;
+        }
+
+        const position = new kakao.maps.LatLng(lat, lng);
+        bounds.extend(position);
+        validPositions.push(position);
+    });
+
+    if (validPositions.length === 0) {
+        console.warn('[moveMapToStations] 유효한 충전소 좌표가 없습니다.');
+        return;
+    }
+
+    if (validPositions.length === 1) {
+        map.setCenter(validPositions[0]);
+        map.setLevel(4);
+        return;
+    }
+
+    map.setBounds(bounds);
 }
 
 function moveMapToRegion(zcode, zscode) {
@@ -413,6 +499,7 @@ function moveMapToRegion(zcode, zscode) {
     }
 
     const regionView = REGION_VIEW[zcode];
+
     if (regionView) {
         map.setCenter(new kakao.maps.LatLng(regionView.lat, regionView.lng));
         map.setLevel(regionView.level);
@@ -434,6 +521,7 @@ function showOverlay(station, position) {
         event.stopPropagation();
 
         const actionEl = event.target.closest('[data-action]');
+
         if (!actionEl) {
             return;
         }
@@ -500,6 +588,7 @@ async function openDetailPanel() {
     }
 
     const panel = document.getElementById('mapDetailPanel');
+
     if (!panel) {
         console.warn('[openDetailPanel] mapDetailPanel을 찾을 수 없습니다.');
         return;
@@ -530,6 +619,7 @@ async function openDetailPanel() {
 
 function closeDetailPanel() {
     const panel = document.getElementById('mapDetailPanel');
+
     if (!panel) {
         return;
     }
@@ -542,6 +632,7 @@ async function loadChargers(stationId) {
     console.log('[loadChargers] url =', url);
 
     const response = await fetch(url);
+
     if (!response.ok) {
         throw new Error('충전기 조회 실패: ' + response.status);
     }
@@ -613,6 +704,7 @@ function buildInfoRows(station) {
     ];
 
     const note = normalizeNote(station.note);
+
     if (note) {
         rows.push(['비고', note]);
     }
@@ -645,14 +737,27 @@ function moveToMyLocation() {
         return;
     }
 
+    resetRegionSelects();
+    clearMarkers();
+    closeOverlay();
+    closeDetailPanel();
+    selectedStation = null;
+
     showLoading();
 
     navigator.geolocation.getCurrentPosition(
-        function (position) {
-            const current = new kakao.maps.LatLng(
-                position.coords.latitude,
-                position.coords.longitude
-            );
+        async function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+
+            console.log('[현재 위치]', {
+                lat: lat,
+                lng: lng,
+                accuracy: accuracy
+            });
+
+            const current = new kakao.maps.LatLng(lat, lng);
 
             map.setCenter(current);
             map.setLevel(4);
@@ -666,17 +771,24 @@ function moveToMyLocation() {
                 position: current
             });
 
-            hideLoading();
+            await searchStationsByCurrentLocation(lat, lng);
         },
-        function () {
+        function (error) {
             hideLoading();
+            console.error('[현재 위치 오류]', error);
             alert('현재 위치를 가져오지 못했습니다.');
+        },
+			 {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
         }
     );
 }
 
 function showLoading() {
     const loadingEl = document.getElementById('mapLoading');
+
     if (!loadingEl) {
         return;
     }
@@ -686,6 +798,7 @@ function showLoading() {
 
 function hideLoading() {
     const loadingEl = document.getElementById('mapLoading');
+
     if (!loadingEl) {
         return;
     }
@@ -711,6 +824,7 @@ function normalizeValue(value) {
     }
 
     const text = String(value).trim();
+
     if (!text || text === 'null') {
         return '-';
     }
@@ -752,6 +866,7 @@ function toNumber(value) {
     }
 
     const parsed = Number(String(value).trim());
+
     return Number.isNaN(parsed) ? NaN : parsed;
 }
 
@@ -770,6 +885,7 @@ function normalizeText(value) {
     }
 
     const text = String(value).trim();
+
     if (!text || text === 'null') {
         return '';
     }

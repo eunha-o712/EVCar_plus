@@ -1,5 +1,6 @@
 package com.evcar.service.wishlist;
 
+import com.evcar.common.enums.VehicleModelType;
 import com.evcar.domain.wishlist.Wishlist;
 import com.evcar.dto.vehicle.VehicleListDto;
 import com.evcar.repository.vehicle.VehicleRepository;
@@ -33,7 +34,7 @@ public class WishlistServiceImpl implements WishlistService {
                 .wishlistId(UUID.randomUUID().toString().substring(0, 20))
                 .userId(userId)
                 .vehicleId(vehicleId)
-                .build(); // createdAt은 @PrePersist가 처리
+                .build();
 
         wishlistRepository.save(wishlist);
     }
@@ -54,7 +55,7 @@ public class WishlistServiceImpl implements WishlistService {
                 VehicleListDto dto = VehicleListDto.builder()
                         .vehicleId(vehicle.getVehicleId())
                         .brand(vehicle.getBrand())
-                        .modelName(vehicle.getModelName())
+                        .modelName(VehicleModelType.toLabel(vehicle.getModelName()))
                         .vehicleClass(vehicle.getVehicleClass())
                         .priceBasic(vehicle.getPriceBasic())
                         .pricePremium(vehicle.getPricePremium())

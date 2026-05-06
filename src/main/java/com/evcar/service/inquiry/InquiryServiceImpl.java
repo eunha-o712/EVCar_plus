@@ -1,5 +1,6 @@
 package com.evcar.service.inquiry;
 
+import com.evcar.common.enums.BoardStatus;
 import com.evcar.domain.inquiry.Inquiry;
 import com.evcar.domain.user.User;
 import com.evcar.dto.inquiry.InquiryCreateRequestDto;
@@ -62,6 +63,8 @@ public class InquiryServiceImpl implements InquiryService {
                 .map(User::getName)
                 .orElse("알 수 없음");
 
+        BoardStatus status = BoardStatus.from(inquiry.getReplyStatus());
+
         return InquiryResponseDto.builder()
                 .inquiryId(inquiry.getInquiryId())
                 .userId(inquiry.getUserId())
@@ -70,6 +73,8 @@ public class InquiryServiceImpl implements InquiryService {
                 .content(inquiry.getContent())
                 .replyContent(inquiry.getReplyContent())
                 .replyStatus(inquiry.getReplyStatus())
+                .statusLabel(status.getLabel())
+                .statusClass(status.getCssClass())
                 .createdAt(inquiry.getCreatedAt())
                 .build();
     }

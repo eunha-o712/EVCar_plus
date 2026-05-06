@@ -87,6 +87,19 @@ public class ChargingStationServiceImpl implements ChargingStationService {
                 .toList();
     }
 
+    @Override
+    public List<ChargingStationResponseDto> getStationsByCurrentLocation(double lat, double lng, double radiusKm) {
+        if (!isValidCoordinate(lat, lng) || radiusKm <= 0) {
+            return List.of();
+        }
+
+        return chargingStationRepository.findByCurrentLocation(lat, lng, radiusKm)
+                .stream()
+                .filter(chargingStationValidator::isValidStation)
+                .map(this::toResponseDto)
+                .toList();
+    }
+
     private ChargingStationResponseDto toResponseDto(ChargingStation station) {
         return ChargingStationResponseDto.builder()
                 .stationId(station.getStationId())
@@ -100,6 +113,13 @@ public class ChargingStationServiceImpl implements ChargingStationService {
                 .parkingFree(toParkingFreeText(station.getParkingFree()))
                 .note(toNoteText(station.getNote()))
                 .build();
+    }
+
+    private boolean isValidCoordinate(double lat, double lng) {
+        return lat >= 33
+                && lat <= 39
+                && lng >= 124
+                && lng <= 132;
     }
 
     private String extractSido(String address) {

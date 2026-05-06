@@ -52,63 +52,18 @@
                     </td>
                     <td th:text="${inquiry.userName}">홍길동</td>
                     <td>
-                        <th:block th:switch="${inquiry.replyStatus}">
-                            <span th:case="'WAITING'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--waiting"
-                                  th:text="${inquiry.replyStatus}">
-                                WAITING
-                            </span>
-                            <span th:case="'PENDING'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--waiting"
-                                  th:text="${inquiry.replyStatus}">
-                                PENDING
-                            </span>
-                            <span th:case="'IN_PROGRESS'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--progress"
-                                  th:text="${inquiry.replyStatus}">
-                                IN_PROGRESS
-                            </span>
-                            <span th:case="'PROGRESS'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--progress"
-                                  th:text="${inquiry.replyStatus}">
-                                PROGRESS
-                            </span>
-                            <span th:case="'REPLIED'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--success"
-                                  th:text="${inquiry.replyStatus}">
-                                REPLIED
-                            </span>
-                            <span th:case="'COMPLETED'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--success"
-                                  th:text="${inquiry.replyStatus}">
-                                COMPLETED
-                            </span>
-                            <span th:case="'DONE'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--success"
-                                  th:text="${inquiry.replyStatus}">
-                                DONE
-                            </span>
-                            <span th:case="'CLOSED'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--danger"
-                                  th:text="${inquiry.replyStatus}">
-                                CLOSED
-                            </span>
-                            <span th:case="'CANCELED'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--danger"
-                                  th:text="${inquiry.replyStatus}">
-                                CANCELED
-                            </span>
-                            <span th:case="'CANCEL'"
-                                  class="ev-inquiry-table__status ev-inquiry-table__status--danger"
-                                  th:text="${inquiry.replyStatus}">
-                                CANCEL
-                            </span>
-                            <span th:case="*"
-                                  class="ev-inquiry-table__status"
-                                  th:text="${inquiry.replyStatus}">
-                                STATUS
-                            </span>
-                        </th:block>
+                        <span class="ev-inquiry-detail__status ev-inquiry-detail__status--success"
+                              th:if="${inquiry.replyStatus == 'CLOSED'}">
+                            완료
+                        </span>
+
+                        <span class="ev-inquiry-detail__status"
+                              th:if="${inquiry.replyStatus != 'CLOSED'}"
+                              th:with="status=${T(com.evcar.common.enums.BoardStatus).from(inquiry.replyStatus)}"
+                              th:classappend="${' ev-inquiry-detail__status--' + status.cssClass}"
+                              th:text="${status.label}">
+                            대기
+                        </span>
                     </td>
                     <td th:text="${#temporals.format(inquiry.createdAt, 'yyyy.MM.dd')}">2026.04.09</td>
                 </tr>

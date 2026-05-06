@@ -244,6 +244,13 @@
     color: var(--ev-admin-danger);
 }
 
+.ev-consultation-card__status--cancel,
+.ev-consultation-detail__status--cancel {
+    background: rgba(148, 163, 184, 0.14);
+    color: #94A3B8;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
 .ev-consultation-card__date {
     color: #5c6d84;
     font-size: 0.95rem;

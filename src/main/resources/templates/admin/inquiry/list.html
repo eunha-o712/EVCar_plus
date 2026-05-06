@@ -45,6 +45,11 @@
                                    th:href="@{/admin/inquiry(size=${size}, replyStatus='COMPLETED', keyword=${keyword})}">
                                     완료
                                 </a>
+                                <a class="ev-admin-chip"
+                                   th:classappend="${replyStatus == 'CANCELED'} ? ' is-active'"
+                                   th:href="@{/admin/inquiry(size=${size}, replyStatus='CANCELED', keyword=${keyword})}">
+                                    취소
+                                </a>
                             </div>
 
                             <div class="ev-inquiry-search-box">
@@ -109,6 +114,7 @@
                                             <span class="ev-admin-badge ev-admin-badge--complete" th:case="'COMPLETED'">완료</span>
                                             <span class="ev-admin-badge ev-admin-badge--complete" th:case="'REPLIED'">완료</span>
                                             <span class="ev-admin-badge ev-admin-badge--complete" th:case="'CLOSED'">완료</span>
+                                            <span class="ev-admin-badge ev-admin-badge--canceled" th:case="'CANCELED'">취소</span>
                                             <span th:case="*"
                                                   th:text="${item.replyStatusDesc != null ? item.replyStatusDesc : '-'}">-</span>
                                         </td>

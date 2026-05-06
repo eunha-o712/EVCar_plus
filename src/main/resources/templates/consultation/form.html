@@ -35,11 +35,13 @@
 
                 <div class="ev-consultation-form__field">
                     <label for="vehicleId" class="ev-consultation-form__label">상담 차량</label>
-                    <select id="vehicleId" th:field="*{vehicleId}" class="ev-consultation-form__select">
+                    <select id="vehicleId"
+                            th:field="*{vehicleId}"
+                            class="ev-consultation-form__select">
                         <option value="">차량을 선택하세요</option>
                         <option th:each="vehicle : ${vehicleList}"
                                 th:value="${vehicle.vehicleId}"
-                                th:text="${vehicle.brand + ' ' + vehicle.modelName}">
+                                th:text="${vehicle.brand + ' ' + T(com.evcar.common.enums.VehicleModelType).toLabel(vehicle.modelName)}">
                             현대 아이오닉 5
                         </option>
                     </select>
@@ -63,17 +65,19 @@
                            placeholder="예: 4500">
                 </div>
 
-				<div class="ev-consultation-form__field ev-consultation-form__field--full">
-				    <label for="purchasePlan" class="ev-consultation-form__label">구매 계획</label>
-				    <select id="purchasePlan" th:field="*{purchasePlan}" class="ev-consultation-form__select">
-				        <option value="">선택해주세요</option>
-				        <option value="1_MONTH">1개월 이내</option>
-				        <option value="3_MONTH">3개월 이내</option>
-				        <option value="6_MONTH">6개월 이내</option>
-				        <option value="UNDECIDED">미정</option>
-				    </select>
-				</div>
-				
+                <div class="ev-consultation-form__field ev-consultation-form__field--full">
+                    <label for="purchasePlan" class="ev-consultation-form__label">구매 계획</label>
+                    <select id="purchasePlan"
+                            th:field="*{purchasePlan}"
+                            class="ev-consultation-form__select">
+                        <option value="">선택해주세요</option>
+                        <option value="1_MONTH">1개월 이내</option>
+                        <option value="3_MONTH">3개월 이내</option>
+                        <option value="6_MONTH">6개월 이내</option>
+                        <option value="UNDECIDED">미정</option>
+                    </select>
+                </div>
+
                 <div class="ev-consultation-form__field ev-consultation-form__field--full">
                     <label for="consultContent" class="ev-consultation-form__label">상담 내용</label>
                     <textarea id="consultContent"

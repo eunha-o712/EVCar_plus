@@ -1,5 +1,6 @@
 package com.evcar.service.consultation;
 
+import com.evcar.common.enums.BoardStatus;
 import com.evcar.domain.consultation.Consultation;
 import com.evcar.domain.user.User;
 import com.evcar.domain.vehicle.Vehicle;
@@ -72,7 +73,6 @@ public class ConsultationServiceImpl implements ConsultationService {
     }
 
     private ConsultationResponseDto toResponseDto(Consultation consultation) {
-        // userId, vehicleId로 별도 조회
         String userName = userRepository.findById(consultation.getUserId())
                 .map(User::getName)
                 .orElse("알 수 없음");
@@ -80,6 +80,8 @@ public class ConsultationServiceImpl implements ConsultationService {
         String vehicleModelName = vehicleRepository.findById(consultation.getVehicleId())
                 .map(Vehicle::getModelName)
                 .orElse("알 수 없음");
+
+        BoardStatus status = BoardStatus.from(consultation.getConsultStatus());
 
         return ConsultationResponseDto.builder()
                 .consultId(consultation.getConsultId())
@@ -94,6 +96,8 @@ public class ConsultationServiceImpl implements ConsultationService {
                 .consultStatus(consultation.getConsultStatus())
                 .consultResult(consultation.getConsultResult())
                 .adminReply(consultation.getAdminReply())
+                .statusLabel(status.getLabel())
+                .statusClass(status.getCssClass())
                 .createdAt(consultation.getCreatedAt())
                 .build();
     }

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{layout/mainLayout :: head('문의상세', ~{::link})}">
     <link rel="stylesheet" th:href="@{/css/inquiry/inquiry.css}">
 </head>
+
 <body>
 <div th:replace="~{layout/header :: header}"></div>
 
@@ -20,69 +22,27 @@
             <div class="ev-inquiry-detail__header">
                 <h2 class="ev-inquiry-detail__title" th:text="${inquiry.title}">문의 제목</h2>
 
-                <th:block th:switch="${inquiry.replyStatus}">
-                    <span th:case="'WAITING'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--waiting"
-                          th:text="${inquiry.replyStatus}">
-                        WAITING
-                    </span>
-                    <span th:case="'PENDING'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--waiting"
-                          th:text="${inquiry.replyStatus}">
-                        PENDING
-                    </span>
-                    <span th:case="'IN_PROGRESS'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--progress"
-                          th:text="${inquiry.replyStatus}">
-                        IN_PROGRESS
-                    </span>
-                    <span th:case="'PROGRESS'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--progress"
-                          th:text="${inquiry.replyStatus}">
-                        PROGRESS
-                    </span>
-                    <span th:case="'REPLIED'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--success"
-                          th:text="${inquiry.replyStatus}">
-                        REPLIED
-                    </span>
-                    <span th:case="'COMPLETED'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--success"
-                          th:text="${inquiry.replyStatus}">
-                        COMPLETED
-                    </span>
-                    <span th:case="'DONE'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--success"
-                          th:text="${inquiry.replyStatus}">
-                        DONE
-                    </span>
-                    <span th:case="'CLOSED'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--danger"
-                          th:text="${inquiry.replyStatus}">
-                        CLOSED
-                    </span>
-                    <span th:case="'CANCELED'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--danger"
-                          th:text="${inquiry.replyStatus}">
-                        CANCELED
-                    </span>
-                    <span th:case="'CANCEL'"
-                          class="ev-inquiry-detail__status ev-inquiry-detail__status--danger"
-                          th:text="${inquiry.replyStatus}">
-                        CANCEL
-                    </span>
-                    <span th:case="*"
-                          class="ev-inquiry-detail__status"
-                          th:text="${inquiry.replyStatus}">
-                        STATUS
-                    </span>
-                </th:block>
+                <span class="ev-inquiry-detail__status ev-inquiry-detail__status--success"
+                      th:if="${inquiry.replyStatus == 'CLOSED'}">
+                    완료
+                </span>
+
+                <span class="ev-inquiry-detail__status"
+                      th:if="${inquiry.replyStatus != 'CLOSED'}"
+                      th:with="status=${T(com.evcar.common.enums.BoardStatus).from(inquiry.replyStatus)}"
+                      th:classappend="${' ev-inquiry-detail__status--' + status.cssClass}"
+                      th:text="${status.label}">
+                    대기
+                </span>
             </div>
 
             <div class="ev-inquiry-detail__meta">
                 <span><strong>문의번호</strong> <span th:text="${inquiry.inquiryId}">IQ0001</span></span>
                 <span><strong>작성자</strong> <span th:text="${inquiry.userName}">홍길동</span></span>
-                <span><strong>작성일</strong> <span th:text="${#temporals.format(inquiry.createdAt, 'yyyy.MM.dd')}">2026.04.09</span></span>
+                <span>
+                    <strong>작성일</strong>
+                    <span th:text="${#temporals.format(inquiry.createdAt, 'yyyy.MM.dd')}">2026.04.09</span>
+                </span>
             </div>
 
             <div class="ev-inquiry-detail__content">
@@ -114,4 +74,6 @@
 <script th:src="@{/js/inquiry/inquiry.js}"></script>
 <script th:src="@{/js/common/footer.js}"></script>
 </body>
+</html>
+
 </html>

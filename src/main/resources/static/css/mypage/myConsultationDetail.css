@@ -40,7 +40,7 @@
     font-weight: 800;
 }
 
-.ev-inquiry-detail-card {
+.ev-consultation-detail-card {
     overflow: hidden;
     border: 1px solid rgba(226, 232, 240, 0.9);
     border-radius: 26px;
@@ -50,43 +50,43 @@
         0 8px 20px rgba(15, 23, 42, 0.035);
 }
 
-.ev-inquiry-detail-card__body {
+.ev-consultation-detail-card__body {
     display: grid;
     grid-template-columns: 1fr;
     gap: 14px;
     padding: 30px 28px 22px;
 }
 
-.ev-inquiry-detail-card__row {
+.ev-consultation-detail-card__row {
     display: grid;
     grid-template-columns: 104px 1fr;
     gap: 14px;
     padding: 8px 0;
 }
 
-.ev-inquiry-detail-card__row--full {
+.ev-consultation-detail-card__row--full {
     grid-column: 1 / -1;
 }
 
-.ev-inquiry-detail-card__label {
+.ev-consultation-detail-card__label {
     color: #64748b;
     font-size: 13px;
     font-weight: 800;
 }
 
-.ev-inquiry-detail-card__value {
+.ev-consultation-detail-card__value {
     color: #111827;
     font-size: 15px;
     font-weight: 700;
     word-break: keep-all;
 }
 
-.ev-inquiry-detail-card__value--multiline {
+.ev-consultation-detail-card__value--multiline {
     white-space: pre-line;
     line-height: 1.75;
 }
 
-.ev-inquiry-detail-card__value--reply {
+.ev-consultation-detail-card__value--reply {
     display: block;
     padding: 16px 18px;
     border: 1px solid rgba(14, 165, 233, 0.18);
@@ -97,7 +97,7 @@
     line-height: 1.75;
 }
 
-.ev-inquiry-detail-card__footer {
+.ev-consultation-detail-card__footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -106,7 +106,7 @@
     border-top: 1px solid rgba(226, 232, 240, 0.95);
 }
 
-.ev-inquiry-detail-status {
+.ev-consultation-detail-status {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -117,22 +117,22 @@
     font-weight: 800;
 }
 
-.ev-inquiry-detail-status--progress {
+.ev-consultation-detail-status--progress {
     background: #e0f2fe;
     color: #0369a1;
 }
 
-.ev-inquiry-detail-status--done {
+.ev-consultation-detail-status--done {
     background: #d1fae5;
     color: #065f46;
 }
 
-.ev-inquiry-detail-status--cancel {
+.ev-consultation-detail-status--cancel {
     background: #fee2e2;
     color: #991b1b;
 }
 
-.ev-inquiry-detail-card__actions {
+.ev-consultation-detail-card__actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -140,17 +140,17 @@
     flex-wrap: wrap;
 }
 
-.ev-inquiry-detail-card__actions form {
+.ev-consultation-detail-card__actions form {
     margin: 0;
 }
 
-.ev-inquiry-detail-card__actions .btn {
+.ev-consultation-detail-card__actions .btn {
     border-radius: 999px;
     font-size: 14px;
     font-weight: 800;
 }
 
-.ev-inquiry-detail-cancel-btn {
+.ev-consultation-detail-cancel-btn {
     min-width: 92px;
     height: 38px;
     padding: 0 16px;
@@ -162,13 +162,13 @@
     font-weight: 800;
 }
 
-.ev-inquiry-detail-cancel-btn:hover {
+.ev-consultation-detail-cancel-btn:hover {
     border-color: rgba(239, 68, 68, 0.38);
     background: rgba(239, 68, 68, 0.12);
     color: #ef4444;
 }
 
-.ev-inquiry-detail-disabled-text {
+.ev-consultation-detail-disabled-text {
     color: #94a3b8;
     font-size: 14px;
     font-weight: 800;
@@ -187,25 +187,25 @@
         width: 100%;
     }
 
-    .ev-inquiry-detail-card__body {
+    .ev-consultation-detail-card__body {
         padding: 26px 22px 20px;
     }
 
-    .ev-inquiry-detail-card__row {
+    .ev-consultation-detail-card__row {
         grid-template-columns: 1fr;
         gap: 6px;
     }
 
-    .ev-inquiry-detail-card__footer {
+    .ev-consultation-detail-card__footer {
         align-items: stretch;
         flex-direction: column;
         padding: 22px;
     }
 
-    .ev-inquiry-detail-card__actions,
-    .ev-inquiry-detail-card__actions form,
-    .ev-inquiry-detail-card__actions .btn,
-    .ev-inquiry-detail-cancel-btn {
+    .ev-consultation-detail-card__actions,
+    .ev-consultation-detail-card__actions form,
+    .ev-consultation-detail-card__actions .btn,
+    .ev-consultation-detail-cancel-btn {
         width: 100%;
     }
 }

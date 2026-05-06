@@ -31,25 +31,26 @@
                             차량 정보가 수정되었습니다.
                         </div>
 
-						<div class="ev-admin-toolbar__row ev-admin-filter-group">
-						    <a class="ev-admin-chip"
-						       th:classappend="${selectedStatus == null || selectedStatus == '' || selectedStatus == 'ALL'} ? ' is-active'"
-						       th:href="@{/admin/vehicle(keyword=${keyword})}">
-						        전체
-						    </a>
-						    <a class="ev-admin-chip"
-						       th:classappend="${selectedStatus == 'ON_SALE'} ? ' is-active'"
-						       th:href="@{/admin/vehicle(status='ON_SALE', keyword=${keyword})}">
-						        판매중
-						    </a>
-						    <a class="ev-admin-chip"
-						       th:classappend="${selectedStatus == 'SOLD_OUT'} ? ' is-active'"
-						       th:href="@{/admin/vehicle(status='SOLD_OUT', keyword=${keyword})}">
-						        품절
-						    </a>
-						</div>
+                        <div class="ev-admin-vehicle-control">
+                            <div class="ev-admin-toolbar__row ev-admin-filter-group">
+                                <a class="ev-admin-chip"
+                                   th:classappend="${selectedStatus == null || selectedStatus == '' || selectedStatus == 'ALL'} ? ' is-active'"
+                                   th:href="@{/admin/vehicle(keyword=${keyword})}">
+                                    전체
+                                </a>
+                                <a class="ev-admin-chip"
+                                   th:classappend="${selectedStatus == 'ON_SALE'} ? ' is-active'"
+                                   th:href="@{/admin/vehicle(status='ON_SALE', keyword=${keyword})}">
+                                    판매중
+                                </a>
+                                <a class="ev-admin-chip"
+                                   th:classappend="${selectedStatus == 'SOLD_OUT'} ? ' is-active'"
+                                   th:href="@{/admin/vehicle(status='SOLD_OUT', keyword=${keyword})}">
+                                    품절
+                                </a>
+                            </div>
 
-                            <div class="ev-admin-toolbar__row">
+                            <div class="ev-admin-toolbar__row ev-admin-vehicle-search-row">
                                 <form th:action="@{/admin/vehicle}" method="get" class="ev-admin-vehicle-search-form">
                                     <input type="hidden" name="status" th:value="${selectedStatus}">
                                     <input type="text"
@@ -117,17 +118,17 @@
                                     </td>
                                     <td th:text="${vehicle.vehicleClassLabel}">중형 SUV</td>
                                     <td th:text="${vehicle.priceBasicFormatted}">6,700만원</td>
-									<td>
-									    <span class="ev-admin-badge ev-admin-badge--danger"
-									          th:if="${vehicle != null and vehicle.vehicleStatus == 'SOLD_OUT'}">
-									        품절
-									    </span>
-									    <span class="ev-admin-badge ev-admin-badge--success"
-									          th:unless="${vehicle != null and vehicle.vehicleStatus == 'SOLD_OUT'}"
-									          th:text="${vehicle != null and vehicle.vehicleStatusLabel != null ? vehicle.vehicleStatusLabel : '판매중'}">
-									        판매중
-									    </span>
-									</td>
+                                    <td>
+                                        <span class="ev-admin-badge ev-admin-badge--danger"
+                                              th:if="${vehicle != null and vehicle.vehicleStatus == 'SOLD_OUT'}">
+                                            품절
+                                        </span>
+                                        <span class="ev-admin-badge ev-admin-badge--success"
+                                              th:unless="${vehicle != null and vehicle.vehicleStatus == 'SOLD_OUT'}"
+                                              th:text="${vehicle != null and vehicle.vehicleStatusLabel != null ? vehicle.vehicleStatusLabel : '판매중'}">
+                                            판매중
+                                        </span>
+                                    </td>
                                     <td th:text="${vehicle.createdAtFormatted}">2024-11-20 00:00</td>
                                     <td th:text="${vehicle.updatedAtFormatted}">2025-03-15 00:00</td>
                                     <td>

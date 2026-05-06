@@ -72,4 +72,14 @@ public class ChargingStationController {
                 .map(ChargerResponseDto::from)
                 .toList();
     }
+    
+    @GetMapping("/current")
+    @ResponseBody
+    public List<ChargingStationResponseDto> getCurrentLocationStations(
+            @RequestParam("lat") double lat,
+            @RequestParam("lng") double lng,
+            @RequestParam(value = "radiusKm", defaultValue = "5") double radiusKm
+    ) {
+        return chargingStationService.getStationsByCurrentLocation(lat, lng, radiusKm);
+    }
 }

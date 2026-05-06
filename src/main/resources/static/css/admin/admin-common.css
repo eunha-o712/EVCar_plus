@@ -20,6 +20,17 @@
     --ev-admin-radius-lg: 24px;
     --ev-admin-radius-md: 18px;
     --ev-admin-radius-sm: 12px;
+    --ev-admin-badge-success-bg: rgba(16, 185, 129, 0.18);
+    --ev-admin-badge-success-text: #7ff2c0;
+    --ev-admin-badge-pending-bg: rgba(245, 158, 11, 0.18);
+    --ev-admin-badge-pending-text: #ffcf70;
+    --ev-admin-badge-progress-bg: rgba(59, 130, 246, 0.18);
+    --ev-admin-badge-progress-text: #93c5fd;
+    --ev-admin-badge-danger-bg: rgba(239, 68, 68, 0.18);
+    --ev-admin-badge-danger-text: #fda4af;
+    --ev-admin-badge-canceled-bg: rgba(148, 163, 184, 0.14);
+    --ev-admin-badge-canceled-text: #FFFFFF;
+    --ev-admin-badge-canceled-border: rgba(148, 163, 184, 0.35);
 }
 
 * {
@@ -341,6 +352,7 @@ textarea {
     min-width: 72px;
     min-height: 32px;
     padding: 6px 12px;
+    border: 1px solid transparent;
     border-radius: 999px;
     font-size: 12px;
     font-weight: 700;
@@ -351,24 +363,30 @@ textarea {
 .ev-admin-badge--active,
 .ev-admin-badge--success,
 .ev-admin-badge--complete {
-    background: rgba(16, 185, 129, 0.18);
-    color: #7ff2c0;
+    background: var(--ev-admin-badge-success-bg);
+    color: var(--ev-admin-badge-success-text);
 }
 
 .ev-admin-badge--pending {
-    background: rgba(245, 158, 11, 0.18);
-    color: #ffcf70;
+    background: var(--ev-admin-badge-pending-bg);
+    color: var(--ev-admin-badge-pending-text);
 }
 
 .ev-admin-badge--progress {
-    background: rgba(59, 130, 246, 0.18);
-    color: #93c5fd;
+    background: var(--ev-admin-badge-progress-bg);
+    color: var(--ev-admin-badge-progress-text);
 }
 
 .ev-admin-badge--withdrawn,
 .ev-admin-badge--danger {
-    background: rgba(239, 68, 68, 0.18);
-    color: #fda4af;
+    background: var(--ev-admin-badge-danger-bg);
+    color: var(--ev-admin-badge-danger-text);
+}
+
+.ev-admin-badge--canceled {
+    background: var(--ev-admin-badge-canceled-bg);
+    color: var(--ev-admin-badge-canceled-text);
+    border-color: var(--ev-admin-badge-canceled-border);
 }
 
 .ev-admin-grid {
