@@ -12,6 +12,13 @@
     height: 100% !important;
 }
 
+.ev-admin-dashboard-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
 .ev-admin-result-layout {
     display: grid;
     grid-template-columns: 1fr;
@@ -82,5 +89,13 @@
 
     .ev-admin-result-compare__grid {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ev-admin-dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
     }
 }

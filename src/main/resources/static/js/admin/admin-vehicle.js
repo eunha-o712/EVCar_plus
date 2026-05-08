@@ -13,6 +13,7 @@ function bindDeleteConfirm() {
     deleteForms.forEach((formElement) => {
         formElement.addEventListener('submit', (event) => {
             const isConfirmed = window.confirm('선택한 차량을 삭제하시겠습니까?');
+
             if (!isConfirmed) {
                 event.preventDefault();
             }
@@ -88,6 +89,7 @@ function bindImageUploader() {
 
     dropzone.addEventListener('drop', (event) => {
         const files = event.dataTransfer.files;
+
         if (!files || files.length === 0) {
             return;
         }
@@ -118,11 +120,11 @@ function bindAutoHideAlert() {
 }
 
 function bindVehicleIdPreview() {
-    const brandInput = document.getElementById('brand');
+    const brandSelect = document.getElementById('brand');
     const vehicleIdPreviewInput = document.getElementById('vehicleIdPreview');
     const hiddenVehicleIdInput = document.querySelector('input[name="vehicleId"]');
 
-    if (!brandInput || !vehicleIdPreviewInput) {
+    if (!brandSelect || !vehicleIdPreviewInput) {
         return;
     }
 
@@ -131,10 +133,11 @@ function bindVehicleIdPreview() {
     }
 
     const requestPreviewVehicleId = async () => {
-        const brand = brandInput.value.trim();
+        const brand = brandSelect.value.trim();
 
         try {
             const response = await fetch('/admin/vehicle/next-id?brand=' + encodeURIComponent(brand));
+
             if (!response.ok) {
                 return;
             }
@@ -146,7 +149,7 @@ function bindVehicleIdPreview() {
         }
     };
 
-    brandInput.addEventListener('input', requestPreviewVehicleId);
+    brandSelect.addEventListener('change', requestPreviewVehicleId);
     requestPreviewVehicleId();
 }
 

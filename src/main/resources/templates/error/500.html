@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/mainLayout :: head('500 INTERNAL SERVER ERROR', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/error/error.css}">
+</head>
+
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-error">
+    <div class="ev-error__background"></div>
+
+    <section class="ev-error__content">
+        <p class="ev-error__code">500 ERROR</p>
+
+        <h1 class="ev-error__title">
+            서버 오류가 발생했습니다.
+        </h1>
+
+        <p class="ev-error__description">
+            일시적인 오류로 인해 요청을 처리하지 못했습니다.<br>
+            잠시 후 다시 시도해주세요.
+        </p>
+
+        <div class="ev-error__actions">
+            <a th:href="@{/main}" class="ev-error__button ev-error__button--primary">
+                메인으로 이동
+            </a>
+
+            <button type="button"
+                    class="ev-error__button ev-error__button--secondary"
+                    onclick="location.reload()">
+                새로고침
+            </button>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/footer.js}"></script>
+<script th:src="@{/js/error/error.js}"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/mainLayout :: head('ERROR', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/error/error.css}">
+</head>
+
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-error">
+    <div class="ev-error__background"></div>
+
+    <section class="ev-error__content">
+        <p class="ev-error__code">ERROR</p>
+
+        <h1 class="ev-error__title">
+            요청을 처리할 수 없습니다.
+        </h1>
+
+        <p class="ev-error__description">
+            서비스 이용 중 문제가 발생했습니다.<br>
+            잠시 후 다시 시도해주세요.
+        </p>
+
+        <div class="ev-error__actions">
+            <a th:href="@{/main}" class="ev-error__button ev-error__button--primary">
+                메인으로 이동
+            </a>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/footer.js}"></script>
+<script th:src="@{/js/error/error.js}"></script>
+</body>
+</html>

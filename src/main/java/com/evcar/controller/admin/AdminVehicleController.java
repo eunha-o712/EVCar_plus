@@ -40,10 +40,13 @@ public class AdminVehicleController {
     public String vehicleForm(Model model) {
         model.addAttribute("isEditMode", false);
         model.addAttribute("previewVehicleId", adminVehicleService.previewNextVehicleId(null));
+        model.addAttribute("brandTypes", adminVehicleService.getVehicleBrandTypes());
+        model.addAttribute("modelTypes", adminVehicleService.getVehicleModelTypes());
         model.addAttribute("vehicleForm", AdminVehicleFormResponseDto.builder()
                 .vehicleStatus("ACTIVE")
                 .chargingMethod("DC_COMBO")
                 .build());
+
         return "admin/vehicle/form";
     }
 
@@ -55,6 +58,9 @@ public class AdminVehicleController {
         model.addAttribute("isEditMode", true);
         model.addAttribute("previewVehicleId", vehicleId);
         model.addAttribute("vehicleForm", adminVehicleService.getVehicleForm(vehicleId));
+        model.addAttribute("brandTypes", adminVehicleService.getVehicleBrandTypes());
+        model.addAttribute("modelTypes", adminVehicleService.getVehicleModelTypes());
+
         return "admin/vehicle/form";
     }
 

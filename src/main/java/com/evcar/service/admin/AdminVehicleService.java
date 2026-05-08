@@ -1,5 +1,7 @@
 package com.evcar.service.admin;
 
+import com.evcar.common.enums.VehicleBrandType;
+import com.evcar.common.enums.VehicleModelType;
 import com.evcar.dto.admin.AdminVehicleFormResponseDto;
 import com.evcar.dto.admin.AdminVehicleListResponseDto;
 import com.evcar.dto.admin.AdminVehicleSaveRequestDto;
@@ -17,4 +19,8 @@ public interface AdminVehicleService {
     void saveVehicle(AdminVehicleSaveRequestDto requestDto, MultipartFile imageFile);
 
     void deleteVehicle(String vehicleId);
+
+    List<VehicleBrandType> getVehicleBrandTypes();
+
+    List<VehicleModelType> getVehicleModelTypes();
 }

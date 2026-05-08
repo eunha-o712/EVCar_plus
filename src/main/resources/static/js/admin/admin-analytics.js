@@ -29,6 +29,28 @@ const VEHICLE_NAME_MAP = {
     BONGO3_EV: '봉고3 EV'
 };
 
+const REGION_SHORT_NAME_MAP = {
+    서울특별시: '서울',
+    부산광역시: '부산',
+    대구광역시: '대구',
+    인천광역시: '인천',
+    광주광역시: '광주',
+    대전광역시: '대전',
+    울산광역시: '울산',
+    세종특별자치시: '세종',
+    경기도: '경기',
+    강원특별자치도: '강원',
+    강원도: '강원',
+    충청북도: '충북',
+    충청남도: '충남',
+    전북특별자치도: '전북',
+    전라북도: '전북',
+    전라남도: '전남',
+    경상북도: '경북',
+    경상남도: '경남',
+    제주특별자치도: '제주'
+};
+
 async function fetchJson(url) {
     const response = await fetch(url, {
         method: 'GET',
@@ -117,17 +139,42 @@ async function loadMonthlyConsultationChart() {
 async function loadVehicleDemandChart() {
     const data = await fetchJson('/admin/analytics/api/vehicle-demand');
 
-    const labels = Array.isArray(data) ? data.map(item => convertVehicleLabel(item.modelName)) : [];
-    const values = Array.isArray(data) ? data.map(item => Number(item.consultationCount) || 0) : [];
+    const labels = Array.isArray(data)
+        ? data.map(item => convertVehicleLabel(item.modelName))
+        : [];
+
+    const values = Array.isArray(data)
+        ? data.map(item => Number(item.consultationCount) || 0)
+        : [];
 
     renderBarChart('vehicleDemandChart', labels, values, '상담 건수', 50);
 }
 
 async function loadRegionConsultationChart() {
     const data = await fetchJson('/admin/analytics/api/region');
+    const regionSummaryMap = new Map();
 
-    const labels = Array.isArray(data) ? data.map(item => convertRegionLabel(item.regionName)) : [];
-    const values = Array.isArray(data) ? data.map(item => Number(item.consultationCount) || 0) : [];
+    if (Array.isArray(data)) {
+        data.forEach((item) => {
+            const regionLabel = convertRegionSidoLabel(item.regionName);
+            const consultationCount = Number(item.consultationCount) || 0;
+
+            if (!regionLabel) {
+                return;
+            }
+
+            regionSummaryMap.set(
+                regionLabel,
+                (regionSummaryMap.get(regionLabel) || 0) + consultationCount
+            );
+        });
+    }
+
+    const sortedRegions = Array.from(regionSummaryMap.entries())
+        .sort((first, second) => second[1] - first[1]);
+
+    const labels = sortedRegions.map(([regionLabel]) => regionLabel);
+    const values = sortedRegions.map(([, consultationCount]) => consultationCount);
 
     renderBarChart('regionConsultationChart', labels, values, '상담 건수', 50);
 }
@@ -135,8 +182,13 @@ async function loadRegionConsultationChart() {
 async function loadConsultationResultChart() {
     const data = await fetchJson('/admin/analytics/api/result');
 
-    const labels = Array.isArray(data) ? data.map(item => convertResultLabel(item.resultName)) : [];
-    const values = Array.isArray(data) ? data.map(item => Number(item.consultationCount) || 0) : [];
+    const labels = Array.isArray(data)
+        ? data.map(item => convertResultLabel(item.resultName))
+        : [];
+
+    const values = Array.isArray(data)
+        ? data.map(item => Number(item.consultationCount) || 0)
+        : [];
 
     renderDoughnutChart('consultationResultChart', labels, values, '상담 결과');
 }
@@ -157,11 +209,12 @@ async function loadComparison() {
     );
 
     setText('comparisonTopModelName', convertVehicleLabel(data.topModelName));
-    setText('comparisonTopRegionName', data.topRegionName || '-');
+    setText('comparisonTopRegionName', convertRegionLabelForText(data.topRegionName));
 }
 
 function setText(elementId, value) {
     const element = document.getElementById(elementId);
+
     if (element) {
         element.textContent = value;
     }
@@ -195,45 +248,72 @@ function convertVehicleLabel(modelName) {
     return VEHICLE_NAME_MAP[modelName] || modelName.replace(/_/g, ' ');
 }
 
-function convertRegionLabel(regionName) {
+function convertRegionSidoLabel(regionName) {
     if (!regionName) {
         return '';
     }
 
-    const parts = regionName.trim().split(/\s+/);
+    const normalizedRegionName = regionName.trim().replace(/\s+/g, ' ');
+    const sido = normalizedRegionName.split(' ')[0];
 
-    if (parts.length <= 1) {
-        return regionName;
+    return shortenRegionPart(sido);
+}
+
+function convertRegionLabelForText(regionName) {
+    if (!regionName) {
+        return '-';
     }
 
-    if (parts.length === 2) {
-        return [parts[0], parts[1]];
+    const normalizedRegionName = regionName.trim().replace(/\s+/g, ' ');
+    const parts = normalizedRegionName.split(' ');
+
+    if (parts.length === 1) {
+        return shortenRegionPart(parts[0]);
     }
 
-    return [parts[0], parts.slice(1).join(' ')];
+    return `${shortenRegionPart(parts[0])} ${parts[1]}`;
+}
+
+function shortenRegionPart(regionPart) {
+    if (!regionPart) {
+        return '';
+    }
+
+    return REGION_SHORT_NAME_MAP[regionPart] || regionPart
+        .replace('특별자치시', '')
+        .replace('특별자치도', '')
+        .replace('특별시', '')
+        .replace('광역시', '')
+        .replace('자치구', '');
 }
 
 function convertResultLabel(resultName) {
     if (resultName === 'PURCHASE') {
         return '구매';
     }
+
     if (resultName === 'NOT_PURCHASE') {
         return '미구매';
     }
+
     if (resultName === 'UNDECIDED') {
         return '보류';
     }
+
     if (resultName === 'CONTRACT') {
         return '계약';
     }
+
     if (resultName === '미정' || resultName === null || resultName === '') {
         return '미정';
     }
+
     return resultName;
 }
 
 function renderLineChart(canvasId, labels, values, label, maxY) {
     const canvas = document.getElementById(canvasId);
+
     if (!canvas) {
         return;
     }
@@ -260,6 +340,7 @@ function renderLineChart(canvasId, labels, values, label, maxY) {
 
 function renderBarChart(canvasId, labels, values, label, maxY) {
     const canvas = document.getElementById(canvasId);
+
     if (!canvas) {
         return;
     }
@@ -282,6 +363,7 @@ function renderBarChart(canvasId, labels, values, label, maxY) {
 
 function renderDoughnutChart(canvasId, labels, values, label) {
     const canvas = document.getElementById(canvasId);
+
     if (!canvas) {
         return;
     }

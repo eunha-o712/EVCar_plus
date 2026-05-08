@@ -26,21 +26,27 @@
 }
 
 .ev-dashboard-summary {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 18px;
-	margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 28px;
+    column-gap: 18px;
+    margin-bottom: 24px;
 }
 
 .ev-dashboard-summary-card {
-	position: relative;
-	overflow: hidden;
-	padding: 24px 26px;
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: 22px;
-	background: rgba(10, 24, 52, 0.72);
-	backdrop-filter: blur(8px);
-	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+    position: relative;
+    overflow: hidden;
+    padding: 24px 26px;
+    margin-bottom: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 22px;
+
+    background: rgba(10, 24, 52, 0.72);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
 }
 
 .ev-dashboard-summary-card::after {

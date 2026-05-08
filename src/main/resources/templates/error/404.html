@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/mainLayout :: head('404 NOT FOUND', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/error/error.css}">
+</head>
+
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<main class="ev-error">
+    <div class="ev-error__background"></div>
+
+    <section class="ev-error__content">
+        <p class="ev-error__code">404 ERROR</p>
+
+        <h1 class="ev-error__title">
+            요청하신 페이지를<br>
+            찾을 수 없습니다.
+        </h1>
+
+        <p class="ev-error__description">
+            주소가 변경되었거나 삭제된 페이지입니다.<br>
+            입력하신 URL을 다시 확인해주세요.
+        </p>
+
+        <div class="ev-error__actions">
+            <a th:href="@{/main}" class="ev-error__button ev-error__button--primary">
+                메인으로 이동
+            </a>
+
+            <button type="button"
+                    class="ev-error__button ev-error__button--secondary"
+                    onclick="history.back()">
+                이전 페이지
+            </button>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/footer.js}"></script>
+<script th:src="@{/js/error/error.js}"></script>
+</body>
+</html>

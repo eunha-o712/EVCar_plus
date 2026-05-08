@@ -1,0 +1,131 @@
+.ev-error {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 96px);
+    padding: 160px 24px 120px;
+    background:
+        radial-gradient(circle at top right, rgba(0, 180, 216, 0.14), transparent 24%),
+        linear-gradient(135deg, #050816 0%, #0A1630 45%, #0F3D5E 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ev-error__background {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.3;
+}
+
+.ev-error__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 720px;
+    padding: 72px 56px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    text-align: center;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.32);
+}
+
+.ev-error__code {
+    margin-bottom: 20px;
+    color: #73E5FF;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+}
+
+.ev-error__title {
+    color: #FFFFFF;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.04em;
+}
+
+.ev-error__description {
+    margin-top: 24px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+}
+
+.ev-error__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 44px;
+}
+
+.ev-error__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    min-height: 56px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.ev-error__button:hover {
+    transform: translateY(-2px);
+}
+
+.ev-error__button--primary {
+    background: #73E5FF;
+    color: #04111A;
+}
+
+.ev-error__button--primary:hover {
+    color: #04111A;
+    box-shadow: 0 14px 32px rgba(115, 229, 255, 0.28);
+}
+
+.ev-error__button--secondary {
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+}
+
+.ev-error__button--secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+    .ev-error {
+        padding-top: 140px;
+    }
+
+    .ev-error__content {
+        padding: 56px 28px;
+    }
+
+    .ev-error__title {
+        font-size: 2.2rem;
+    }
+
+    .ev-error__actions {
+        flex-direction: column;
+    }
+
+    .ev-error__button {
+        width: 100%;
+    }
+}

@@ -1,5 +1,7 @@
 package com.evcar.service.admin;
 
+import com.evcar.common.enums.VehicleBrandType;
+import com.evcar.common.enums.VehicleModelType;
 import com.evcar.domain.vehicle.Vehicle;
 import com.evcar.dto.admin.AdminVehicleFormResponseDto;
 import com.evcar.dto.admin.AdminVehicleListResponseDto;
@@ -12,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +55,7 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
                         .build())
                 .toList();
     }
+
     @Override
     public AdminVehicleFormResponseDto getVehicleForm(String vehicleId) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
@@ -77,7 +81,7 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
                 .updatedAt(vehicle.getUpdatedAt())
                 .build();
     }
-  
+
     @Override
     public String previewNextVehicleId(String brand) {
         return generateNextVehicleId(brand);
@@ -107,12 +111,22 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
         deleteUploadFileIfExists(imageUrl);
     }
 
+    @Override
+    public List<VehicleBrandType> getVehicleBrandTypes() {
+        return Arrays.stream(VehicleBrandType.values()).toList();
+    }
+
+    @Override
+    public List<VehicleModelType> getVehicleModelTypes() {
+        return Arrays.stream(VehicleModelType.values()).toList();
+    }
+
     private void createVehicle(AdminVehicleSaveRequestDto requestDto, MultipartFile imageFile) {
         LocalDateTime now = LocalDateTime.now();
         String storedImageUrl = resolveImageUrl(defaultString(requestDto.getImageUrl()), imageFile);
 
         Vehicle vehicle = Vehicle.builder()
-        		.vehicleId(generateNextVehicleId(requestDto.getBrand()))
+                .vehicleId(generateNextVehicleId(requestDto.getBrand()))
                 .brand(requestDto.getBrand().trim())
                 .modelName(requestDto.getModelName().trim())
                 .vehicleClass(requestDto.getVehicleClass().trim())
@@ -171,10 +185,16 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
 
     private void validateRequest(AdminVehicleSaveRequestDto requestDto) {
         if (!StringUtils.hasText(requestDto.getBrand())) {
-            throw new IllegalArgumentException("브랜드명을 입력해 주세요.");
+            throw new IllegalArgumentException("브랜드명을 선택해 주세요.");
+        }
+        if (!VehicleBrandType.isValid(requestDto.getBrand())) {
+            throw new IllegalArgumentException("존재하지 않는 브랜드입니다.");
         }
         if (!StringUtils.hasText(requestDto.getModelName())) {
-            throw new IllegalArgumentException("차량 모델명을 입력해 주세요.");
+            throw new IllegalArgumentException("차량 모델명을 선택해 주세요.");
+        }
+        if (!isValidVehicleModel(requestDto.getModelName())) {
+            throw new IllegalArgumentException("존재하지 않는 차량 모델입니다.");
         }
         if (!StringUtils.hasText(requestDto.getVehicleClass())) {
             throw new IllegalArgumentException("차급을 입력해 주세요.");
@@ -191,6 +211,11 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
         if (requestDto.getBatteryCapacity() != null && requestDto.getBatteryCapacity().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("배터리 용량은 0 이상으로 입력해 주세요.");
         }
+    }
+
+    private boolean isValidVehicleModel(String modelName) {
+        return Arrays.stream(VehicleModelType.values())
+                .anyMatch(modelType -> modelType.getCode().equalsIgnoreCase(modelName));
     }
 
     private String resolveImageUrl(String currentImageUrl, MultipartFile imageFile) {
@@ -302,12 +327,16 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
     }
 
     private String createVehiclePrefix(String brand) {
-        String normalizedBrand = defaultString(brand).toUpperCase();
+        if (!StringUtils.hasText(brand)) {
+            return "VH";
+        }
 
-        if ("HYUNDAI".equals(normalizedBrand) || "현대".equals(brand)) {
+        String normalizedBrand = brand.trim().toUpperCase();
+
+        if (VehicleBrandType.HYUNDAI.getCode().equalsIgnoreCase(normalizedBrand)) {
             return "HD";
         }
-        if ("KIA".equals(normalizedBrand) || "기아".equals(brand)) {
+        if (VehicleBrandType.KIA.getCode().equalsIgnoreCase(normalizedBrand)) {
             return "KA";
         }
 
@@ -319,9 +348,8 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
             return onlyLetters + "X";
         }
         return "VH";
-        
-        
     }
+
     private String normalizeModelKeyword(String keyword) {
         if (!StringUtils.hasText(keyword)) {
             return null;
@@ -339,22 +367,12 @@ public class AdminVehicleServiceImpl implements AdminVehicleService {
             case "아이오닉6", "IONIQ6" -> "IONIQ_6";
             case "아이오닉9", "IONIQ9" -> "IONIQ_9";
             case "캐스퍼", "캐스퍼EV", "캐스퍼전기차", "CASPER", "CASPEREV" -> "CASPER_EV";
+            case "레이EV", "레이", "RAY", "RAYEV" -> "RAY_EV";
+            case "코나", "코나EV", "코나일렉트릭", "KONA", "KONAELECTRIC" -> "KONA_ELECTRIC";
+            case "니로", "니로EV", "NIRO", "NIROEV" -> "NIRO_EV";
             case "EV3" -> "EV3";
             case "EV6" -> "EV6";
             case "EV9" -> "EV9";
-            default -> keyword;
-        };
-    }
-    private String normalizeBrandKeyword(String keyword) {
-        if (!StringUtils.hasText(keyword)) {
-            return null;
-        }
-
-        String normalized = keyword.trim().replace(" ", "").toUpperCase();
-
-        return switch (normalized) {
-            case "현대", "HYUNDAI" -> "HYUNDAI";
-            case "기아", "KIA" -> "KIA";
             default -> keyword;
         };
     }
