@@ -53,4 +53,3 @@ out/
 
 ### 기타 ###
 src/main/resources/application-secret.properties
-src/main/resources/application.properties

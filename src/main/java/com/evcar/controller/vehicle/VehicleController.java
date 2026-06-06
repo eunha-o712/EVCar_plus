@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 
 @Controller
 @RequiredArgsConstructor
@@ -74,8 +74,15 @@ public class VehicleController {
                     .body(VehicleAiRecommendResponseDto.class);
 
             model.addAttribute("recommendReply", responseDto != null ? responseDto.getReply() : "추천 결과를 가져오지 못했습니다.");
-        } catch (RestClientException e) {
-            model.addAttribute("recommendReply", "AI 추천 서버 연결에 실패했습니다. AI 서버가 실행 중인지 확인해 주세요.");
+        } catch (RestClientResponseException e) {
+            e.printStackTrace();
+            model.addAttribute("recommendReply", "AI 추천 실패: "
+                    + e.getStatusCode()
+                    + " / "
+                    + e.getResponseBodyAsString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("recommendReply", "AI 추천 서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.");
         }
 
         model.addAttribute("selectedMessage", userMessage);
